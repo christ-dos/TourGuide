@@ -1,31 +1,25 @@
 package tourGuide.service;
 
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import java.util.UUID;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
-
 import gpsUtil.GpsUtil;
 import gpsUtil.location.Attraction;
 import gpsUtil.location.Location;
 import gpsUtil.location.VisitedLocation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
+import tourGuide.exception.VisitedLocationNotFoundException;
 import tourGuide.helper.InternalTestHelper;
 import tourGuide.tracker.Tracker;
 import tourGuide.user.User;
 import tourGuide.user.UserReward;
 import tripPricer.Provider;
 import tripPricer.TripPricer;
+
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Service
 public class TourGuideService {
@@ -83,8 +77,18 @@ public class TourGuideService {
 		return providers;
 	}
 	
-	public VisitedLocation trackUserLocation(User user) {
-		VisitedLocation visitedLocation = gpsUtil.getUserLocation(user.getUserId());
+	public VisitedLocation trackUserLocation(User user)  {
+		VisitedLocation visitedLocation = null;
+		try {
+		Locale.setDefault(new Locale("en","US"));
+//		logger.debug("locale2:" + Locale.getDefault());
+			visitedLocation = gpsUtil.getUserLocation(user.getUserId());
+		} catch (NumberFormatException ex) {
+			logger.debug("NumberFormatException:" + ex.getMessage());
+		}
+		if(visitedLocation == null){
+			throw new VisitedLocationNotFoundException("Service:Visited location not found");
+		}
 		user.addToVisitedLocations(visitedLocation);
 		rewardsService.calculateRewards(user);
 		return visitedLocation;
@@ -143,8 +147,8 @@ public class TourGuideService {
 	}
 	
 	private double generateRandomLatitude() {
-		double leftLimit = -85.05112878;
-	    double rightLimit = 85.05112878;
+		double leftLimit = -85.05112878D;
+	    double rightLimit = 85.05112878D;
 	    return leftLimit + new Random().nextDouble() * (rightLimit - leftLimit);
 	}
 	

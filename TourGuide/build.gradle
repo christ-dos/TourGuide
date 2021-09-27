@@ -57,7 +57,7 @@ jacocoTestReport {
     }
 }
 
-test.finalizedBy jacocoTestReport
+//test.finalizedBy jacocoTestReport
 check.dependsOn jacocoTestCoverageVerification
 
 jacocoTestCoverageVerification {
