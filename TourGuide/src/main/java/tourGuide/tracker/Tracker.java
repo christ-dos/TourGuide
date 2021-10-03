@@ -43,7 +43,6 @@ public class Tracker extends Thread {
                 logger.debug("Tracker stopping");
                 break;
             }
-
             List<User> users = tourGuideService.getAllUsers();
 
             final ExecutorService executorService = Executors.newFixedThreadPool(1600, r -> {
@@ -54,15 +53,12 @@ public class Tracker extends Thread {
             logger.debug("Begin Tracker. Tracking " + users.size() + " users.");
             stopWatch.start();
 
-            CompletableFuture<VisitedLocation> completableFuture = new CompletableFuture<>();
-            users.forEach(user -> completableFuture.supplyAsync(() -> tourGuideService.trackUserLocation(user), executorService));
-//            long nombre = users.stream().map(u -> tourGuideService.trackUserLocation(u)).collect(Collectors.toSet()).size();
-//            System.out.println("************************" + nombre + "***********************");
-            System.out.println("processeurs dispo:" + Runtime.getRuntime().availableProcessors());
+//            CompletableFuture<VisitedLocation> completableFuture = new CompletableFuture<>();
+//            users.forEach(user -> completableFuture.supplyAsync(() -> tourGuideService.trackUserLocation(user), executorService));
             //TODO enlever sys.out
-//            users.forEach(u -> {
-//                tourGuideService.trackUserLocation(u);
-//            });
+            users.forEach(u -> {
+                tourGuideService.trackUserLocation(u);
+            });
             stopWatch.stop();
             logger.debug("Tracker Time Elapsed: " + TimeUnit.MILLISECONDS.toSeconds(stopWatch.getTime()) + " seconds.");
             stopWatch.reset();

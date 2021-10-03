@@ -47,18 +47,23 @@ public class RewardsService {
 		//TODO nettoyer code
 //		List<VisitedLocation> userLocations = CompletableFuture.supplyAsync(()-> user.getVisitedLocations(),executorService).join();
 //		List<Attraction> attractions = CompletableFuture.supplyAsync(()-> gpsUtil.getAttractions(),executorService).join();
-		final ExecutorService executorService = Executors.newFixedThreadPool(Math.min(userLocations.size(),1600), r->{
-			Thread t = new Thread(r);
-			t.setDaemon(true);
-			return t;
-		});
+
+		final ExecutorService executorService = Executors.newFixedThreadPool(1000);
+
+//		final ExecutorService executorService = Executors.newFixedThreadPool(Math.min(userLocations.size(),1600), r->{
+//			Thread t = new Thread(r);
+//			t.setDaemon(true);
+//			return t;
+//		});
 
 		for(VisitedLocation visitedLocation : userLocations) {
 			for(Attraction attraction : attractions) {
 				if(user.getUserRewards().stream().filter(r -> r.attraction.attractionName.equals(attraction.attractionName)).count() == 0) {
 					if(nearAttraction(visitedLocation, attraction)) {
-						user.addUserReward(new UserReward(visitedLocation, attraction, CompletableFuture.supplyAsync(
-								()->getRewardPoints(attraction, user),executorService).join()));
+						CompletableFuture.supplyAsync(() -> getRewardPoints(attraction, user), executorService).thenAccept(rewardPoints -> {
+							UserReward userReward = new UserReward(visitedLocation, attraction, rewardPoints);
+							user.addUserReward(userReward);
+						});
 					}
 				}
 			}
@@ -74,6 +79,7 @@ public class RewardsService {
 	}
 	
 	private int getRewardPoints(Attraction attraction, User user) {
+		System.out.println("Calculate reward on: " + Thread.currentThread().getName());
 		return rewardsCentral.getAttractionRewardPoints(attraction.attractionId, user.getUserId());
 	}
 

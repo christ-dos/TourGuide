@@ -65,24 +65,12 @@ public class TestPerformance {
 	    StopWatch stopWatch = new StopWatch();
 		stopWatch.start();
 		//TODO clean code
-//		allUsers.forEach(u -> {
-//			completableFuture.supplyAsync(() -> tourGuideService.trackUserLocation(u))
-//					.thenAccept(value-> System.out.println("CompletedTest:" + Thread.currentThread().getName()));
-//		});
-		long size = allUsers.stream().parallel().map(u->tourGuideService.trackUserLocation(u)).collect(Collectors.toSet()).size();
-		System.out.println("nombre:" + size);
-//		for(User user : allUsers) {
-//			tourGuideService.trackUserLocation(user);
+//		long size = allUsers.stream().parallel().map(u->tourGuideService.trackUserLocation(u)).collect(Collectors.toSet()).size();
+//		System.out.println("nombre:" + size);
+		for(User user : allUsers) {
+			tourGuideService.trackUserLocation(user);
 //			System.out.println("passage dans la boucle de test:");
-//
-//		}
-		stopWatch.stop();
-//		try {
-//			System.out.println("test sleepping");
-//			Thread.sleep(3000);
-//		} catch (InterruptedException e) {
-//			e.printStackTrace();
-//		}
+		}
 		tourGuideService.tracker.stopTracking();
 
 		System.out.println("highVolumeTrackLocation: Time Elapsed: " + TimeUnit.MILLISECONDS.toSeconds(stopWatch.getTime()) + " seconds.");
@@ -102,8 +90,7 @@ public class TestPerformance {
 		TourGuideService tourGuideService = new TourGuideService(gpsUtil, rewardsService);
 
 	    Attraction attraction = gpsUtil.getAttractions().get(0);
-		List<User> allUsers = new ArrayList<>();
-		allUsers = tourGuideService.getAllUsers();
+		List<User> allUsers = tourGuideService.getAllUsers();
 
 		allUsers.forEach(u -> u.addToVisitedLocations(new VisitedLocation(u.getUserId(), attraction, new Date())));
 		allUsers.forEach(u -> rewardsService.calculateRewards(u));

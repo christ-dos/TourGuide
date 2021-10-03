@@ -82,20 +82,20 @@ public class TourGuideService {
 
     public VisitedLocation trackUserLocation(User user) {
         VisitedLocation visitedLocation = null;
-        final ExecutorService executorService = Executors.newFixedThreadPool(1600, r -> {
-            Thread t = new Thread(r);
-            t.setDaemon(true);
-            return t;
-        });
+//        final ExecutorService executorService = Executors.newFixedThreadPool(1600, r -> {
+//            Thread t = new Thread(r);
+//            t.setDaemon(true);
+//            return t;
+//        });
         try {
             Locale.setDefault(new Locale("en", "US"));
 
-            visitedLocation = CompletableFuture.supplyAsync(() ->
-                    gpsUtil.getUserLocation(user.getUserId()), executorService).join();
+//            visitedLocation = CompletableFuture.supplyAsync(() ->
+//                    gpsUtil.getUserLocation(user.getUserId()), executorService).join();
 
-            System.out.println("visited location in service:" + Thread.currentThread().getName());
+//            System.out.println("visited location in service:" + Thread.currentThread().getName());
             //TODO enlever sys.out et clean code
-//            visitedLocation = gpsUtil.getUserLocation(user.getUserId());
+            visitedLocation = gpsUtil.getUserLocation(user.getUserId());
         } catch (NumberFormatException ex) {
             logger.debug("NumberFormatException:" + ex.getMessage());
         }
@@ -119,7 +119,6 @@ public class TourGuideService {
             }
         }
         rewardsService.setAttractionProximityRange((int)getAverageDistanceByAttraction(distances));
-        Double sum = distances.stream().mapToDouble(s->s).sum();
 
         return nearbyAttractions;
     }
