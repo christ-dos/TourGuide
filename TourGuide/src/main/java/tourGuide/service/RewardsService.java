@@ -2,10 +2,8 @@ package tourGuide.service;
 
 import java.util.List;
 import java.util.concurrent.*;
-import java.util.stream.Stream;
+import java.util.concurrent.atomic.AtomicInteger;
 
-import jdk.nashorn.internal.objects.annotations.Getter;
-import lombok.Setter;
 import org.springframework.stereotype.Service;
 
 import gpsUtil.GpsUtil;
@@ -39,7 +37,22 @@ public class RewardsService {
 	public void setDefaultProximityBuffer() {
 		proximityBuffer = defaultProximityBuffer;
 	}
-	
+
+//	public void calculateRewards(User user) {
+//		List<VisitedLocation> userLocations = user.getVisitedLocations();
+//		List<Attraction> attractions = gpsUtil.getAttractions();
+//
+//		for(VisitedLocation visitedLocation : userLocations) {
+//			for(Attraction attraction : attractions) {
+//				if(user.getUserRewards().stream().filter(r -> r.attraction.attractionName.equals(attraction.attractionName)).count() == 0) {
+//					if(nearAttraction(visitedLocation, attraction)) {
+//						user.addUserReward(new UserReward(visitedLocation, attraction, getRewardPoints(attraction, user)));
+//					}
+//				}
+//			}
+//		}
+//	}
+
 	public void calculateRewards(User user) {
 
 		List<VisitedLocation> userLocations = user.getVisitedLocations();
@@ -60,13 +73,15 @@ public class RewardsService {
 			for(Attraction attraction : attractions) {
 				if(user.getUserRewards().stream().filter(r -> r.attraction.attractionName.equals(attraction.attractionName)).count() == 0) {
 					if(nearAttraction(visitedLocation, attraction)) {
-						CompletableFuture.supplyAsync(() -> getRewardPoints(attraction, user), executorService).thenAccept(rewardPoints -> {
+						CompletableFuture.supplyAsync(() -> getRewardPoints(attraction, user),executorService).thenAccept(rewardPoints -> {
 							UserReward userReward = new UserReward(visitedLocation, attraction, rewardPoints);
 							user.addUserReward(userReward);
+//							System.out.println("rewards points: " + rewardPoints);
 						});
 					}
 				}
 			}
+
 		}
 	}
 
@@ -80,7 +95,12 @@ public class RewardsService {
 	
 	private int getRewardPoints(Attraction attraction, User user) {
 		System.out.println("Calculate reward on: " + Thread.currentThread().getName());
+		//TODO RETIRER SYS0OUT
+//		CompletableFuture<Integer> completableFutureRewardPoints = CompletableFuture.supplyAsync(
+//				()->rewardsCentral.getAttractionRewardPoints(attraction.attractionId, user.getUserId()));
+//		int rewardPoints = completableFutureRewardPoints.join();
 		return rewardsCentral.getAttractionRewardPoints(attraction.attractionId, user.getUserId());
+//		return rewardPoints;
 	}
 
 	public void setAttractionProximityRange(int attractionProximityRange) {

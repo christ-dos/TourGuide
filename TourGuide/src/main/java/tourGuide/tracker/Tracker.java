@@ -45,11 +45,11 @@ public class Tracker extends Thread {
             }
             List<User> users = tourGuideService.getAllUsers();
 
-            final ExecutorService executorService = Executors.newFixedThreadPool(1600, r -> {
-                Thread t = new Thread(r);
-                t.setDaemon(true);
-                return t;
-            });
+//            final ExecutorService executorService = Executors.newFixedThreadPool(1600, r -> {
+//                Thread t = new Thread(r);
+//                t.setDaemon(true);
+//                return t;
+//            });
             logger.debug("Begin Tracker. Tracking " + users.size() + " users.");
             stopWatch.start();
 
@@ -58,6 +58,8 @@ public class Tracker extends Thread {
             //TODO enlever sys.out
             users.forEach(u -> {
                 tourGuideService.trackUserLocation(u);
+                System.out.println("visited location in service:" + Thread.currentThread().getName());
+
             });
             stopWatch.stop();
             logger.debug("Tracker Time Elapsed: " + TimeUnit.MILLISECONDS.toSeconds(stopWatch.getTime()) + " seconds.");
