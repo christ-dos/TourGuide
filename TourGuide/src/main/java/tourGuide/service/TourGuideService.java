@@ -5,13 +5,12 @@ import gpsUtil.location.Attraction;
 import gpsUtil.location.VisitedLocation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tourGuide.DAO.InternalUserMapDAO;
 import tourGuide.exception.VisitedLocationNotFoundException;
 import tourGuide.tracker.Tracker;
-import tourGuide.user.User;
-import tourGuide.user.UserReward;
+import tourGuide.model.User;
+import tourGuide.model.UserReward;
 import tripPricer.Provider;
 import tripPricer.TripPricer;
 
@@ -21,7 +20,6 @@ import java.util.Locale;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.stream.Collectors;
 
 @Service
 public class TourGuideService {
@@ -127,9 +125,9 @@ public class TourGuideService {
             throw new VisitedLocationNotFoundException("Service: Visited location not found");
         }
         user.addToVisitedLocations(visitedLocation);
-//        CompletableFuture.runAsync(() ->
-//               rewardsService.calculateRewards(user),executorService);
-        rewardsService.calculateRewards(user);
+        CompletableFuture.runAsync(() ->
+               rewardsService.calculateRewards(user),executorService);
+//        rewardsService.calculateRewards(user);
         return visitedLocation;
     }
 

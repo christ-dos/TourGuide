@@ -1,11 +1,11 @@
-package tourGuide.DAO;
+package com.tripMaster.microservicegps.DAO;
 
+import com.tripMaster.microservicegps.helper.InternalTestHelper;
+import com.tripMaster.microservicegps.model.User;
 import gpsUtil.location.Location;
 import gpsUtil.location.VisitedLocation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
-import tourGuide.helper.InternalTestHelper;
-import tourGuide.model.User;
 
 import javax.annotation.PostConstruct;
 import java.time.LocalDateTime;
@@ -42,7 +42,8 @@ public class InternalUserMapDAO {
 
     private void generateUserLocationHistory(User user) {
         IntStream.range(0, 3).forEach(i -> {
-            user.addToVisitedLocations(new VisitedLocation(user.getUserId(), new Location(generateRandomLatitude(), generateRandomLongitude()), getRandomTime()));
+            user.getVisitedLocations().add(
+                    new VisitedLocation(user.getUserId(), new Location(generateRandomLatitude(), generateRandomLongitude()), getRandomTime()));
         });
     }
 
