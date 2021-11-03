@@ -52,6 +52,8 @@ dependencies {
     // https://mvnrepository.com/artifact/org.projectlombok/lombok
     compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.20'
 
+//    // https://mvnrepository.com/artifact/org.javamoney/moneta
+//    implementation 'org.javamoney:moneta:1.3'
 
 
 }

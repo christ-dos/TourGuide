@@ -4,7 +4,9 @@ import com.tripMaster.microservicegps.DAO.InternalUserMapDAO;
 import com.tripMaster.microservicegps.model.User;
 import gpsUtil.GpsUtil;
 import gpsUtil.location.VisitedLocation;
+import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,12 +15,14 @@ import java.util.Locale;
 
 @Service
 @NoArgsConstructor
+@Slf4j
 public class UserGpsServiceImpl implements UserGpsService {
-    private final GpsUtil gpsUtil = new GpsUtil();
+    private GpsUtil gpsUtil;
     private InternalUserMapDAO internalUserMapDAO;
 
     @Autowired
-    public UserGpsServiceImpl(InternalUserMapDAO internalUserMapDAO) {
+    public UserGpsServiceImpl(GpsUtil gpsUtil, InternalUserMapDAO internalUserMapDAO) {
+        this.gpsUtil = gpsUtil;
         this.internalUserMapDAO = internalUserMapDAO;
     }
 
@@ -41,7 +45,7 @@ public class UserGpsServiceImpl implements UserGpsService {
     }
 
     @Override
-    public User getUser(String userName) {
+    public User getUserByUserName(String userName) {
         return internalUserMapDAO.getUser(userName);
     }
 

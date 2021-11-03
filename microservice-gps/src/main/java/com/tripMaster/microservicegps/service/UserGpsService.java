@@ -9,6 +9,6 @@ public interface UserGpsService {
 
     VisitedLocation getUserLocation(User user);
 
-    User getUser(String userName);
+    User getUserByUserName(String userName);
 
 }
