@@ -18,7 +18,7 @@ public class UserGpsController {
     @GetMapping("/getLocation")
     public VisitedLocation userGpsGetLocation(@RequestParam String userName) {
         User user = userGpsService.getUserByUserName(userName);
-        log.debug("Controller - get user location with userName: " + userName);
+        log.debug("Controller - Obtain visited location for user with userName: " + userName);
         return userGpsService.getUserLocation(user);
     }
 }

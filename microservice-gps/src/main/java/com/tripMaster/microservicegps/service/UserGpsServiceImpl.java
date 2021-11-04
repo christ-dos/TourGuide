@@ -31,6 +31,7 @@ public class UserGpsServiceImpl implements UserGpsService {
         Locale.setDefault(new Locale("en", "US"));
         VisitedLocation visitedLocation = gpsUtil.getUserLocation(user.getUserId());
         addToVisitedLocations(visitedLocation, user);
+        log.debug("Service - user location tracked for username: " + user.getUserName());
         return visitedLocation;
     }
 
@@ -41,6 +42,7 @@ public class UserGpsServiceImpl implements UserGpsService {
         VisitedLocation visitedLocation = (user.getVisitedLocations().size() > 0) ?
                 user.getVisitedLocations().get(visitedLocations.size() - 1) :
                 trackUserLocation(user);
+        log.debug("Service - get visited location for user: " + user.getUserName());
         return visitedLocation;
     }
 
@@ -48,13 +50,16 @@ public class UserGpsServiceImpl implements UserGpsService {
     public User getUserByUserName(String userName) {
         User user = internalUserMapDAO.getUser(userName);
         if(user == null){
+            log.error("Service - User not found with username: " + userName);
             throw new UserNotFoundException("user not found");
         }
+        log.debug("Service - User found with username: " + userName);
         return user;
     }
 
     private void addToVisitedLocations(VisitedLocation visitedLocation, User user) {
         List<VisitedLocation> visitedLocations = user.getVisitedLocations();
         visitedLocations.add(visitedLocation);
+        log.debug("Service - Visited location added for user: " + user.getUserName());
     }
 }
