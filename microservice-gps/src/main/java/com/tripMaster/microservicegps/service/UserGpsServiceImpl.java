@@ -1,10 +1,10 @@
 package com.tripMaster.microservicegps.service;
 
 import com.tripMaster.microservicegps.DAO.InternalUserMapDAO;
+import com.tripMaster.microservicegps.exception.UserNotFoundException;
 import com.tripMaster.microservicegps.model.User;
 import gpsUtil.GpsUtil;
 import gpsUtil.location.VisitedLocation;
-import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +46,11 @@ public class UserGpsServiceImpl implements UserGpsService {
 
     @Override
     public User getUserByUserName(String userName) {
-        return internalUserMapDAO.getUser(userName);
+        User user = internalUserMapDAO.getUser(userName);
+        if(user == null){
+            throw new UserNotFoundException("user not found");
+        }
+        return user;
     }
 
     private void addToVisitedLocations(VisitedLocation visitedLocation, User user) {

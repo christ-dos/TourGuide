@@ -24,8 +24,9 @@ public class MicroserviceGpsApplication implements CommandLineRunner {
     public void run(String... args) throws Exception {
 		User user = new User(UUID.randomUUID(), "jon", "000", "jon@tourGuide.com");
 //
-		VisitedLocation visitedLocation = userGpsService.trackUserLocation(user);
-        System.out.println(visitedLocation.location.latitude);
-		System.out.println(user.getVisitedLocations().get(0).location.latitude);
+//		VisitedLocation visitedLocation = userGpsService.trackUserLocation(user);
+//        System.out.println(visitedLocation.location.latitude);
+//		System.out.println(user.getVisitedLocations().get(0).location.latitude);
+        //todo clean code
     }
 }

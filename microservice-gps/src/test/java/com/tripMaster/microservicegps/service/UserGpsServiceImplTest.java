@@ -1,6 +1,7 @@
 package com.tripMaster.microservicegps.service;
 
 import com.tripMaster.microservicegps.DAO.InternalUserMapDAO;
+import com.tripMaster.microservicegps.exception.UserNotFoundException;
 import com.tripMaster.microservicegps.model.User;
 import gpsUtil.GpsUtil;
 import gpsUtil.location.Location;
@@ -18,7 +19,12 @@ import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-
+/**
+ * Class that test the {@link UserGpsServiceImpl}
+ *
+ * @author Christine Duarte
+ *
+ */
 @ExtendWith(MockitoExtension.class)
 public class UserGpsServiceImplTest {
 
@@ -114,9 +120,8 @@ public class UserGpsServiceImplTest {
         //GIVEN
         when(internalUserMapDAOMock.getUser(anyString())).thenReturn(null);
         //WHEN
-        User userResult = userGpsServiceTest.getUserByUserName("unknown");
         //THEN
-        assertNull(userResult);
+        assertThrows(UserNotFoundException.class, () -> userGpsServiceTest.getUserByUserName("Unknown"));
         verify(internalUserMapDAOMock,times(1)).getUser(anyString());
     }
 
