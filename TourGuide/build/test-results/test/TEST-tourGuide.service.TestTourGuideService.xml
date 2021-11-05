@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="tourGuide.service.TestTourGuideService" tests="5" skipped="0" failures="0" errors="0" timestamp="2021-11-03T21:50:45" hostname="MSI" time="0.139">
+  <properties/>
+  <testcase name="getUserLocation" classname="tourGuide.service.TestTourGuideService" time="0.057"/>
+  <testcase name="addUser" classname="tourGuide.service.TestTourGuideService" time="0.001"/>
+  <testcase name="getAllUsers" classname="tourGuide.service.TestTourGuideService" time="0.001"/>
+  <testcase name="trackUser" classname="tourGuide.service.TestTourGuideService" time="0.064"/>
+  <testcase name="getNearbyAttractions" classname="tourGuide.service.TestTourGuideService" time="0.014"/>
+  <system-out><![CDATA[Calculate reward on: pool-3-thread-2
+22:50:45.972 [Test worker] INFO tourGuide.service.TourGuideService - TestMode enabled
+22:50:45.972 [Test worker] DEBUG tourGuide.service.TourGuideService - Initializing users
+22:50:45.972 [Test worker] DEBUG tourGuide.DAO.InternalUserMapDAO - Created 0 internal test users.
+22:50:45.972 [Test worker] DEBUG tourGuide.service.TourGuideService - Finished initializing users
+22:50:45.973 [pool-4-thread-1] DEBUG tourGuide.tracker.Tracker - Begin Tracker. Tracking 0 users.
+22:50:45.973 [pool-4-thread-1] DEBUG tourGuide.tracker.Tracker - Tracker Time Elapsed: 0 seconds.
+22:50:45.973 [pool-4-thread-1] DEBUG tourGuide.tracker.Tracker - Tracker sleeping
+22:50:46.029 [Test worker] INFO tourGuide.service.TourGuideService - TestMode enabled
+22:50:46.029 [Test worker] DEBUG tourGuide.service.TourGuideService - Initializing users
+22:50:46.029 [Test worker] DEBUG tourGuide.DAO.InternalUserMapDAO - Created 0 internal test users.
+22:50:46.029 [Test worker] DEBUG tourGuide.service.TourGuideService - Finished initializing users
+22:50:46.030 [pool-6-thread-1] DEBUG tourGuide.tracker.Tracker - Begin Tracker. Tracking 0 users.
+22:50:46.030 [pool-6-thread-1] DEBUG tourGuide.tracker.Tracker - Tracker Time Elapsed: 0 seconds.
+22:50:46.030 [pool-6-thread-1] DEBUG tourGuide.tracker.Tracker - Tracker sleeping
+22:50:46.031 [Test worker] INFO tourGuide.service.TourGuideService - TestMode enabled
+22:50:46.031 [Test worker] DEBUG tourGuide.service.TourGuideService - Initializing users
+22:50:46.031 [Test worker] DEBUG tourGuide.DAO.InternalUserMapDAO - Created 0 internal test users.
+22:50:46.031 [Test worker] DEBUG tourGuide.service.TourGuideService - Finished initializing users
+22:50:46.031 [pool-7-thread-1] DEBUG tourGuide.tracker.Tracker - Begin Tracker. Tracking 0 users.
+22:50:46.032 [pool-7-thread-1] DEBUG tourGuide.tracker.Tracker - Tracker Time Elapsed: 0 seconds.
+22:50:46.032 [pool-7-thread-1] DEBUG tourGuide.tracker.Tracker - Tracker sleeping
+22:50:46.032 [Test worker] INFO tourGuide.service.TourGuideService - TestMode enabled
+22:50:46.032 [Test worker] DEBUG tourGuide.service.TourGuideService - Initializing users
+22:50:46.033 [Test worker] DEBUG tourGuide.DAO.InternalUserMapDAO - Created 0 internal test users.
+22:50:46.033 [Test worker] DEBUG tourGuide.service.TourGuideService - Finished initializing users
+22:50:46.033 [pool-8-thread-1] DEBUG tourGuide.tracker.Tracker - Begin Tracker. Tracking 0 users.
+22:50:46.033 [pool-8-thread-1] DEBUG tourGuide.tracker.Tracker - Tracker Time Elapsed: 0 seconds.
+22:50:46.033 [pool-8-thread-1] DEBUG tourGuide.tracker.Tracker - Tracker sleeping
+22:50:46.096 [Test worker] INFO tourGuide.service.TourGuideService - TestMode enabled
+22:50:46.096 [Test worker] DEBUG tourGuide.service.TourGuideService - Initializing users
+22:50:46.096 [Test worker] DEBUG tourGuide.DAO.InternalUserMapDAO - Created 0 internal test users.
+22:50:46.096 [Test worker] DEBUG tourGuide.service.TourGuideService - Finished initializing users
+22:50:46.097 [pool-11-thread-1] DEBUG tourGuide.tracker.Tracker - Begin Tracker. Tracking 0 users.
+22:50:46.097 [pool-11-thread-1] DEBUG tourGuide.tracker.Tracker - Tracker Time Elapsed: 0 seconds.
+22:50:46.097 [pool-11-thread-1] DEBUG tourGuide.tracker.Tracker - Tracker sleeping
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
