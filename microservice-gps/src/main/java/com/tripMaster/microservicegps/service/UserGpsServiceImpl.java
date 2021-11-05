@@ -4,6 +4,7 @@ import com.tripMaster.microservicegps.DAO.InternalUserMapDAO;
 import com.tripMaster.microservicegps.exception.UserNotFoundException;
 import com.tripMaster.microservicegps.model.User;
 import gpsUtil.GpsUtil;
+import gpsUtil.location.Attraction;
 import gpsUtil.location.VisitedLocation;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -60,6 +61,11 @@ public class UserGpsServiceImpl implements UserGpsService {
         }
         log.debug("Service - User found with username: " + userName);
         return user;
+    }
+
+    @Override
+    public List<Attraction> getAttractions(){
+        return gpsUtil.getAttractions();
     }
 
     private void addToVisitedLocations(VisitedLocation visitedLocation, User user) {

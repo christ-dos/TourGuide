@@ -32,6 +32,15 @@
       </GradleProjectSettings>
       <GradleProjectSettings>
         <option name="distributionType" value="DEFAULT_WRAPPED" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/microservice-rewards" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/microservice-rewards" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+      <GradleProjectSettings>
+        <option name="distributionType" value="DEFAULT_WRAPPED" />
         <option name="externalProjectPath" value="$PROJECT_DIR$/tourguide-client" />
         <option name="modules">
           <set>

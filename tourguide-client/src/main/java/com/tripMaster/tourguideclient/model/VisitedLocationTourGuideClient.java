@@ -13,10 +13,10 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class VisitedLocation {
+public class VisitedLocationTourGuideClient {
 
     private UUID userId;
-    private Location location;
+    private LocationTourGuideClient location;
     private Date timeVisited;
 
 }

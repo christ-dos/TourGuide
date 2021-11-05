@@ -1,7 +1,7 @@
 package com.tripMaster.tourguideclient.controller;
 
 import com.tripMaster.tourguideclient.model.UserTourGuideClient;
-import com.tripMaster.tourguideclient.model.VisitedLocation;
+import com.tripMaster.tourguideclient.model.VisitedLocationTourGuideClient;
 import com.tripMaster.tourguideclient.proxies.MicroserviceUserGpsProxy;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,10 +17,10 @@ public class TourGuideClientController {
 
 
     @GetMapping(value = "/getLocation")
-    public VisitedLocation userGpsGetLocation(@RequestParam String userName) {
-        VisitedLocation visitedLocation = microserviceUserGpsProxy.userGpsGetLocation(userName);
+    public VisitedLocationTourGuideClient userGpsGetLocation(@RequestParam String userName) {
+        VisitedLocationTourGuideClient visitedLocationTourGuideClient = microserviceUserGpsProxy.userGpsGetLocation(userName);
         log.debug("Controller - request tourguideClient to get position username: " + userName);
-        return visitedLocation;
+        return visitedLocationTourGuideClient;
     }
 
     @GetMapping("/getUser")
