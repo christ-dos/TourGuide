@@ -1,5 +1,6 @@
 package com.tripMaster.microservicerewards.model;
 
+import gpsUtil.location.Location;
 import lombok.Getter;
 import lombok.Setter;
 

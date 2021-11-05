@@ -1,14 +1,18 @@
 package com.tripMaster.microservicerewards.model;
 
-import gpsUtil.location.Attraction;
 import gpsUtil.location.VisitedLocation;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 public class UserReward {
 
-	public final VisitedLocation visitedLocation;
-	public final Attraction attraction;
+	private final VisitedLocation visitedLocation;
+	private final com.tripMaster.microservicerewards.model.Attraction attraction;
 	private int rewardPoints;
-	public UserReward(VisitedLocation visitedLocation, Attraction attraction, int rewardPoints) {
+
+	public UserReward(VisitedLocation visitedLocation, com.tripMaster.microservicerewards.model.Attraction attraction, int rewardPoints) {
 		this.visitedLocation = visitedLocation;
 		this.attraction = attraction;
 		this.rewardPoints = rewardPoints;

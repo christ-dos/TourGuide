@@ -1,5 +1,6 @@
 package com.tripMaster.microservicerewards.model;
 
+import gpsUtil.location.VisitedLocation;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -18,6 +19,8 @@ public class User {
     private String emailAddress;
     private Date latestLocationTimestamp;
     private List<VisitedLocation> visitedLocations = new ArrayList<>();
+    private List<UserReward> userRewards = new ArrayList<>();
+
 //	private CopyOnWriteArrayList<VisitedLocation> visitedLocations = new CopyOnWriteArrayList<>();
 
 
