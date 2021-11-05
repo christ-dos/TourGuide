@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="Gradle: :TripPricer:">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/TourGuide/libs/TripPricer.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>
