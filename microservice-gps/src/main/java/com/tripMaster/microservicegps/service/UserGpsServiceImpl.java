@@ -13,6 +13,11 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Locale;
 
+/**
+ * Class of service that manage obtaining user visited location
+ *
+ * @author Christine Duarte
+ */
 @Service
 @NoArgsConstructor
 @Slf4j
@@ -49,7 +54,7 @@ public class UserGpsServiceImpl implements UserGpsService {
     @Override
     public User getUserByUserName(String userName) {
         User user = internalUserMapDAO.getUser(userName);
-        if(user == null){
+        if (user == null) {
             log.error("Service - User not found with username: " + userName);
             throw new UserNotFoundException("user not found");
         }

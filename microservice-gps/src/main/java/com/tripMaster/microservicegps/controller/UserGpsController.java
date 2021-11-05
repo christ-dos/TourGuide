@@ -9,6 +9,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * Class of controller that manage requests to obtaining user positions
+ *
+ * @author Christine Duarte
+ */
 @RestController
 @Slf4j
 public class UserGpsController {
@@ -20,5 +25,10 @@ public class UserGpsController {
         User user = userGpsService.getUserByUserName(userName);
         log.debug("Controller - Obtain visited location for user with userName: " + userName);
         return userGpsService.getUserLocation(user);
+    }
+
+    @GetMapping("/getUser")
+    public User getUser(@RequestParam String userName) {
+        return userGpsService.getUserByUserName(userName);
     }
 }

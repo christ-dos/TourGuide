@@ -1,12 +1,10 @@
-package com.tripMaster.microservicegps.controller;
+package com.tripMaster.tourguideclient.controller;
 
-import com.tripMaster.microservicegps.DAO.InternalUserMapDAO;
-import com.tripMaster.microservicegps.exception.UserNotFoundException;
-import com.tripMaster.microservicegps.model.User;
-import com.tripMaster.microservicegps.service.UserGpsServiceImpl;
-import gpsUtil.GpsUtil;
-import gpsUtil.location.Location;
-import gpsUtil.location.VisitedLocation;
+import com.tripMaster.tourguideclient.exception.UserNotFoundException;
+import com.tripMaster.tourguideclient.model.Location;
+import com.tripMaster.tourguideclient.model.UserTourGuideClient;
+import com.tripMaster.tourguideclient.model.VisitedLocation;
+import com.tripMaster.tourguideclient.proxies.MicroserviceUserGpsProxy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -30,33 +28,21 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-/**
- * Class that test the {@link UserGpsController}
- *
- * @author Christine Duarte
- */
-@WebMvcTest(UserGpsController.class)
+@WebMvcTest(TourGuideClientController.class)
 @ExtendWith(MockitoExtension.class)
 @AutoConfigureMockMvc
-public class UserGpsControllerTest {
-
+public class TourGuideClientControllerTest {
     @Autowired
     private MockMvc mockMvcUserGps;
 
     @MockBean
-    private UserGpsServiceImpl userGpsServiceMock;
+    private MicroserviceUserGpsProxy microserviceUserGpsProxyMock;
 
-    @MockBean
-    private GpsUtil gpsUtil;
-
-    @MockBean
-    private InternalUserMapDAO internalUserMapDAO;
-
-    private User userTest;
+    private UserTourGuideClient userTest;
 
     @BeforeEach
     public void setupPerTest() {
-        userTest = new User(UUID.randomUUID(), "jon", "000", "jon@tourGuide.com");
+        userTest = new UserTourGuideClient(UUID.randomUUID(), "jon", "000", "jon@tourGuide.com");
     }
 
     @Test
@@ -67,10 +53,10 @@ public class UserGpsControllerTest {
                 new VisitedLocation(userTest.getUserId(), new Location(34.817595D, -117.922008D), new Date()),
                 new VisitedLocation(userTest.getUserId(), new Location(35.817595D, -118.922008D), new Date())
         );
-        when(userGpsServiceMock.getUserByUserName(anyString())).thenReturn(userTest);
-        when(userGpsServiceMock.getUserLocation(any(User.class))).thenReturn(visitedLocationListTest.get(2));
+        when(microserviceUserGpsProxyMock.userGpsGetLocation(anyString())).thenReturn(visitedLocationListTest.get(2));
         //WHEN
         userTest.setVisitedLocations(visitedLocationListTest);
+        System.out.println(userTest.toString());
         //THEN
         mockMvcUserGps.perform(MockMvcRequestBuilders.get("/getLocation?userName=jon"))
                 .andExpect(status().isOk())
@@ -85,8 +71,7 @@ public class UserGpsControllerTest {
         //GIVEN
         VisitedLocation visitedLocationTest = new VisitedLocation(userTest.getUserId(), new Location(33.817595D, -116.922008D), new Date());
         List<VisitedLocation> visitedLocationListEmptyTest = new ArrayList<>();
-        when(userGpsServiceMock.getUserByUserName(anyString())).thenReturn(userTest);
-        when(userGpsServiceMock.getUserLocation(any(User.class))).thenReturn(visitedLocationTest);
+        when(microserviceUserGpsProxyMock.userGpsGetLocation(anyString())).thenReturn(visitedLocationTest);
         //WHEN
         userTest.setVisitedLocations(visitedLocationListEmptyTest);
         assertTrue(userTest.getVisitedLocations().isEmpty());
@@ -102,7 +87,7 @@ public class UserGpsControllerTest {
     @Test
     public void userGpsGetLocationTest_whenUserNotExist_thenTrowUserNotFoundException() throws Exception {
         //GIVEN
-        when(userGpsServiceMock.getUserByUserName(anyString())).thenThrow(new UserNotFoundException("user not found"));
+        when(microserviceUserGpsProxyMock.userGpsGetLocation(anyString())).thenThrow(new UserNotFoundException("user not found"));
         //WHEN
         //THEN
         mockMvcUserGps.perform(MockMvcRequestBuilders.get("/getLocation?userName=unknown"))
@@ -112,6 +97,5 @@ public class UserGpsControllerTest {
                         result.getResolvedException().getMessage()))
                 .andDo(print());
     }
+
 }
-
-

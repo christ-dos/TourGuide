@@ -1,11 +1,11 @@
-package com.tripMaster.microservicegps.configuration;
+package com.tripMaster.tourguideclient.configuration;
 
 import gpsUtil.GpsUtil;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class TourGuideModule {
+public class TourGuideClientModule {
 	
 	@Bean
 	public GpsUtil getGpsUtil() {
