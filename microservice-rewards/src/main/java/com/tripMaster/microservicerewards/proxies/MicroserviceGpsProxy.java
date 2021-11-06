@@ -15,11 +15,11 @@ public interface MicroserviceGpsProxy {
     @GetMapping("/getAttractions")
     List<Attraction> getAttractions();
 
-    @GetMapping("/getRewards")
-    VisitedLocation getRewards(@RequestParam String userName);
-
+//    @GetMapping("/getRewards")
+//    VisitedLocation getRewards(@RequestParam String userName);
+    //todo clean code
     @GetMapping("/getLocation")
-    gpsUtil.location.VisitedLocation userGpsGetLocation(@RequestParam String userName);
+    VisitedLocation userGpsGetLocation(@RequestParam String userName);
 
     @GetMapping("/getUser")
     User getUser(@RequestParam String userName);

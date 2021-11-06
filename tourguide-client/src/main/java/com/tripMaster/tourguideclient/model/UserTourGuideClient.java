@@ -17,6 +17,7 @@ public class UserTourGuideClient {
     private String emailAddress;
     private Date latestLocationTimestamp;
     private List<VisitedLocationTourGuideClient> visitedLocations = new ArrayList<>();
+    private List<UserRewardTourGuideClient> userRewards = new ArrayList<>();
 //	private CopyOnWriteArrayList<VisitedLocation> visitedLocations = new CopyOnWriteArrayList<>();
 
 
@@ -29,13 +30,14 @@ public class UserTourGuideClient {
 
     @Override
     public String toString() {
-        return "User{" +
+        return "UserTourGuideClient{" +
                 "userId=" + userId +
                 ", userName='" + userName + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", emailAddress='" + emailAddress + '\'' +
                 ", latestLocationTimestamp=" + latestLocationTimestamp +
                 ", visitedLocations=" + visitedLocations +
+                ", userRewards=" + userRewards +
                 '}';
     }
 }

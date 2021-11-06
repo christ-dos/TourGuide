@@ -1,8 +1,6 @@
 package com.tripMaster.microservicerewards.model;
 
-import gpsUtil.location.VisitedLocation;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.ArrayList;
@@ -40,6 +38,7 @@ public class User {
                 ", emailAddress='" + emailAddress + '\'' +
                 ", latestLocationTimestamp=" + latestLocationTimestamp +
                 ", visitedLocations=" + visitedLocations +
+                ", userRewards=" + userRewards +
                 '}';
     }
 }

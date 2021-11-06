@@ -1,12 +1,7 @@
 package com.tripMaster.microservicerewards.service;
 
-import com.tripMaster.microservicerewards.model.Attraction;
-import com.tripMaster.microservicerewards.model.User;
-import com.tripMaster.microservicerewards.model.UserReward;
+import com.tripMaster.microservicerewards.model.*;
 import com.tripMaster.microservicerewards.proxies.MicroserviceGpsProxy;
-import gpsUtil.GpsUtil;
-import gpsUtil.location.Location;
-import gpsUtil.location.VisitedLocation;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -70,7 +65,7 @@ public class RewardsServiceTest {
         List<UserReward> userRewards = user.getUserRewards();
         //THEN
         assertTrue(userRewards.size() > 0);
-        assertEquals(user.getUserId(),userRewards.get(0).getVisitedLocation().userId);
+        assertEquals(user.getUserId(),userRewards.get(0).getVisitedLocation().getUserId());
         assertEquals(200,userRewards.get(0).getRewardPoints());
     }
 
@@ -94,7 +89,7 @@ public class RewardsServiceTest {
         List<UserReward> userRewards = user.getUserRewards();
         //THEN
         assertTrue(user.getUserRewards().isEmpty());
-        assertEquals(48.871900D,user.getVisitedLocations().get(0).location.latitude);
-        assertEquals(2.776623D,user.getVisitedLocations().get(0).location.longitude);
+        assertEquals(48.871900D,user.getVisitedLocations().get(0).getLocation().getLatitude());
+        assertEquals(2.776623D,user.getVisitedLocations().get(0).getLocation().getLongitude());
     }
 }
