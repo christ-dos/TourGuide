@@ -19,6 +19,5 @@ public interface UserGpsService {
 
     User getUserByUserName(String userName);
 
-
     List<Attraction> getAttractions();
 }
