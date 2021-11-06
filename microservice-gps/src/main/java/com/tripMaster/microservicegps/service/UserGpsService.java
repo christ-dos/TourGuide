@@ -5,6 +5,7 @@ import gpsUtil.location.Attraction;
 import gpsUtil.location.VisitedLocation;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Interface that exposes methodes of {@link UserGpsServiceImpl}
@@ -17,7 +18,7 @@ public interface UserGpsService {
 
     VisitedLocation getUserLocation(User user);
 
-    User getUserByUserName(String userName);
+    Optional<User> getUserByUserName(String userName);
 
     List<Attraction> getAttractions();
 }

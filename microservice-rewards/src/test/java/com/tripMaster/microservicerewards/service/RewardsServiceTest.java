@@ -17,7 +17,7 @@ import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 /**
  * Class that test the {@link RewardsServiceImpl}
@@ -67,6 +67,8 @@ public class RewardsServiceTest {
         assertTrue(userRewards.size() > 0);
         assertEquals(user.getUserId(),userRewards.get(0).getVisitedLocation().getUserId());
         assertEquals(200,userRewards.get(0).getRewardPoints());
+        verify(microserviceGpsProxyMock,times(1)).getAttractions();
+        verify(rewardsCentralMock,times(1)).getAttractionRewardPoints(any(UUID.class),any(UUID.class));
     }
 
     @Test
@@ -82,7 +84,6 @@ public class RewardsServiceTest {
         VisitedLocation visitedLocation = new VisitedLocation(user.getUserId(), new Location(48.871900D,2.776623D),new Date());
 
         when(microserviceGpsProxyMock.getAttractions()).thenReturn(attractions);
-//        when(rewardsCentralMock.getAttractionRewardPoints(any(UUID.class),any(UUID.class))).thenReturn(20);
         //WHEN
         addToVisitedLocations(visitedLocation,user);
         rewardsServiceImplTest.calculateRewards(user);
@@ -91,5 +92,7 @@ public class RewardsServiceTest {
         assertTrue(user.getUserRewards().isEmpty());
         assertEquals(48.871900D,user.getVisitedLocations().get(0).getLocation().getLatitude());
         assertEquals(2.776623D,user.getVisitedLocations().get(0).getLocation().getLongitude());
+        verify(microserviceGpsProxyMock,times(1)).getAttractions();
+
     }
 }

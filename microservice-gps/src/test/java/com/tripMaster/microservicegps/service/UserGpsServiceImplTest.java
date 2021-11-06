@@ -106,10 +106,10 @@ public class UserGpsServiceImplTest {
         //GIVEN
         when(internalUserMapDAOMock.getUser(anyString())).thenReturn(userTest);
         //WHEN
-        User userResult = userGpsServiceTest.getUserByUserName("jon");
+        Optional<User> userResult = userGpsServiceTest.getUserByUserName("jon");
         //THEN
-        assertTrue(userResult.getUserId() == userTest.getUserId());
-        assertTrue(userResult.getEmailAddress().contains("jon"));
+        assertTrue(userResult.get().getUserId() == userTest.getUserId());
+        assertTrue(userResult.get().getEmailAddress().contains("jon"));
         verify(internalUserMapDAOMock,times(1)).getUser(anyString());
     }
 

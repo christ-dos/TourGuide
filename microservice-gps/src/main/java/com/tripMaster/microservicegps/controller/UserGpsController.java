@@ -1,5 +1,6 @@
 package com.tripMaster.microservicegps.controller;
 
+import com.tripMaster.microservicegps.exception.UserNotFoundException;
 import com.tripMaster.microservicegps.model.User;
 import com.tripMaster.microservicegps.service.UserGpsService;
 import gpsUtil.location.Attraction;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Class of controller that manage requests to obtaining user positions
@@ -25,13 +27,13 @@ public class UserGpsController {
 
     @GetMapping("/getLocation")
     public VisitedLocation userGpsGetLocation(@RequestParam String userName) {
-        User user = userGpsService.getUserByUserName(userName);
+        Optional<User> user = userGpsService.getUserByUserName(userName);
         log.debug("Controller - Obtain visited location for user with userName: " + userName);
-        return userGpsService.getUserLocation(user);
+        return userGpsService.getUserLocation(user.orElseThrow(()-> new UserNotFoundException("User not found")));
     }
 
     @GetMapping("/getUser")
-    public User getUser(@RequestParam String userName) {
+    public Optional<User> getUser(@RequestParam String userName) {
         return userGpsService.getUserByUserName(userName);
     }
 

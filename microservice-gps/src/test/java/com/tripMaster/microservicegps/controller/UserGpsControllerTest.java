@@ -67,7 +67,7 @@ public class UserGpsControllerTest {
                 new VisitedLocation(userTest.getUserId(), new Location(34.817595D, -117.922008D), new Date()),
                 new VisitedLocation(userTest.getUserId(), new Location(35.817595D, -118.922008D), new Date())
         );
-        when(userGpsServiceMock.getUserByUserName(anyString())).thenReturn(userTest);
+        when(userGpsServiceMock.getUserByUserName(anyString())).thenReturn(Optional.of(userTest));
         when(userGpsServiceMock.getUserLocation(any(User.class))).thenReturn(visitedLocationListTest.get(2));
         //WHEN
         userTest.setVisitedLocations(visitedLocationListTest);
@@ -85,7 +85,7 @@ public class UserGpsControllerTest {
         //GIVEN
         VisitedLocation visitedLocationTest = new VisitedLocation(userTest.getUserId(), new Location(33.817595D, -116.922008D), new Date());
         List<VisitedLocation> visitedLocationListEmptyTest = new ArrayList<>();
-        when(userGpsServiceMock.getUserByUserName(anyString())).thenReturn(userTest);
+        when(userGpsServiceMock.getUserByUserName(anyString())).thenReturn(Optional.of(userTest));
         when(userGpsServiceMock.getUserLocation(any(User.class))).thenReturn(visitedLocationTest);
         //WHEN
         userTest.setVisitedLocations(visitedLocationListEmptyTest);
