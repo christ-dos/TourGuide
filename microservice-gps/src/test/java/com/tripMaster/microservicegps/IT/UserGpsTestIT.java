@@ -4,7 +4,6 @@ import com.tripMaster.microservicegps.DAO.InternalUserMapDAO;
 import com.tripMaster.microservicegps.exception.UserNotFoundException;
 import com.tripMaster.microservicegps.model.User;
 import com.tripMaster.microservicegps.service.UserGpsServiceImpl;
-import gpsUtil.GpsUtil;
 import gpsUtil.location.Location;
 import gpsUtil.location.VisitedLocation;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,8 +18,6 @@ import java.util.*;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;

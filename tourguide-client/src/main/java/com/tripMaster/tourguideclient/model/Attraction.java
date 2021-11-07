@@ -8,13 +8,13 @@ import java.util.UUID;
 
 @Getter
 @Setter
-public class AttractionTourGuideClient extends Location {
+public class Attraction extends Location {
     private final String attractionName;
     private final String city;
     private final String state;
     private final UUID attractionId;
 
-    public AttractionTourGuideClient(String attractionName, String city, String state, double latitude, double longitude) {
+    public Attraction(String attractionName, String city, String state, double latitude, double longitude) {
         super(latitude, longitude);
         this.attractionName = attractionName;
         this.city = city;

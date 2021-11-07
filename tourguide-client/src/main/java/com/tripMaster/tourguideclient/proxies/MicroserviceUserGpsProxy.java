@@ -1,7 +1,7 @@
 package com.tripMaster.tourguideclient.proxies;
 
-import com.tripMaster.tourguideclient.model.UserTourGuideClient;
-import com.tripMaster.tourguideclient.model.VisitedLocationTourGuideClient;
+import com.tripMaster.tourguideclient.model.User;
+import com.tripMaster.tourguideclient.model.VisitedLocation;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 public interface MicroserviceUserGpsProxy {
 
     @GetMapping(value = "/getLocation")
-    VisitedLocationTourGuideClient userGpsGetLocation(@RequestParam String userName);
+    VisitedLocation userGpsGetLocation(@RequestParam String userName);
 
     @GetMapping("/getUser")
-    UserTourGuideClient getUser(@RequestParam String userName);
+    User getUser(@RequestParam String userName);
 
 
 }

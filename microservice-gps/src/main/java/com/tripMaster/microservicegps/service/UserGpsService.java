@@ -14,11 +14,11 @@ import java.util.Optional;
  */
 public interface UserGpsService {
 
-    VisitedLocation trackUserLocation(User user);
+    VisitedLocation trackUserLocation(User user); // TODO: Takes userId instead.
 
-    VisitedLocation getUserLocation(User user);
+    VisitedLocation getUserLocation(User user); // TODO: To remove
 
-    Optional<User> getUserByUserName(String userName);
+    Optional<User> getUserByUserName(String userName); // TODO: To remove
 
     List<Attraction> getAttractions();
 }

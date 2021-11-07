@@ -1,10 +1,11 @@
 package com.tripMaster.tourguideclient.service;
 
-import com.tripMaster.tourguideclient.model.UserRewardTourGuideClient;
-import com.tripMaster.tourguideclient.model.UserTourGuideClient;
+import com.tripMaster.tourguideclient.model.UserReward;
+import com.tripMaster.tourguideclient.model.User;
 
 import java.util.List;
 
 public interface TourGuideClientService {
-    List<UserRewardTourGuideClient> calculateRewards(UserTourGuideClient user);
+
+    List<UserReward> calculateRewards(User user);
 }

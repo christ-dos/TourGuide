@@ -1,9 +1,9 @@
-package com.tripMaster.microservicegps.DAO;
+package com.tripMaster.tourguideclient.DAO;
 
-import com.tripMaster.microservicegps.helper.InternalTestHelper;
-import com.tripMaster.microservicegps.model.User;
-import gpsUtil.location.Location;
-import gpsUtil.location.VisitedLocation;
+import com.tripMaster.tourguideclient.helper.InternalTestHelper;
+import com.tripMaster.tourguideclient.model.Location;
+import com.tripMaster.tourguideclient.model.User;
+import com.tripMaster.tourguideclient.model.VisitedLocation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 

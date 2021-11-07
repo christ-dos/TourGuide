@@ -28,29 +28,37 @@ public class RewardsServiceImpl implements RewardsService {
         this.microserviceGpsProxy = microserviceGpsProxy;
     }
 
+    @Override
+    public void setProximityBuffer(int proximityBuffer) {
+        this.proximityBuffer = proximityBuffer;
+    }
 
     @Override
     public void calculateRewards(User user) {
         List<VisitedLocation> userLocations = user.getVisitedLocations();
         List<com.tripMaster.microservicerewards.model.Attraction> attractions = microserviceGpsProxy.getAttractions();
-
-        for(VisitedLocation visitedLocation : userLocations) {
-            for(Attraction attraction : attractions) {
-                if(user.getUserRewards().stream().filter(r -> r.getAttraction().getAttractionName().equals(attraction.getAttractionName())).count() == 0) {
-                    if(nearAttraction(visitedLocation, attraction)) {
-                        addUserReward(new UserReward(visitedLocation, attraction, getRewardPoints(attraction, user)),user);
+        setProximityBuffer(8000);
+    log.info("service - calcul en cours....");
+        for (VisitedLocation visitedLocation : userLocations) {
+            for (Attraction attraction : attractions) {
+                if (user.getUserRewards().stream().filter(r -> r.getAttraction().getAttractionName().equals(attraction.getAttractionName())).count() == 0) {
+                    if (nearAttraction(visitedLocation, attraction)) {
+                        addUserReward(new UserReward(visitedLocation, attraction, getRewardPoints(attraction, user)), user);
                     }
                 }
             }
         }
+        user.getUserRewards().forEach(x-> System.out.println("reward added in rewards:" + x.toString()));
+//
     }
 
     private void addUserReward(UserReward userReward, User user) {
         List<UserReward> userRewards = user.getUserRewards();
-        if(userRewards.stream().filter(r -> r.getAttraction().getAttractionName().equals(userReward.getAttraction().getAttractionName())).count() == 0) {
+        if (userRewards.stream().filter(r -> r.getAttraction().getAttractionName().equals(userReward.getAttraction().getAttractionName())).count() == 0) {
             //TODO quand on change le filter on  enleve la negation(!) le test NearAllAttractions passe au vert
             userRewards.add(userReward);
-            user.setUserRewards(userRewards);
+            log.info("Service - Reward added for userReward: " + user.getUserName());
+              user.setUserRewards(userRewards);
         }
     }
 
@@ -58,6 +66,7 @@ public class RewardsServiceImpl implements RewardsService {
     private int getRewardPoints(Attraction attraction, User user) {
         System.out.println("Calculate reward on: " + Thread.currentThread().getName());
         //TODO RETIRER SYS0OUT
+        log.info("rewards:"  + user.getUserRewards());
         return rewardsCentral.getAttractionRewardPoints(attraction.getAttractionId(), user.getUserId());
     }
 

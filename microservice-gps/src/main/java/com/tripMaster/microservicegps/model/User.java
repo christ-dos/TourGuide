@@ -18,6 +18,8 @@ public class User {
     private String emailAddress;
     private Date latestLocationTimestamp;
     private List<VisitedLocation> visitedLocations = new ArrayList<>();
+    private List<UserReward> userRewards = new ArrayList<>();
+
 //	private CopyOnWriteArrayList<VisitedLocation> visitedLocations = new CopyOnWriteArrayList<>();
 
 
@@ -37,6 +39,7 @@ public class User {
                 ", emailAddress='" + emailAddress + '\'' +
                 ", latestLocationTimestamp=" + latestLocationTimestamp +
                 ", visitedLocations=" + visitedLocations +
+                ", userRewards=" + userRewards +
                 '}';
     }
 }

@@ -1,6 +1,5 @@
 package com.tripMaster.tourguideclient.model;
 
-import gpsUtil.location.VisitedLocation;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -8,13 +7,13 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class UserRewardTourGuideClient {
+public class UserReward {
 
-	private final VisitedLocationTourGuideClient visitedLocation;
-	private final AttractionTourGuideClient attraction;
+	private final VisitedLocation visitedLocation;
+	private final Attraction attraction;
 	private int rewardPoints;
 
-	public UserRewardTourGuideClient(VisitedLocationTourGuideClient visitedLocation, AttractionTourGuideClient attraction) {
+	public UserReward(VisitedLocation visitedLocation, Attraction attraction) {
 		this.visitedLocation = visitedLocation;
 		this.attraction = attraction;
 	}

@@ -1,4 +1,4 @@
-package com.tripMaster.microservicegps.helper;
+package com.tripMaster.tourguideclient.helper;
 
 public class InternalTestHelper {
 

@@ -3,6 +3,7 @@ package com.tripMaster.microservicegps.service;
 import com.tripMaster.microservicegps.DAO.InternalUserMapDAO;
 import com.tripMaster.microservicegps.exception.UserNotFoundException;
 import com.tripMaster.microservicegps.model.User;
+import com.tripMaster.microservicegps.proxies.MicroserviceRewardsProxy;
 import gpsUtil.GpsUtil;
 import gpsUtil.location.Location;
 import gpsUtil.location.VisitedLocation;
@@ -34,12 +35,15 @@ public class UserGpsServiceImplTest {
     @Mock
     private InternalUserMapDAO internalUserMapDAOMock;
 
+    @Mock
+    private MicroserviceRewardsProxy microserviceRewardsProxyMock;
+
     private User userTest;
 
 
     @BeforeEach
     public void setUpPerTest() {
-        userGpsServiceTest = new UserGpsServiceImpl(gpsUtilMock, internalUserMapDAOMock);
+        userGpsServiceTest = new UserGpsServiceImpl(gpsUtilMock, internalUserMapDAOMock, microserviceRewardsProxyMock);
         userTest = new User(UUID.randomUUID(), "jon", "000", "jon@tourGuide.com");
 
     }

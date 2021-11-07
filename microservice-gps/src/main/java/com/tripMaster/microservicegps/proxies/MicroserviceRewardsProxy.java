@@ -1,6 +1,5 @@
-package com.tripMaster.tourguideclient.proxies;
+package com.tripMaster.microservicegps.proxies;
 
-import com.tripMaster.tourguideclient.model.User;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -9,6 +8,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 public interface MicroserviceRewardsProxy {
 
     @GetMapping("/getRewards")
-    User calculateRewards(@RequestParam String userName);
+    void calculateRewards(@RequestParam String userName);
+
+    @GetMapping("/trackUser")
+    String trackUser(@RequestParam String userName);
 
 }

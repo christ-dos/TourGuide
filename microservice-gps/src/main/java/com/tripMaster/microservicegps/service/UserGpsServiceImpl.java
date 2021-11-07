@@ -3,6 +3,7 @@ package com.tripMaster.microservicegps.service;
 import com.tripMaster.microservicegps.DAO.InternalUserMapDAO;
 import com.tripMaster.microservicegps.exception.UserNotFoundException;
 import com.tripMaster.microservicegps.model.User;
+import com.tripMaster.microservicegps.proxies.MicroserviceRewardsProxy;
 import gpsUtil.GpsUtil;
 import gpsUtil.location.Attraction;
 import gpsUtil.location.VisitedLocation;
@@ -26,11 +27,13 @@ import java.util.Optional;
 public class UserGpsServiceImpl implements UserGpsService {
     private GpsUtil gpsUtil;
     private InternalUserMapDAO internalUserMapDAO;
+    private MicroserviceRewardsProxy microserviceRewardsProxy;
 
     @Autowired
-    public UserGpsServiceImpl(GpsUtil gpsUtil, InternalUserMapDAO internalUserMapDAO) {
+    public UserGpsServiceImpl(GpsUtil gpsUtil, InternalUserMapDAO internalUserMapDAO, MicroserviceRewardsProxy microserviceRewardsProxy) {
         this.gpsUtil = gpsUtil;
         this.internalUserMapDAO = internalUserMapDAO;
+        this.microserviceRewardsProxy = microserviceRewardsProxy;
     }
 
     @Override
@@ -38,6 +41,7 @@ public class UserGpsServiceImpl implements UserGpsService {
         Locale.setDefault(new Locale("en", "US"));
         VisitedLocation visitedLocation = gpsUtil.getUserLocation(user.getUserId());
         addToVisitedLocations(visitedLocation, user);
+        microserviceRewardsProxy.calculateRewards(user.getUserName());
         log.debug("Service - user location tracked for username: " + user.getUserName());
         return visitedLocation;
     }
@@ -65,7 +69,7 @@ public class UserGpsServiceImpl implements UserGpsService {
     }
 
     @Override
-    public List<Attraction> getAttractions(){
+    public List<Attraction> getAttractions() {
         return gpsUtil.getAttractions();
     }
 
