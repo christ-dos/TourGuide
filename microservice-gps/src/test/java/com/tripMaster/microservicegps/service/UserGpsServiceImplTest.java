@@ -1,10 +1,7 @@
 package com.tripMaster.microservicegps.service;
 
-import com.tripMaster.microservicegps.DAO.InternalUserMapDAO;
-import com.tripMaster.microservicegps.exception.UserNotFoundException;
-import com.tripMaster.microservicegps.model.User;
-import com.tripMaster.microservicegps.proxies.MicroserviceRewardsProxy;
 import gpsUtil.GpsUtil;
+import gpsUtil.location.Attraction;
 import gpsUtil.location.Location;
 import gpsUtil.location.VisitedLocation;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,9 +10,13 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
 /**
@@ -32,32 +33,21 @@ public class UserGpsServiceImplTest {
     @Mock
     private GpsUtil gpsUtilMock;
 
-    @Mock
-    private InternalUserMapDAO internalUserMapDAOMock;
-
-    @Mock
-    private MicroserviceRewardsProxy microserviceRewardsProxyMock;
-
-    private User userTest;
-
-
     @BeforeEach
     public void setUpPerTest() {
-        userGpsServiceTest = new UserGpsServiceImpl(gpsUtilMock, internalUserMapDAOMock, microserviceRewardsProxyMock);
-        userTest = new User(UUID.randomUUID(), "jon", "000", "jon@tourGuide.com");
-
+        userGpsServiceTest = new UserGpsServiceImpl(gpsUtilMock);
     }
 
     @Test
     public void trackUserLocationTest(){
-        VisitedLocation visitedLocationMock = new VisitedLocation(userTest.getUserId(), new Location(33.817595D, -116.922008D), new Date());
-
-        when(gpsUtilMock.getUserLocation(userTest.getUserId())).thenReturn(visitedLocationMock);
+        //GIVEN
+        UUID userId = UUID.randomUUID();
+        VisitedLocation visitedLocationMock = new VisitedLocation(userId, new Location(33.817595D, -116.922008D), new Date());
+        when(gpsUtilMock.getUserLocation(any(UUID.class))).thenReturn(visitedLocationMock);
         //WHEN
-        assertTrue(userTest.getVisitedLocations().isEmpty());
-        VisitedLocation visitedLocationResult = userGpsServiceTest.trackUserLocation(userTest);
+        VisitedLocation visitedLocationResult = userGpsServiceTest.trackUserLocation(userId);
         //THEN
-        assertTrue(!userTest.getVisitedLocations().isEmpty());
+        assertTrue(visitedLocationResult.userId == userId);
         assertEquals(-116.922008D, visitedLocationResult.location.longitude);
         assertEquals(33.817595D, visitedLocationResult.location.latitude);
 
@@ -65,68 +55,20 @@ public class UserGpsServiceImplTest {
     }
 
     @Test
-    public void getUserLocationTest_whenVisitedLocationsListIsEmpty_thenCallMethodTrackUserLoaction() {
+    public void getAttractionsTest(){
         //GIVEN
-        VisitedLocation visitedLocationMock = new VisitedLocation(userTest.getUserId(), new Location(33.817595D, -116.922008D), new Date());
-        List<VisitedLocation> emptyListTest = new ArrayList<>();
-        userTest.setVisitedLocations(emptyListTest);
-
-        when(gpsUtilMock.getUserLocation(userTest.getUserId())).thenReturn(visitedLocationMock);
+        List<Attraction> attractions = new ArrayList();
+        attractions.add(new Attraction("Disneyland", "Anaheim", "CA", 33.817595D, -117.922008D));
+        attractions.add(new Attraction("Jackson Hole", "Jackson Hole", "WY", 43.582767D, -110.821999D));
+        attractions.add(new Attraction("Mojave National Preserve", "Kelso", "CA", 35.141689D, -115.510399D));
+        when(gpsUtilMock.getAttractions()).thenReturn(attractions);
         //WHEN
-        assertTrue(userTest.getVisitedLocations().isEmpty());
-        VisitedLocation visitedLocationResult = userGpsServiceTest.getUserLocation(userTest);
+        List<Attraction> attractionsResult = gpsUtilMock.getAttractions();
         //THEN
-        assertTrue(visitedLocationResult.userId.equals(userTest.getUserId()));
-        assertTrue(userTest.getVisitedLocations().size() > 0);
-        assertEquals(-116.922008D,visitedLocationResult.location.longitude);
-        assertEquals(33.817595D,visitedLocationResult.location.latitude);
-
-        verify(gpsUtilMock, times(1)).getUserLocation(any(UUID.class));
+        assertTrue(attractionsResult.size() == 3);
+        assertEquals("Disneyland",attractionsResult.get(0).attractionName);
+        assertEquals(33.817595D,attractionsResult.get(0).latitude);
+        assertEquals(-117.922008D,attractionsResult.get(0).longitude);
     }
-
-    @Test
-    public void getUserLocationTest_whenVisitedLocationsListIsNotEmpty_thenGetLastVisitedLocation() {
-        //GIVEN
-        User userTest2 = new User(UUID.randomUUID(), "jona", "000", "jona@tourGuide.com");
-
-        List<VisitedLocation> visitedLocationListTest = Arrays.asList(
-                new VisitedLocation(userTest2.getUserId(), new Location(33.817595D, -116.922008D), new Date()),
-                new VisitedLocation(userTest2.getUserId(), new Location(34.817595D, -117.922008D), new Date()),
-                new VisitedLocation(userTest2.getUserId(), new Location(35.817595D, -118.922008D), new Date())
-        );
-        userTest2.setVisitedLocations(visitedLocationListTest);
-        //WHEN
-        VisitedLocation visitedLocationResult = userGpsServiceTest.getUserLocation(userTest2);
-        //THEN
-        assertEquals(userTest2.getUserId(),visitedLocationResult.userId);
-        assertEquals(visitedLocationListTest.get(2),visitedLocationResult);
-        assertTrue(userTest2.getVisitedLocations().size() > 0);
-        assertEquals(-118.922008D, visitedLocationResult.location.longitude);
-        assertEquals(35.817595D, visitedLocationResult.location.latitude);
-    }
-
-    @Test
-    public void getUserByUserNameTest_whenUserExistAndIsJon_thenReturnUserJon() {
-        //GIVEN
-        when(internalUserMapDAOMock.getUser(anyString())).thenReturn(userTest);
-        //WHEN
-        Optional<User> userResult = userGpsServiceTest.getUserByUserName("jon");
-        //THEN
-        assertTrue(userResult.get().getUserId() == userTest.getUserId());
-        assertTrue(userResult.get().getEmailAddress().contains("jon"));
-        verify(internalUserMapDAOMock,times(1)).getUser(anyString());
-    }
-
-    @Test
-    public void getUserByUserNameTest_whenUserNotExistAndIsUnknown_thenReturnNull() {
-        //GIVEN
-        when(internalUserMapDAOMock.getUser(anyString())).thenReturn(null);
-        //WHEN
-        //THEN
-        assertThrows(UserNotFoundException.class, () -> userGpsServiceTest.getUserByUserName("Unknown"));
-        verify(internalUserMapDAOMock,times(1)).getUser(anyString());
-    }
-
-
 
 }

@@ -1,19 +1,19 @@
 package com.tripMaster.tourguideclient.proxies;
 
-import com.tripMaster.tourguideclient.model.User;
+import com.tripMaster.tourguideclient.model.Attraction;
 import com.tripMaster.tourguideclient.model.VisitedLocation;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.List;
+import java.util.UUID;
 
 @FeignClient(name = "${microservice-gps.name}", url = "${microservice-gps.url}")
 public interface MicroserviceUserGpsProxy {
 
-    @GetMapping(value = "/getLocation")
-    VisitedLocation userGpsGetLocation(@RequestParam String userName);
+    @GetMapping("/getLocation")
+    VisitedLocation trackUserLocation(UUID userId);
 
-    @GetMapping("/getUser")
-    User getUser(@RequestParam String userName);
-
-
+    @GetMapping("/getAttractions")
+    List<Attraction> getAttractions();
 }
