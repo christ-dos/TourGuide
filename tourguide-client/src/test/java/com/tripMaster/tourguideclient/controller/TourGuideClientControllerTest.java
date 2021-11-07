@@ -5,6 +5,7 @@ import com.tripMaster.tourguideclient.model.Location;
 import com.tripMaster.tourguideclient.model.User;
 import com.tripMaster.tourguideclient.model.VisitedLocation;
 import com.tripMaster.tourguideclient.proxies.MicroserviceUserGpsProxy;
+import com.tripMaster.tourguideclient.service.TourGuideClientServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -36,7 +37,7 @@ public class TourGuideClientControllerTest {
     private MockMvc mockMvcUserGps;
 
     @MockBean
-    private MicroserviceUserGpsProxy microserviceUserGpsProxyMock;
+    private TourGuideClientServiceImpl tourGuideClientServiceTest;
 
     private User userTest;
 
@@ -44,6 +45,7 @@ public class TourGuideClientControllerTest {
     public void setupPerTest() {
         userTest = new User(UUID.randomUUID(), "jon", "000", "jon@tourGuide.com");
     }
+
 
     @Test
     public void userGpsGetLocationTest_whenUserNameIsJonAndVisitedLocationsListIsNotEmpty_thenReturnVisitedLocationOfJon() throws Exception {
@@ -53,10 +55,9 @@ public class TourGuideClientControllerTest {
                 new VisitedLocation(userTest.getUserId(), new Location(34.817595D, -117.922008D), new Date()),
                 new VisitedLocation(userTest.getUserId(), new Location(35.817595D, -118.922008D), new Date())
         );
-        when(microserviceUserGpsProxyMock.userGpsGetLocation(anyString())).thenReturn(visitedLocationListTest.get(2));
+        when(tourGuideClientServiceTest.getUserLocation(anyString())).thenReturn(visitedLocationListTest.get(2));
         //WHEN
-        userTest.setVisitedLocationTourGuideClients(visitedLocationListTest);
-        System.out.println(userTest.toString());
+        userTest.setVisitedLocations(visitedLocationListTest);
         //THEN
         mockMvcUserGps.perform(MockMvcRequestBuilders.get("/getLocation?userName=jon"))
                 .andExpect(status().isOk())
@@ -71,10 +72,10 @@ public class TourGuideClientControllerTest {
         //GIVEN
         VisitedLocation visitedLocationTest = new VisitedLocation(userTest.getUserId(), new Location(33.817595D, -116.922008D), new Date());
         List<VisitedLocation> visitedLocationListEmptyTest = new ArrayList<>();
-        when(microserviceUserGpsProxyMock.userGpsGetLocation(anyString())).thenReturn(visitedLocationTest);
+        when(tourGuideClientServiceTest.getUserLocation(anyString())).thenReturn(visitedLocationTest);
         //WHEN
-        userTest.setVisitedLocationTourGuideClients(visitedLocationListEmptyTest);
-        assertTrue(userTest.getVisitedLocationTourGuideClients().isEmpty());
+        userTest.setVisitedLocations(visitedLocationListEmptyTest);
+        assertTrue(userTest.getVisitedLocations().isEmpty());
         //THEN
         mockMvcUserGps.perform(MockMvcRequestBuilders.get("/getLocation?userName=jon"))
                 .andExpect(status().isOk())
@@ -83,11 +84,11 @@ public class TourGuideClientControllerTest {
                 .andExpect(jsonPath("$.location.latitude", is(33.817595)))
                 .andDo(print());
     }
-
+//
     @Test
-    public void userGpsGetLocationTest_whenUserNotExist_thenTrowUserNotFoundException() throws Exception {
+    public void userGpsGetLocationTest_whenUserNotExist_thenThrowUserNotFoundException() throws Exception {
         //GIVEN
-        when(microserviceUserGpsProxyMock.userGpsGetLocation(anyString())).thenThrow(new UserNotFoundException("user not found"));
+        when(tourGuideClientServiceTest.getUserLocation(anyString())).thenThrow(new UserNotFoundException("user not found"));
         //WHEN
         //THEN
         mockMvcUserGps.perform(MockMvcRequestBuilders.get("/getLocation?userName=unknown"))
@@ -97,5 +98,4 @@ public class TourGuideClientControllerTest {
                         result.getResolvedException().getMessage()))
                 .andDo(print());
     }
-
 }
