@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @Slf4j
@@ -25,35 +26,10 @@ public class RewardsController {
     private RewardsService rewardsService;
 
 
-    @GetMapping("/getAttractions")
-    public List<Attraction> getAttractions() {
-        log.info("Controller - Attrtactions found");
-        return microserviceGpsProxy.getAttractions();
-    }
-
     @GetMapping("/getRewards")
-    public void calculateRewards(@RequestParam String userName) {
-        User user = microserviceGpsProxy.getUser(userName);
-        rewardsService.calculateRewards(user);
-        log.info("Controller - request to get rewards ");
-    }
-
-    @GetMapping("/getLocation")
-    public VisitedLocation userGpsGetLocation(@RequestParam String userName) {
-        return microserviceGpsProxy.userGpsGetLocation(userName);
-    }
-
-    @GetMapping("/getUser")
-    public User getUser(@RequestParam String userName) {
-        return microserviceGpsProxy.getUser(userName);
-    }
-
-    @GetMapping("/trackUser")
-    public String trackUser(@RequestParam String userName) {
-        User user = microserviceGpsProxy.getUser(userName);
-        rewardsService.calculateRewards(user);
-        log.info("Controller - User Tracked");
-        return JsonStream.serialize(user.getUserRewards());
+    public int getRewardsPoints(@RequestParam UUID attractionId, @RequestParam UUID userId) {
+        log.info("Controller - request to get rewards points");
+        return rewardsService.getRewardPoints(attractionId,userId);
 
     }
 }

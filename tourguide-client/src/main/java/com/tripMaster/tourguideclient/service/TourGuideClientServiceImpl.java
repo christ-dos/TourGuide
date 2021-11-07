@@ -4,7 +4,6 @@ import com.tripMaster.tourguideclient.DAO.InternalUserMapDAO;
 import com.tripMaster.tourguideclient.exception.UserNotFoundException;
 import com.tripMaster.tourguideclient.model.User;
 import com.tripMaster.tourguideclient.model.VisitedLocation;
-import com.tripMaster.tourguideclient.proxies.MicroserviceRewardsProxy;
 import com.tripMaster.tourguideclient.proxies.MicroserviceUserGpsProxy;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,24 +16,26 @@ import java.util.Locale;
 @Slf4j
 public class TourGuideClientServiceImpl implements TourGuideClientService {
 
-    private MicroserviceRewardsProxy microserviceRewardsProxy;
+//    private MicroserviceRewardsProxy microserviceRewardsProxy;
 
     private MicroserviceUserGpsProxy microserviceUserGpsProxy;
 
     private InternalUserMapDAO internalUserMapDAO;
 
+    private TourGuideClientRewardsServiceImpl tourGuideClientRewardsServiceImpl;
+
     @Autowired
-    public TourGuideClientServiceImpl(MicroserviceRewardsProxy microserviceRewardsProxy, MicroserviceUserGpsProxy microserviceUserGpsProxy, InternalUserMapDAO internalUserMapDAO) {
-        this.microserviceRewardsProxy = microserviceRewardsProxy;
+    public TourGuideClientServiceImpl(MicroserviceUserGpsProxy microserviceUserGpsProxy, InternalUserMapDAO internalUserMapDAO, TourGuideClientRewardsServiceImpl tourGuideClientRewardsServiceImpl) {
         this.microserviceUserGpsProxy = microserviceUserGpsProxy;
         this.internalUserMapDAO = internalUserMapDAO;
+        this.tourGuideClientRewardsServiceImpl = tourGuideClientRewardsServiceImpl;
     }
 
     public VisitedLocation trackUserLocation(User user) {
         Locale.setDefault(new Locale("en", "US"));
         VisitedLocation visitedLocation = microserviceUserGpsProxy.trackUserLocation(user.getUserId());
         addToVisitedLocations(visitedLocation, user);
-        microserviceRewardsProxy.calculateRewards(user.getUserName());
+        tourGuideClientRewardsServiceImpl.calculateRewards(user);
         log.debug("Service - user location tracked for username: " + user.getUserName());
         return visitedLocation;
     }
@@ -42,7 +43,7 @@ public class TourGuideClientServiceImpl implements TourGuideClientService {
     @Override
     public VisitedLocation getUserLocation(String userName) {
         User user = internalUserMapDAO.getUser(userName);
-        if(user == null){
+        if (user == null) {
             throw new UserNotFoundException("User not found");
         }
         List<VisitedLocation> visitedLocations = user.getVisitedLocations();

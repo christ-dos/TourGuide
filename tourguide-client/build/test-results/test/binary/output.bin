@@ -1,6 +1,0 @@
-ï20:27:39.962 [Test worker] DEBUG com.tripMaster.tourguideclient.service.TourGuideClientServiceImpl - Service - Visited location added for user: jon
-ò20:27:39.970 [Test worker] DEBUG com.tripMaster.tourguideclient.service.TourGuideClientServiceImpl - Service - user location tracked for username: jon
-ë20:27:40.011 [Test worker] DEBUG com.tripMaster.tourguideclient.service.TourGuideClientServiceImpl - Service - get user location for user: jona
-ï20:27:40.016 [Test worker] DEBUG com.tripMaster.tourguideclient.service.TourGuideClientServiceImpl - Service - Visited location added for user: jon
-ò20:27:40.017 [Test worker] DEBUG com.tripMaster.tourguideclient.service.TourGuideClientServiceImpl - Service - user location tracked for username: jon
-ê20:27:40.017 [Test worker] DEBUG com.tripMaster.tourguideclient.service.TourGuideClientServiceImpl - Service - get user location for user: jon

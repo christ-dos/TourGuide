@@ -33,12 +33,15 @@ public class TourGuideClientServiceImplTest {
     @Mock
     private InternalUserMapDAO internalUserMapDAO;
 
+    @Mock
+    private TourGuideClientRewardsServiceImpl tourGuideClientRewardsServiceImpl;
+
     private User userTest;
 
     @BeforeEach
     public void setUpPerTest() {
         tourGuideClientServiceTest = new TourGuideClientServiceImpl(
-                microserviceRewardsProxy,microserviceUserGpsProxy,internalUserMapDAO);
+                microserviceUserGpsProxy,internalUserMapDAO, tourGuideClientRewardsServiceImpl);
         userTest = new User(UUID.randomUUID(), "jon", "000", "jon@tourGuide.com");
     }
 

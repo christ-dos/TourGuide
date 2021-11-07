@@ -5,6 +5,7 @@ import com.tripMaster.tourguideclient.model.Location;
 import com.tripMaster.tourguideclient.model.User;
 import com.tripMaster.tourguideclient.model.VisitedLocation;
 import com.tripMaster.tourguideclient.proxies.MicroserviceUserGpsProxy;
+import com.tripMaster.tourguideclient.service.TourGuideClientRewardsService;
 import com.tripMaster.tourguideclient.service.TourGuideClientServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -38,6 +39,9 @@ public class TourGuideClientControllerTest {
 
     @MockBean
     private TourGuideClientServiceImpl tourGuideClientServiceTest;
+
+    @MockBean
+    private TourGuideClientRewardsService tourGuideClientRewardsService;
 
     private User userTest;
 
