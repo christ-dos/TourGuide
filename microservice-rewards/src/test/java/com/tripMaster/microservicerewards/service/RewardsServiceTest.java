@@ -36,7 +36,7 @@ public class RewardsServiceTest {
     }
 
     @Test
-    public void getRewardPoint_thenReturn200RewardPoints() {
+    public void getRewardPointTest_thenReturn200RewardPoints() {
         //GIVEN
         UUID attractionId = UUID.randomUUID();
         UUID userId = UUID.randomUUID();

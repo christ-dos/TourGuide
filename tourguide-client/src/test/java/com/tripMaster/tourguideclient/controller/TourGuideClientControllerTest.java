@@ -1,9 +1,7 @@
 package com.tripMaster.tourguideclient.controller;
 
 import com.tripMaster.tourguideclient.exception.UserNotFoundException;
-import com.tripMaster.tourguideclient.model.Location;
-import com.tripMaster.tourguideclient.model.User;
-import com.tripMaster.tourguideclient.model.VisitedLocation;
+import com.tripMaster.tourguideclient.model.*;
 import com.tripMaster.tourguideclient.service.TourGuideClientRewardsService;
 import com.tripMaster.tourguideclient.service.TourGuideClientServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,6 +20,7 @@ import java.util.*;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -98,6 +97,29 @@ public class TourGuideClientControllerTest {
                 .andExpect(result -> assertTrue(result.getResolvedException() instanceof UserNotFoundException))
                 .andExpect(result -> assertEquals("user not found",
                         result.getResolvedException().getMessage()))
+                .andDo(print());
+    }
+
+    @Test
+    public void getRewardsTest_whenUsernameIsJon_thenReturnListUserRewardsForJon() throws Exception {
+        //GIVEN
+        Attraction attraction1 = new Attraction("Disneyland", "Anaheim", "CA", 33.817595D, -117.922008D);
+        Attraction attraction2 = new Attraction("Jackson Hole", "Jackson Hole", "WY", 43.582767D, -110.821999D);
+
+        VisitedLocation visitedLocationMock1 = new VisitedLocation(userTest.getUserId(), new Location(33.817595D, -116.922008D), new Date());
+        VisitedLocation visitedLocationMock2 = new VisitedLocation(userTest.getUserId(), new Location(34.817595D, -117.922008D), new Date());
+
+        List<UserReward> rewards = Arrays.asList(
+                new UserReward(visitedLocationMock1, attraction1, 250),
+                new UserReward(visitedLocationMock2, attraction2, 500));
+        when(tourGuideClientRewardsService.getUserRewards(anyString())).thenReturn(rewards);
+        //WHEN
+        //THEN
+        mockMvcUserGps.perform(MockMvcRequestBuilders.get("/getRewards?userName=jon"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.[0].visitedLocation.userId", is(String.valueOf(userTest.getUserId()))))
+                .andExpect(jsonPath("$.[0].attraction.attractionName", is("Disneyland")))
+                .andExpect(jsonPath("$.[0].rewardPoints", is(250)))
                 .andDo(print());
     }
 }

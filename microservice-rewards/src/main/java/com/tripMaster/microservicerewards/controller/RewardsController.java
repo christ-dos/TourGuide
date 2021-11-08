@@ -25,7 +25,6 @@ public class RewardsController {
     @Autowired
     private RewardsService rewardsService;
 
-
     @GetMapping("/getRewards")
     public int getRewardsPoints(@RequestParam UUID attractionId, @RequestParam UUID userId) {
         log.info("Controller - request to get rewards points");

@@ -61,15 +61,15 @@ public class TourGuideClientRewardsServiceImplTest {
         assertEquals(3, userRewards.size());
         assertEquals("Disneyland", userTest.getUserRewards().get(0).getAttraction().getAttractionName());
         assertNotNull(userTest.getUserRewards().get(0).getRewardPoints());
-        verify(microserviceUserGpsProxy,times(1)).getAttractions();
+        verify(microserviceUserGpsProxy, times(1)).getAttractions();
     }
 
     @Test
-    public void calculateRewardsTest_whenVisitedLocationIsFarOfAttractions_thenUserHasNoRewardsAdded(){
+    public void calculateRewardsTest_whenVisitedLocationIsFarOfAttractions_thenUserHasNoRewardsAdded() {
         //GIVEN
-         User user = new User(UUID.randomUUID(), "jon", "000", "jon@tourGuide.com");
+        User user = new User(UUID.randomUUID(), "jon", "000", "jon@tourGuide.com");
         //Postion Gps Disneyland Paris
-        VisitedLocation visitedLocation = new VisitedLocation(user.getUserId(), new Location(48.871900D,2.776623D),new Date());
+        VisitedLocation visitedLocation = new VisitedLocation(user.getUserId(), new Location(48.871900D, 2.776623D), new Date());
         List<VisitedLocation> visitedLocations = userTest.getVisitedLocations();
         when(microserviceUserGpsProxy.getAttractions()).thenReturn(attractions);
         //WHEN
@@ -78,13 +78,12 @@ public class TourGuideClientRewardsServiceImplTest {
         List<UserReward> userRewards = user.getUserRewards();
         //THEN
         assertTrue(user.getUserRewards().isEmpty());
-        assertEquals(user.getUserId(),visitedLocations.get(0).getUserId());
-        assertEquals(48.871900D,visitedLocations.get(0).getLocation().getLatitude());
-        assertEquals(2.776623D,visitedLocations.get(0).getLocation().getLongitude());
-        verify(microserviceUserGpsProxy,times(1)).getAttractions();
+        assertEquals(user.getUserId(), visitedLocations.get(0).getUserId());
+        assertEquals(48.871900D, visitedLocations.get(0).getLocation().getLatitude());
+        assertEquals(2.776623D, visitedLocations.get(0).getLocation().getLongitude());
+        verify(microserviceUserGpsProxy, times(1)).getAttractions();
 
     }
-
 
     @Test
     public void getUserRewardsTest_whenUserHasTwoUserRewards_thenReturnListWithTwoElements() {
@@ -103,8 +102,8 @@ public class TourGuideClientRewardsServiceImplTest {
         //WHEN
         List<UserReward> rewardsResult = tourGuideClientRewardsService.getUserRewards("jon");
         //THEN
-        assertEquals(2,rewardsResult.size());
-        assertEquals("Disneyland",rewardsResult.get(0).getAttraction().getAttractionName());
+        assertEquals(2, rewardsResult.size());
+        assertEquals("Disneyland", rewardsResult.get(0).getAttraction().getAttractionName());
     }
 
     @Test

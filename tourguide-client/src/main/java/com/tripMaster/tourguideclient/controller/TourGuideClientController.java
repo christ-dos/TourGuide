@@ -27,11 +27,6 @@ public class TourGuideClientController {
     @Autowired
     private TourGuideClientRewardsService tourGuideClientRewardsService;
 
-
-
-
-//todo revoir method controller
-
     @GetMapping("/")
     public String index() {
         return "Greetings from TourGuide!";
@@ -46,20 +41,8 @@ public class TourGuideClientController {
 
     @GetMapping("/getRewards")
     public List<UserReward> getRewards(@RequestParam String userName) {
-        VisitedLocation visitedLocation = tourGuideClientService.getUserLocation(userName);
-        List<UserReward> rewards = tourGuideClientRewardsService.getUserRewards(userName);
-        return rewards;
+        return tourGuideClientRewardsService.getUserRewards(userName);
+
     }
 
-//    @GetMapping("/getRewards")
-//    public List<UserReward> getRewards(@RequestParam String userName) {
-////        microserviceRewardsProxy.calculateRewards(userName);
-//        List<VisitedLocation> visitedLocationList = new ArrayList<>();
-//        User user  = microserviceUserGpsProxy.getUser(userName);
-//        user.setVisitedLocations(visitedLocationList);
-//       microserviceUserGpsProxy.userGpsGetLocation(user.getUserName());
-//       return user.getUserRewards();
-//
-////        return JsonStream.serialize(user.getUserRewards());
-//    }
 }
