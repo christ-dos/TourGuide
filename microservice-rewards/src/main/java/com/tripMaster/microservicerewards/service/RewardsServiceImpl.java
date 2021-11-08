@@ -1,6 +1,5 @@
 package com.tripMaster.microservicerewards.service;
 
-import com.tripMaster.microservicerewards.proxies.MicroserviceGpsProxy;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,18 +12,11 @@ import java.util.UUID;
 public class RewardsServiceImpl implements RewardsService {
     private static final double STATUTE_MILES_PER_NAUTICAL_MILE = 1.15077945;
 
-    // proximity in miles
-    private int defaultProximityBuffer = 10;
-    private int proximityBuffer = defaultProximityBuffer;
-    private int attractionProximityRange = 200;
-
     private RewardCentral rewardsCentral;
-    private MicroserviceGpsProxy microserviceGpsProxy;
 
     @Autowired
-    public RewardsServiceImpl(RewardCentral rewardsCentral, MicroserviceGpsProxy microserviceGpsProxy) {
+    public RewardsServiceImpl(RewardCentral rewardsCentral) {
         this.rewardsCentral = rewardsCentral;
-        this.microserviceGpsProxy = microserviceGpsProxy;
     }
 
     public int getRewardPoints(UUID attractionId, UUID userId) {

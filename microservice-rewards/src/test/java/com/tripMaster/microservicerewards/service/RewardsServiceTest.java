@@ -1,6 +1,5 @@
 package com.tripMaster.microservicerewards.service;
 
-import com.tripMaster.microservicerewards.proxies.MicroserviceGpsProxy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -27,12 +26,10 @@ public class RewardsServiceTest {
     @Mock
     private RewardCentral rewardsCentralMock;
 
-    @Mock
-    private MicroserviceGpsProxy microserviceGpsProxyMock;
 
     @BeforeEach
     public void setUpPerTest() {
-        rewardsServiceImplTest = new RewardsServiceImpl(rewardsCentralMock, microserviceGpsProxyMock);
+        rewardsServiceImplTest = new RewardsServiceImpl(rewardsCentralMock);
     }
 
     @Test
