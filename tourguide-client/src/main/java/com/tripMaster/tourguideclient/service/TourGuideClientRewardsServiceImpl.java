@@ -47,7 +47,7 @@ public class TourGuideClientRewardsServiceImpl implements TourGuideClientRewards
         List<Attraction> attractions = microserviceUserGpsProxy.getAttractions();
         log.info("Service - Calcul en cours....");
         //todo retirer log
-        setDefaultProximityBuffer(8000);
+        setDefaultProximityBuffer(10);
         for (VisitedLocation visitedLocation : userLocations) {
             for (Attraction attraction : attractions) {
                 if (user.getUserRewards().stream().filter(r -> r.getAttraction().getAttractionName().equals(attraction.getAttractionName())).count() == 0) {
@@ -76,7 +76,7 @@ public class TourGuideClientRewardsServiceImpl implements TourGuideClientRewards
     }
 
     private boolean nearAttraction(VisitedLocation visitedLocation, Attraction attraction) {
-        setProximityBuffer(8000);
+        setProximityBuffer(5000);
         return getDistance(attraction, visitedLocation.getLocation()) > proximityBuffer ? false : true;
     }
 

@@ -18,6 +18,8 @@ public class User {
     private Date latestLocationTimestamp;
     private List<VisitedLocation> visitedLocations = new ArrayList<>();
     private List<UserReward> userRewards = new ArrayList<>();
+    private UserPreferences userPreferences = new UserPreferences();
+    private List<Provider> tripDeals = new ArrayList<>();
 //	private CopyOnWriteArrayList<VisitedLocation> visitedLocations = new CopyOnWriteArrayList<>();
 
 
@@ -30,7 +32,7 @@ public class User {
 
     @Override
     public String toString() {
-        return "UserTourGuideClient{" +
+        return "User{" +
                 "userId=" + userId +
                 ", userName='" + userName + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
@@ -38,6 +40,8 @@ public class User {
                 ", latestLocationTimestamp=" + latestLocationTimestamp +
                 ", visitedLocations=" + visitedLocations +
                 ", userRewards=" + userRewards +
+                ", userPreferences=" + userPreferences +
+                ", tripDeals=" + tripDeals +
                 '}';
     }
 }

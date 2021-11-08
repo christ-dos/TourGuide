@@ -6,6 +6,7 @@ import com.tripMaster.tourguideclient.model.Location;
 import com.tripMaster.tourguideclient.model.User;
 import com.tripMaster.tourguideclient.model.VisitedLocation;
 import com.tripMaster.tourguideclient.proxies.MicroserviceRewardsProxy;
+import com.tripMaster.tourguideclient.proxies.MicroserviceTripPricerProxy;
 import com.tripMaster.tourguideclient.proxies.MicroserviceUserGpsProxy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,9 +26,6 @@ public class TourGuideClientServiceImplTest {
     private TourGuideClientServiceImpl tourGuideClientServiceTest;
 
     @Mock
-    private MicroserviceRewardsProxy microserviceRewardsProxy;
-
-    @Mock
     private MicroserviceUserGpsProxy microserviceUserGpsProxy;
 
     @Mock
@@ -36,12 +34,15 @@ public class TourGuideClientServiceImplTest {
     @Mock
     private TourGuideClientRewardsServiceImpl tourGuideClientRewardsServiceImpl;
 
+    @Mock
+    MicroserviceTripPricerProxy microserviceTripPricerProxy;
+
     private User userTest;
 
     @BeforeEach
     public void setUpPerTest() {
         tourGuideClientServiceTest = new TourGuideClientServiceImpl(
-                microserviceUserGpsProxy,internalUserMapDAO, tourGuideClientRewardsServiceImpl);
+                microserviceUserGpsProxy,internalUserMapDAO, tourGuideClientRewardsServiceImpl,microserviceTripPricerProxy);
         userTest = new User(UUID.randomUUID(), "jon", "000", "jon@tourGuide.com");
     }
 

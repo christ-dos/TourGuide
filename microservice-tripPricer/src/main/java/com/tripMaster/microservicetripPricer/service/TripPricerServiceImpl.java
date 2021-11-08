@@ -22,6 +22,7 @@ public class TripPricerServiceImpl implements TripPricerService {
     }
 
     public List<Provider> getPrice(String apiKey, UUID attractionId, int adults, int children, int nightsStay, int rewardsPoints) {
+        log.info("Service - list Providers getted for microservice-TripPricer");
         return tripPricer.getPrice(apiKey,attractionId,adults,children,nightsStay,rewardsPoints);
     }
 }

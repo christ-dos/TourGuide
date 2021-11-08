@@ -7,6 +7,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.UUID;
 
+/**
+ * An Interface that manage requests send to microservice-Rewards
+ *
+ * @author Christine Duarte
+ */
 @FeignClient(name = "${microservice-rewards.name}", url = "${microservice-rewards.url}")
 public interface MicroserviceRewardsProxy {
 

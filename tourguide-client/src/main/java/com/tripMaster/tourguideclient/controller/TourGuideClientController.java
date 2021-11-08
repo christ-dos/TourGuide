@@ -1,5 +1,7 @@
 package com.tripMaster.tourguideclient.controller;
 
+import com.tripMaster.tourguideclient.DAO.InternalUserMapDAO;
+import com.tripMaster.tourguideclient.model.Provider;
 import com.tripMaster.tourguideclient.model.UserReward;
 import com.tripMaster.tourguideclient.model.VisitedLocation;
 import com.tripMaster.tourguideclient.service.TourGuideClientRewardsService;
@@ -15,17 +17,15 @@ import java.util.List;
 @RestController
 @Slf4j
 public class TourGuideClientController {
-//    @Autowired
-//    private MicroserviceUserGpsProxy microserviceUserGpsProxy;
-
-//    @Autowired
-//    private MicroserviceRewardsProxy microserviceRewardsProxy;
 
     @Autowired
     private TourGuideClientService tourGuideClientService;
 
     @Autowired
     private TourGuideClientRewardsService tourGuideClientRewardsService;
+
+    @Autowired
+    private InternalUserMapDAO internalUserMapDAO;
 
     @GetMapping("/")
     public String index() {
@@ -41,7 +41,12 @@ public class TourGuideClientController {
 
     @GetMapping("/getRewards")
     public List<UserReward> getRewards(@RequestParam String userName) {
-        return tourGuideClientRewardsService.getUserRewards(userName);
+       return tourGuideClientRewardsService.getUserRewards(userName);
+    }
+
+    @GetMapping("/getTripDeals")
+    public List<Provider> getTripDeals(@RequestParam String userName) {
+        return tourGuideClientService.getTripDeals(userName);
 
     }
 

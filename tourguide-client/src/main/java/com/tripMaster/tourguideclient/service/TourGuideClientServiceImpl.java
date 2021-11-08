@@ -2,15 +2,21 @@ package com.tripMaster.tourguideclient.service;
 
 import com.tripMaster.tourguideclient.DAO.InternalUserMapDAO;
 import com.tripMaster.tourguideclient.exception.UserNotFoundException;
+import com.tripMaster.tourguideclient.model.Provider;
 import com.tripMaster.tourguideclient.model.User;
+import com.tripMaster.tourguideclient.model.UserReward;
 import com.tripMaster.tourguideclient.model.VisitedLocation;
+import com.tripMaster.tourguideclient.proxies.MicroserviceTripPricerProxy;
 import com.tripMaster.tourguideclient.proxies.MicroserviceUserGpsProxy;
+import gpsUtil.GpsUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import rewardCentral.RewardCentral;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.UUID;
 
 @Service
 @Slf4j
@@ -22,12 +28,16 @@ public class TourGuideClientServiceImpl implements TourGuideClientService {
 
     private TourGuideClientRewardsServiceImpl tourGuideClientRewardsServiceImpl;
 
+    private MicroserviceTripPricerProxy microserviceTripPricerProxy;
+
     @Autowired
-    public TourGuideClientServiceImpl(MicroserviceUserGpsProxy microserviceUserGpsProxy, InternalUserMapDAO internalUserMapDAO, TourGuideClientRewardsServiceImpl tourGuideClientRewardsServiceImpl) {
+    public TourGuideClientServiceImpl(MicroserviceUserGpsProxy microserviceUserGpsProxy, InternalUserMapDAO internalUserMapDAO, TourGuideClientRewardsServiceImpl tourGuideClientRewardsServiceImpl, MicroserviceTripPricerProxy microserviceTripPricerProxy) {
         this.microserviceUserGpsProxy = microserviceUserGpsProxy;
         this.internalUserMapDAO = internalUserMapDAO;
         this.tourGuideClientRewardsServiceImpl = tourGuideClientRewardsServiceImpl;
+        this.microserviceTripPricerProxy = microserviceTripPricerProxy;
     }
+
 
     public VisitedLocation trackUserLocation(User user) {
         Locale.setDefault(new Locale("en", "US"));
@@ -54,9 +64,35 @@ public class TourGuideClientServiceImpl implements TourGuideClientService {
         return visitedLocation;
     }
 
+    @Override
+    public List<Provider> getTripDeals(String userName) {
+        User user = internalUserMapDAO.getUser(userName);
+        if (user == null) {
+            throw new UserNotFoundException("User not found");
+        }
+        int cumulativeRewardPoints = user.getUserRewards().stream().mapToInt(i -> i.getRewardPoints()).sum();
+        List<Provider> providers =
+                microserviceTripPricerProxy.getProviders(internalUserMapDAO.getTripPricerApiKey(),getAttractionId(user) , user.getUserPreferences().getNumberOfAdults(),
+                        user.getUserPreferences().getNumberOfChildren(), user.getUserPreferences().getTripDuration(), cumulativeRewardPoints);
+        user.setTripDeals(providers);
+        return providers;
+    }
+
+    private UUID getAttractionId(User user) {
+        List<UserReward> userRewards = user.getUserRewards();
+        if (userRewards.size() > 0) {
+            return userRewards.get(userRewards.size() - 1).getAttraction().getAttractionId();
+        }
+//        return UUID.randomUUID();
+        return null;
+        //todo a revoir pourquoi mes rewards sont null ts le tps
+    }
+
     private void addToVisitedLocations(VisitedLocation visitedLocation, User user) {
         List<VisitedLocation> visitedLocations = user.getVisitedLocations();
         visitedLocations.add(visitedLocation);
         log.debug("Service - Visited location added for user: " + user.getUserName());
     }
+
+
 }
