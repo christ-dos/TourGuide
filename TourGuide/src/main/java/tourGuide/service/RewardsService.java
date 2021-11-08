@@ -36,7 +36,6 @@ public class RewardsService {
 		proximityBuffer = defaultProximityBuffer;
 	}
 
-
 	public void calculateRewards(User user) {
 		List<VisitedLocation> userLocations = user.getVisitedLocations();
 		List<Attraction> attractions = gpsUtil.getAttractions();

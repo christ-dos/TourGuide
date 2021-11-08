@@ -33,7 +33,7 @@ public class UserGpsTestIT {
     private MockMvc mockMvcUserGps;
 
     @Autowired
-    UserGpsServiceImpl userGpsServiceTest;
+    private UserGpsServiceImpl userGpsServiceTest;
 
 
     @Test

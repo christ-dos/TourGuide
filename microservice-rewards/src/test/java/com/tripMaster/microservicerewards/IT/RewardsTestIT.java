@@ -1,56 +1,53 @@
-package com.tripMaster.microservicerewards.controller;
+package com.tripMaster.microservicerewards.IT;
 
 import com.tripMaster.microservicerewards.service.RewardsServiceImpl;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.util.UUID;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.hamcrest.CoreMatchers.isA;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+
 /**
- * Class that test the {@link RewardsController}
+ * Class integration test Rewards which verify that all
+ * classes works correctly together
  *
  * @author Christine Duarte
  */
-@WebMvcTest(RewardsController.class)
-@ExtendWith(MockitoExtension.class)
+@SpringBootTest
 @AutoConfigureMockMvc
-public class RewardsControllerTest {
-
+public class RewardsTestIT {
     @Autowired
     private MockMvc mockMvcRewards;
 
-    @MockBean
-    private RewardsServiceImpl rewardsServiceImplMock;
-
+    @Autowired
+    private RewardsServiceImpl rewardsService;
 
     @Test
     public void getRewardsPointsTest_thenReturnAnIntegerWithRewardsPoints() throws Exception {
         //GIVEN
         UUID attractionId = UUID.randomUUID();
         UUID userId = UUID.randomUUID();
-        when(rewardsServiceImplMock.getRewardPoints(any(UUID.class), any(UUID.class))).thenReturn(220);
         //WHEN
+        int rewardsPoint = rewardsService.getRewardPoints(attractionId,userId);
         //THEN
         mockMvcRewards.perform(MockMvcRequestBuilders.get("/getRewards")
                         .param("attractionId" , String.valueOf(attractionId))
                         .param("userId" , String.valueOf(userId)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$", is(220)))
+                .andExpect(jsonPath("$", isA(Integer.class)))
                 .andDo(print());
+
+        assertNotNull(rewardsPoint);
     }
 
 }
