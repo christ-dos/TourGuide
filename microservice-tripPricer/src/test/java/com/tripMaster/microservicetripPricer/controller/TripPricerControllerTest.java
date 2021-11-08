@@ -39,7 +39,7 @@ public class TripPricerControllerTest {
     private TripPricerServiceImpl tripPricerServiceMock ;
 
     @Test
-    public void getProvidersTest() throws Exception {
+    public void getProvidersTest_thenReturnListOfProvider() throws Exception {
         //GIVEN
         String apiKey = "apiKey";
         int adults = 2;

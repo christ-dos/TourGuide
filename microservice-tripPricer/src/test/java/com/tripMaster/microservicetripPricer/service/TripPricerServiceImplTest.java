@@ -35,7 +35,7 @@ public class TripPricerServiceImplTest {
     }
 
     @Test
-    public void getPriceTest() {
+    public void getPriceTest_thenReturnListOfProvider() {
         //GIVEN
         String apiKey = "apiKey";
         int adults = 2;
