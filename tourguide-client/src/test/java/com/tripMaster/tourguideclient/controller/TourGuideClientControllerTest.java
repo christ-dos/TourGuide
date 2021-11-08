@@ -4,7 +4,6 @@ import com.tripMaster.tourguideclient.exception.UserNotFoundException;
 import com.tripMaster.tourguideclient.model.Location;
 import com.tripMaster.tourguideclient.model.User;
 import com.tripMaster.tourguideclient.model.VisitedLocation;
-import com.tripMaster.tourguideclient.proxies.MicroserviceUserGpsProxy;
 import com.tripMaster.tourguideclient.service.TourGuideClientRewardsService;
 import com.tripMaster.tourguideclient.service.TourGuideClientServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,7 +22,6 @@ import java.util.*;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -88,7 +86,7 @@ public class TourGuideClientControllerTest {
                 .andExpect(jsonPath("$.location.latitude", is(33.817595)))
                 .andDo(print());
     }
-//
+
     @Test
     public void userGpsGetLocationTest_whenUserNotExist_thenThrowUserNotFoundException() throws Exception {
         //GIVEN

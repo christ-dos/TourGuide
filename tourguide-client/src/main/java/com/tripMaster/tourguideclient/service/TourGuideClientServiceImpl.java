@@ -16,8 +16,6 @@ import java.util.Locale;
 @Slf4j
 public class TourGuideClientServiceImpl implements TourGuideClientService {
 
-//    private MicroserviceRewardsProxy microserviceRewardsProxy;
-
     private MicroserviceUserGpsProxy microserviceUserGpsProxy;
 
     private InternalUserMapDAO internalUserMapDAO;

@@ -57,38 +57,38 @@ public class RewardsControllerTest {
 
     }
 
-    @Test
-    public void getAttractionsTest_whenListContainedThreeElements_thenReturnListWithThreeAttractions() throws Exception {
-        //GIVEN
-        List<Attraction> attractions = new ArrayList();
-        attractions.add(new Attraction("Disneyland", "Anaheim", "CA", 33.817595D, -117.922008D));
-        attractions.add(new Attraction("Jackson Hole", "Jackson Hole", "WY", 43.582767D, -110.821999D));
-        attractions.add(new Attraction("Mojave National Preserve", "Kelso", "CA", 35.141689D, -115.510399D));
-        when(microserviceGpsProxyMock.getAttractions()).thenReturn(attractions);
-        //WHEN
-        //THEN
-        mockMvcRewards.perform(MockMvcRequestBuilders.get("/getAttractions"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.[0].attractionName", is("Disneyland")))
-                .andExpect(jsonPath("$.[0].latitude", is(33.817595)))
-                .andExpect(jsonPath("$.[0].longitude", is(-117.922008)))
-                .andDo(print());
-
-    }
-
-    @Test
-    public void calculateRewardsTest_whenUsernameExist() throws Exception {
-        //GIVEN
-        User user = new User(UUID.randomUUID(), "jon", "000", "jon@tourGuide.com");
-        //WHEN
-        when(microserviceGpsProxyMock.getUser(anyString())).thenReturn(user);
-        doNothing().when(rewardsServiceImplMock).calculateRewards(user);
-        //THEN
-        mockMvcRewards.perform(MockMvcRequestBuilders.get("/getRewards?userName=jon"))
-                .andExpect(status().isOk())
-                .andDo(print());
-
-    }
+//    @Test
+//    public void getAttractionsTest_whenListContainedThreeElements_thenReturnListWithThreeAttractions() throws Exception {
+//        //GIVEN
+//        List<Attraction> attractions = new ArrayList();
+//        attractions.add(new Attraction("Disneyland", "Anaheim", "CA", 33.817595D, -117.922008D));
+//        attractions.add(new Attraction("Jackson Hole", "Jackson Hole", "WY", 43.582767D, -110.821999D));
+//        attractions.add(new Attraction("Mojave National Preserve", "Kelso", "CA", 35.141689D, -115.510399D));
+//        when(microserviceGpsProxyMock.getAttractions()).thenReturn(attractions);
+//        //WHEN
+//        //THEN
+//        mockMvcRewards.perform(MockMvcRequestBuilders.get("/getAttractions"))
+//                .andExpect(status().isOk())
+//                .andExpect(jsonPath("$.[0].attractionName", is("Disneyland")))
+//                .andExpect(jsonPath("$.[0].latitude", is(33.817595)))
+//                .andExpect(jsonPath("$.[0].longitude", is(-117.922008)))
+//                .andDo(print());
+//
+//    }
+//
+//    @Test
+//    public void calculateRewardsTest_whenUsernameExist() throws Exception {
+//        //GIVEN
+//        User user = new User(UUID.randomUUID(), "jon", "000", "jon@tourGuide.com");
+//        //WHEN
+//        when(microserviceGpsProxyMock.getUser(anyString())).thenReturn(user);
+//        doNothing().when(rewardsServiceImplMock).calculateRewards(user);
+//        //THEN
+//        mockMvcRewards.perform(MockMvcRequestBuilders.get("/getRewards?userName=jon"))
+//                .andExpect(status().isOk())
+//                .andDo(print());
+//
+//    }
 
     @Test
     public void userGpsGetLocationTest_whenUsernameExist_thenReturnVisitedLocation() throws Exception {
