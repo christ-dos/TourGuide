@@ -2,10 +2,11 @@ package com.tripMaster.tourguideclient.service;
 
 import com.tripMaster.tourguideclient.DAO.InternalUserMapDAO;
 import com.tripMaster.tourguideclient.exception.UserNotFoundException;
+import com.tripMaster.tourguideclient.helper.InternalTestHelper;
+import com.tripMaster.tourguideclient.model.Attraction;
 import com.tripMaster.tourguideclient.model.Location;
 import com.tripMaster.tourguideclient.model.User;
 import com.tripMaster.tourguideclient.model.VisitedLocation;
-import com.tripMaster.tourguideclient.proxies.MicroserviceRewardsProxy;
 import com.tripMaster.tourguideclient.proxies.MicroserviceTripPricerProxy;
 import com.tripMaster.tourguideclient.proxies.MicroserviceUserGpsProxy;
 import org.junit.jupiter.api.BeforeEach;
@@ -42,12 +43,12 @@ public class TourGuideClientServiceImplTest {
     @BeforeEach
     public void setUpPerTest() {
         tourGuideClientServiceTest = new TourGuideClientServiceImpl(
-                microserviceUserGpsProxy,internalUserMapDAO, tourGuideClientRewardsServiceImpl,microserviceTripPricerProxy);
+                microserviceUserGpsProxy, internalUserMapDAO, tourGuideClientRewardsServiceImpl, microserviceTripPricerProxy);
         userTest = new User(UUID.randomUUID(), "jon", "000", "jon@tourGuide.com");
     }
 
     @Test
-    public void trackUserLocationTest(){
+    public void trackUserLocationTest() {
         //GIVEN
         VisitedLocation visitedLocationMock = new com.tripMaster.tourguideclient.model.VisitedLocation(userTest.getUserId(), new Location(33.817595D, -116.922008D), new Date());
         when(microserviceUserGpsProxy.trackUserLocation(any(UUID.class))).thenReturn(visitedLocationMock);
@@ -67,6 +68,7 @@ public class TourGuideClientServiceImplTest {
         VisitedLocation visitedLocationMock = new VisitedLocation(userTest.getUserId(), new Location(33.817595D, -116.922008D), new Date());
         List<VisitedLocation> emptyListTest = new ArrayList<>();
         userTest.setVisitedLocations(emptyListTest);
+
         when(internalUserMapDAO.getUser(anyString())).thenReturn(userTest);
         when(microserviceUserGpsProxy.trackUserLocation(userTest.getUserId())).thenReturn(visitedLocationMock);
         //WHEN
@@ -75,11 +77,11 @@ public class TourGuideClientServiceImplTest {
         //THEN
         assertTrue(visitedLocationResult.getUserId().equals(userTest.getUserId()));
         assertTrue(userTest.getVisitedLocations().size() > 0);
-        assertEquals(-116.922008D,visitedLocationResult.getLocation().getLongitude());
-        assertEquals(33.817595D,visitedLocationResult.getLocation().getLatitude());
+        assertEquals(-116.922008D, visitedLocationResult.getLocation().getLongitude());
+        assertEquals(33.817595D, visitedLocationResult.getLocation().getLatitude());
 
         verify(microserviceUserGpsProxy, times(1)).trackUserLocation(any(UUID.class));
-        verify(internalUserMapDAO,times(1)).getUser(anyString());
+        verify(internalUserMapDAO, times(1)).getUser(anyString());
     }
 
     @Test
@@ -97,12 +99,12 @@ public class TourGuideClientServiceImplTest {
         //WHEN
         VisitedLocation visitedLocationResult = tourGuideClientServiceTest.getUserLocation(userTest2.getUserName());
         //THEN
-        assertEquals(userTest2.getUserId(),visitedLocationResult.getUserId());
-        assertEquals(visitedLocationListTest.get(2),visitedLocationResult);
+        assertEquals(userTest2.getUserId(), visitedLocationResult.getUserId());
+        assertEquals(visitedLocationListTest.get(2), visitedLocationResult);
         assertTrue(userTest2.getVisitedLocations().size() > 0);
         assertEquals(-118.922008D, visitedLocationResult.getLocation().getLongitude());
         assertEquals(35.817595D, visitedLocationResult.getLocation().getLatitude());
-        verify(internalUserMapDAO,times(1)).getUser(anyString());
+        verify(internalUserMapDAO, times(1)).getUser(anyString());
     }
 
     @Test
@@ -113,7 +115,33 @@ public class TourGuideClientServiceImplTest {
         //WHEN
         //THEN
         assertThrows(UserNotFoundException.class, () -> tourGuideClientServiceTest.getUserLocation("Unknown"));
-        verify(internalUserMapDAO,times(1)).getUser(anyString());
+        verify(internalUserMapDAO, times(1)).getUser(anyString());
     }
 
+    @Test
+    public void getTripDealsTest() {
+        //GIVEN
+        //WHEN
+        //THEN
+    }
+
+    @Test
+    public void getNearByAttractionsTest_whenDistanceLessAttractionProximityRange_thenReturnListAttraction() {
+        //GIVEN
+        User user = new User(UUID.randomUUID(), "jon", "000", "jon@tourGuide.com");
+        VisitedLocation visitedLocation = new VisitedLocation(user.getUserId(), new Location(33.817595D, -117.922008D), new Date());
+
+        List<Attraction> attractions = new ArrayList();
+        attractions.add(new Attraction("Disneyland", "Anaheim", "CA", 33.817595D, -117.922008D));
+        attractions.add(new Attraction("Jackson Hole", "Jackson Hole", "WY", 43.582767D, -110.821999D));
+        attractions.add(new Attraction("Mojave National Preserve", "Kelso", "CA", 35.141689D, -115.510399D));
+        when(microserviceUserGpsProxy.getAttractions()).thenReturn(attractions);
+
+
+        //WHEN
+        InternalTestHelper.setInternalUserNumber(0);
+        List<Attraction> attractionsResult = tourGuideClientServiceTest.getNearByAttractions(visitedLocation);
+        //THEN
+        assertEquals(5, attractions.size());
+    }
 }

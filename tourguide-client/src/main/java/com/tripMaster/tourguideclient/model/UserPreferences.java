@@ -23,17 +23,5 @@ public class UserPreferences {
 	public UserPreferences() {
 	}
 
-	@Override
-	public String toString() {
-		return "UserPreferences{" +
-				"attractionProximity=" + attractionProximity +
-				", currency=" + currency +
-				", lowerPricePoint=" + lowerPricePoint +
-				", highPricePoint=" + highPricePoint +
-				", tripDuration=" + tripDuration +
-				", ticketQuantity=" + ticketQuantity +
-				", numberOfAdults=" + numberOfAdults +
-				", numberOfChildren=" + numberOfChildren +
-				'}';
-	}
+
 }

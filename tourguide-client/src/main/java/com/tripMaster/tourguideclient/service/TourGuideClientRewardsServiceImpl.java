@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @Slf4j
@@ -20,18 +21,8 @@ public class TourGuideClientRewardsServiceImpl implements TourGuideClientRewards
     private int proximityBuffer = defaultProximityBuffer;
     private int attractionProximityRange = 200;
 
-    public void setDefaultProximityBuffer(int defaultProximityBuffer) {
-        this.defaultProximityBuffer = defaultProximityBuffer;
-    }
-
-    public void setProximityBuffer(int proximityBuffer) {
-        this.proximityBuffer = proximityBuffer;
-    }
-
     private MicroserviceRewardsProxy microserviceRewardsProxy;
-
     private MicroserviceUserGpsProxy microserviceUserGpsProxy;
-
     private InternalUserMapDAO internalUserMapDAO;
 
     @Autowired
@@ -41,18 +32,31 @@ public class TourGuideClientRewardsServiceImpl implements TourGuideClientRewards
         this.internalUserMapDAO = internalUserMapDAO;
     }
 
+
+    public void setDefaultProximityBuffer(int defaultProximityBuffer) {
+        this.defaultProximityBuffer = defaultProximityBuffer;
+    }
+
+    public void setProximityBuffer(int proximityBuffer) {
+        this.proximityBuffer = proximityBuffer;
+    }
+
+    public void setAttractionProximityRange(int attractionProximityRange) {
+        this.attractionProximityRange = attractionProximityRange;
+    }
+
     @Override
     public void calculateRewards(User user) {
         List<VisitedLocation> userLocations = user.getVisitedLocations();
         List<Attraction> attractions = microserviceUserGpsProxy.getAttractions();
         log.info("Service - Calcul en cours....");
         //todo retirer log
-        setDefaultProximityBuffer(10);
+//        setDefaultProximityBuffer(10);
         for (VisitedLocation visitedLocation : userLocations) {
             for (Attraction attraction : attractions) {
                 if (user.getUserRewards().stream().filter(r -> r.getAttraction().getAttractionName().equals(attraction.getAttractionName())).count() == 0) {
                     if (nearAttraction(visitedLocation, attraction)) {
-                        addUserReward(new UserReward(visitedLocation, attraction, microserviceRewardsProxy.getRewardsPoints(attraction.getAttractionId(), user.getUserId())), user);
+                        addUserReward(new UserReward(visitedLocation, attraction, getRewardPoints(attraction.getAttractionId(), user.getUserId())), user);
                     }
                 }
             }
@@ -75,12 +79,22 @@ public class TourGuideClientRewardsServiceImpl implements TourGuideClientRewards
         }
     }
 
+    public boolean isWithinAttractionProximity(Attraction attraction, Location location) {
+        return getDistance(attraction, location) > attractionProximityRange ? false : true;
+    }
+
     private boolean nearAttraction(VisitedLocation visitedLocation, Attraction attraction) {
-        setProximityBuffer(5000);
+        setProximityBuffer(10000);
         return getDistance(attraction, visitedLocation.getLocation()) > proximityBuffer ? false : true;
     }
 
-    private double getDistance(Location loc1, Location loc2) {
+    private int getRewardPoints(UUID attractionId, UUID userId) {
+        System.out.println("Calculate reward on: " + Thread.currentThread().getName());
+        //TODO RETIRER SYS0OUT
+        return  microserviceRewardsProxy.getRewardsPoints(attractionId,userId);
+    }
+
+    public double getDistance(Location loc1, Location loc2) {
         double lat1 = Math.toRadians(loc1.getLatitude());
         double lon1 = Math.toRadians(loc1.getLongitude());
         double lat2 = Math.toRadians(loc2.getLatitude());
