@@ -15,7 +15,7 @@ public class UserPreferences {
 	private int tripDuration = 1;
 	private int ticketQuantity = 1;
 	private int numberOfAdults = 1;
-	private int numberOfChildren = 0;
+	private int numberOfChildren = 1;
 	
 	public UserPreferences() {
 	}

@@ -1,10 +1,9 @@
 package com.tripMaster.tourguideclient.controller;
 
 import com.tripMaster.tourguideclient.exception.UserNotFoundException;
-import com.tripMaster.tourguideclient.model.LocationTourGuideClient;
-import com.tripMaster.tourguideclient.model.UserTourGuideClient;
-import com.tripMaster.tourguideclient.model.VisitedLocationTourGuideClient;
-import com.tripMaster.tourguideclient.proxies.MicroserviceUserGpsProxy;
+import com.tripMaster.tourguideclient.model.*;
+import com.tripMaster.tourguideclient.service.TourGuideClientRewardsService;
+import com.tripMaster.tourguideclient.service.TourGuideClientServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -36,27 +35,30 @@ public class TourGuideClientControllerTest {
     private MockMvc mockMvcUserGps;
 
     @MockBean
-    private MicroserviceUserGpsProxy microserviceUserGpsProxyMock;
+    private TourGuideClientServiceImpl tourGuideClientServiceTest;
 
-    private UserTourGuideClient userTest;
+    @MockBean
+    private TourGuideClientRewardsService tourGuideClientRewardsService;
+
+    private User userTest;
 
     @BeforeEach
     public void setupPerTest() {
-        userTest = new UserTourGuideClient(UUID.randomUUID(), "jon", "000", "jon@tourGuide.com");
+        userTest = new User(UUID.randomUUID(), "jon", "000", "jon@tourGuide.com");
     }
+
 
     @Test
     public void userGpsGetLocationTest_whenUserNameIsJonAndVisitedLocationsListIsNotEmpty_thenReturnVisitedLocationOfJon() throws Exception {
         //GIVEN
-        List<VisitedLocationTourGuideClient> visitedLocationTourGuideClientListTest = Arrays.asList(
-                new VisitedLocationTourGuideClient(userTest.getUserId(), new LocationTourGuideClient(33.817595D, -116.922008D), new Date()),
-                new VisitedLocationTourGuideClient(userTest.getUserId(), new LocationTourGuideClient(34.817595D, -117.922008D), new Date()),
-                new VisitedLocationTourGuideClient(userTest.getUserId(), new LocationTourGuideClient(35.817595D, -118.922008D), new Date())
+        List<VisitedLocation> visitedLocationListTest = Arrays.asList(
+                new VisitedLocation(userTest.getUserId(), new Location(33.817595D, -116.922008D), new Date()),
+                new VisitedLocation(userTest.getUserId(), new Location(34.817595D, -117.922008D), new Date()),
+                new VisitedLocation(userTest.getUserId(), new Location(35.817595D, -118.922008D), new Date())
         );
-        when(microserviceUserGpsProxyMock.userGpsGetLocation(anyString())).thenReturn(visitedLocationTourGuideClientListTest.get(2));
+        when(tourGuideClientServiceTest.getUserLocation(anyString())).thenReturn(visitedLocationListTest.get(2));
         //WHEN
-        userTest.setVisitedLocationTourGuideClients(visitedLocationTourGuideClientListTest);
-        System.out.println(userTest.toString());
+        userTest.setVisitedLocations(visitedLocationListTest);
         //THEN
         mockMvcUserGps.perform(MockMvcRequestBuilders.get("/getLocation?userName=jon"))
                 .andExpect(status().isOk())
@@ -69,12 +71,12 @@ public class TourGuideClientControllerTest {
     @Test
     public void userGpsGetLocationTest_whenUserNameIsJonAndVisitedLocationsIsEmpty_thenReturnVisitedLocationOfJonTracked() throws Exception {
         //GIVEN
-        VisitedLocationTourGuideClient visitedLocationTourGuideClientTest = new VisitedLocationTourGuideClient(userTest.getUserId(), new LocationTourGuideClient(33.817595D, -116.922008D), new Date());
-        List<VisitedLocationTourGuideClient> visitedLocationTourGuideClientListEmptyTest = new ArrayList<>();
-        when(microserviceUserGpsProxyMock.userGpsGetLocation(anyString())).thenReturn(visitedLocationTourGuideClientTest);
+        VisitedLocation visitedLocationTest = new VisitedLocation(userTest.getUserId(), new Location(33.817595D, -116.922008D), new Date());
+        List<VisitedLocation> visitedLocationListEmptyTest = new ArrayList<>();
+        when(tourGuideClientServiceTest.getUserLocation(anyString())).thenReturn(visitedLocationTest);
         //WHEN
-        userTest.setVisitedLocationTourGuideClients(visitedLocationTourGuideClientListEmptyTest);
-        assertTrue(userTest.getVisitedLocationTourGuideClients().isEmpty());
+        userTest.setVisitedLocations(visitedLocationListEmptyTest);
+        assertTrue(userTest.getVisitedLocations().isEmpty());
         //THEN
         mockMvcUserGps.perform(MockMvcRequestBuilders.get("/getLocation?userName=jon"))
                 .andExpect(status().isOk())
@@ -85,9 +87,9 @@ public class TourGuideClientControllerTest {
     }
 
     @Test
-    public void userGpsGetLocationTest_whenUserNotExist_thenTrowUserNotFoundException() throws Exception {
+    public void userGpsGetLocationTest_whenUserNotExist_thenThrowUserNotFoundException() throws Exception {
         //GIVEN
-        when(microserviceUserGpsProxyMock.userGpsGetLocation(anyString())).thenThrow(new UserNotFoundException("user not found"));
+        when(tourGuideClientServiceTest.getUserLocation(anyString())).thenThrow(new UserNotFoundException("user not found"));
         //WHEN
         //THEN
         mockMvcUserGps.perform(MockMvcRequestBuilders.get("/getLocation?userName=unknown"))
@@ -98,4 +100,26 @@ public class TourGuideClientControllerTest {
                 .andDo(print());
     }
 
+    @Test
+    public void getRewardsTest_whenUsernameIsJon_thenReturnListUserRewardsForJon() throws Exception {
+        //GIVEN
+        Attraction attraction1 = new Attraction("Disneyland", "Anaheim", "CA", 33.817595D, -117.922008D);
+        Attraction attraction2 = new Attraction("Jackson Hole", "Jackson Hole", "WY", 43.582767D, -110.821999D);
+
+        VisitedLocation visitedLocationMock1 = new VisitedLocation(userTest.getUserId(), new Location(33.817595D, -116.922008D), new Date());
+        VisitedLocation visitedLocationMock2 = new VisitedLocation(userTest.getUserId(), new Location(34.817595D, -117.922008D), new Date());
+
+        List<UserReward> rewards = Arrays.asList(
+                new UserReward(visitedLocationMock1, attraction1, 250),
+                new UserReward(visitedLocationMock2, attraction2, 500));
+        when(tourGuideClientRewardsService.getUserRewards(anyString())).thenReturn(rewards);
+        //WHEN
+        //THEN
+        mockMvcUserGps.perform(MockMvcRequestBuilders.get("/getRewards?userName=jon"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.[0].visitedLocation.userId", is(String.valueOf(userTest.getUserId()))))
+                .andExpect(jsonPath("$.[0].attraction.attractionName", is("Disneyland")))
+                .andExpect(jsonPath("$.[0].rewardPoints", is(250)))
+                .andDo(print());
+    }
 }

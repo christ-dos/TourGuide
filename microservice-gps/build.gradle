@@ -43,11 +43,16 @@ repositories {
 	}
 }
 
+ext {
+	set('springCloudVersion', "2020.0.4")
+}
+
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.junit.jupiter:junit-jupiter:5.7.0'
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
+	implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	compileOnly(name:'gpsUtil', ext:'jar')
 	testImplementation(name:'gpsUtil', ext:'jar')
@@ -65,6 +70,12 @@ dependencies {
 	// https://mvnrepository.com/artifact/org.springframework/spring-test
 	testImplementation 'org.springframework:spring-test:5.3.12'
 
+}
+
+dependencyManagement {
+	imports {
+		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+	}
 }
 
 test {
