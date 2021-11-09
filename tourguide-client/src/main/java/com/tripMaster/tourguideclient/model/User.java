@@ -18,7 +18,6 @@ public class User {
     private Date latestLocationTimestamp;
     private List<VisitedLocation> visitedLocations = new ArrayList<>();
     private List<UserReward> userRewards = new ArrayList<>();
-//    private UserPreferences userPreferences;
     private UserPreferences userPreferences = new UserPreferences();
     private List<Provider> tripDeals = new ArrayList<>();
 //	private CopyOnWriteArrayList<VisitedLocation> visitedLocations = new CopyOnWriteArrayList<>();

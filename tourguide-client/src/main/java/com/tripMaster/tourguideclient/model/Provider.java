@@ -11,9 +11,10 @@ import java.util.UUID;
 @Getter
 @Setter
 public class Provider {
+    private final UUID tripId;
     private final String name;
     private final double price;
-    private final UUID tripId;
+
 
     @Override
     public String toString() {

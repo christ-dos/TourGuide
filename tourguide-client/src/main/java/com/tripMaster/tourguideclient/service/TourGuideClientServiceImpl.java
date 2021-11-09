@@ -64,15 +64,20 @@ public class TourGuideClientServiceImpl implements TourGuideClientService {
             throw new UserNotFoundException("User not found");
         }
         List<UserReward> userRewards = user.getUserRewards();
-        if(userRewards.isEmpty()){
+        if (userRewards.isEmpty()) {
             throw new UserRewardsNotFoundException("User Rewards not found");
         }
         UUID attractionId = userRewards.get(userRewards.size() - 1).getAttraction().getAttractionId();
 
         int cumulativeRewardPoints = user.getUserRewards().stream().mapToInt(i -> i.getRewardPoints()).sum();
         List<Provider> providers =
-                microserviceTripPricerProxy.getProviders(internalUserMapDAO.getTripPricerApiKey(),attractionId , user.getUserPreferences().getNumberOfAdults(),
-                        user.getUserPreferences().getNumberOfChildren(), user.getUserPreferences().getTripDuration(), cumulativeRewardPoints);
+                microserviceTripPricerProxy.getProviders(
+                        internalUserMapDAO.getTripPricerApiKey(),
+                                attractionId,
+                                user.getUserPreferences().getNumberOfAdults(),
+                                user.getUserPreferences().getNumberOfChildren(),
+                                user.getUserPreferences().getTripDuration(),
+                                cumulativeRewardPoints);
         user.setTripDeals(providers);
         return providers;
     }
@@ -85,7 +90,7 @@ public class TourGuideClientServiceImpl implements TourGuideClientService {
         for (Attraction attraction : microserviceUserGpsProxy.getAttractions()) {
             if (tourGuideClientRewardsServiceImpl.isWithinAttractionProximity(attraction, visitedLocation.getLocation())) {
                 nearbyAttractions.add(attraction);
-            }else{
+            } else {
                 distances.add(tourGuideClientRewardsServiceImpl.getDistance(attraction, visitedLocation.getLocation()));
             }
         }
@@ -111,9 +116,9 @@ public class TourGuideClientServiceImpl implements TourGuideClientService {
         log.debug("Service - Visited location added for user: " + user.getUserName());
     }
 
-    private double getAverageDistanceByAttraction(List<Double> distances){
+    private double getAverageDistanceByAttraction(List<Double> distances) {
 
-        return distances.stream().mapToDouble(s->s)
+        return distances.stream().mapToDouble(s -> s)
                 .average()
                 .orElse(0D);
     }
