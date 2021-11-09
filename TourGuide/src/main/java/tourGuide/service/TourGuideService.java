@@ -8,9 +8,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import tourGuide.DAO.InternalUserMapDAO;
 import tourGuide.exception.VisitedLocationNotFoundException;
-import tourGuide.tracker.Tracker;
 import tourGuide.model.User;
 import tourGuide.model.UserReward;
+import tourGuide.tracker.Tracker;
 import tripPricer.Provider;
 import tripPricer.TripPricer;
 
@@ -57,7 +57,7 @@ public class TourGuideService {
         return visitedLocation;
     }
 
-//    public User getUser(String userName) {
+    //    public User getUser(String userName) {
 //        return internalUserMap.get(userName);
 //    }
 //
@@ -71,7 +71,7 @@ public class TourGuideService {
 //        }
 //    }
     public User getUser(String userName) {
-    return internalUserMapDAO.getUser(userName);
+        return internalUserMapDAO.getUser(userName);
     }
 
     public List<User> getAllUsers() {
@@ -109,7 +109,7 @@ public class TourGuideService {
             Locale.setDefault(new Locale("en", "US"));
 
             CompletableFuture<VisitedLocation> future = CompletableFuture.supplyAsync(() ->
-                    gpsUtil.getUserLocation(user.getUserId()),executorService);
+                    gpsUtil.getUserLocation(user.getUserId()), executorService);
             visitedLocation = future.join();
 
 //            System.out.println("visited location in service:" + Thread.currentThread().getName());
@@ -126,7 +126,7 @@ public class TourGuideService {
         }
         user.addToVisitedLocations(visitedLocation);
         CompletableFuture.runAsync(() ->
-               rewardsService.calculateRewards(user),executorService);
+                rewardsService.calculateRewards(user), executorService);
 //        rewardsService.calculateRewards(user);
         return visitedLocation;
     }
@@ -138,12 +138,13 @@ public class TourGuideService {
         for (Attraction attraction : gpsUtil.getAttractions()) {
             if (rewardsService.isWithinAttractionProximity(attraction, visitedLocation.location)) {
                 nearbyAttractions.add(attraction);
-            }else{
+            } else {
                 distances.add(rewardsService.getDistance(attraction, visitedLocation.location));
             }
         }
-        rewardsService.setAttractionProximityRange((int)getAverageDistanceByAttraction(distances));
-
+//        if (nearbyAttractions.size() > 5) {
+//            return nearbyAttractions.subList(0, 5);
+//        }
         return nearbyAttractions;
     }
 
@@ -155,9 +156,9 @@ public class TourGuideService {
         });
     }
 
-    private double getAverageDistanceByAttraction(List<Double> distances){
+    private double getAverageDistanceByAttraction(List<Double> distances) {
 
-       return distances.stream().mapToDouble(s->s)
+        return distances.stream().mapToDouble(s -> s)
                 .average()
                 .orElse(0D);
     }

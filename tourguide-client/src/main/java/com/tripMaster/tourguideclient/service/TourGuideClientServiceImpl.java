@@ -100,16 +100,6 @@ public class TourGuideClientServiceImpl implements TourGuideClientService {
         return nearbyAttractions;
     }
 
-//    private UUID getAttractionId(User user) {
-//        List<UserReward> userRewards = user.getUserRewards();
-//        if (userRewards.size() > 0) {
-//            return userRewards.get(userRewards.size() - 1).getAttraction().getAttractionId();
-//        }
-////        return UUID.randomUUID();
-//        return null;
-//        //todo a revoir pourquoi mes rewards sont null ts le tps
-//    }
-
     private void addToVisitedLocations(VisitedLocation visitedLocation, User user) {
         List<VisitedLocation> visitedLocations = user.getVisitedLocations();
         visitedLocations.add(visitedLocation);

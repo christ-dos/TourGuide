@@ -6,6 +6,7 @@ import com.tripMaster.tourguideclient.model.UserReward;
 import java.util.List;
 
 public interface TourGuideClientRewardsService {
+
     void calculateRewards(User user);
 
     List<UserReward> getUserRewards(String userName);

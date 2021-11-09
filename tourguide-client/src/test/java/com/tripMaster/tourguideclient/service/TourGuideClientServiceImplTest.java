@@ -37,8 +37,6 @@ public class TourGuideClientServiceImplTest {
 
     @BeforeEach
     public void setUpPerTest() {
-//        tourGuideClientRewardsServiceImplMock.setDefaultProximityBuffer(10);
-//        tourGuideClientRewardsServiceImplMock.setAttractionProximityRange(200);
         tourGuideClientServiceTest = new TourGuideClientServiceImpl(
                 microserviceUserGpsProxyMock, internalUserMapDAOMock, tourGuideClientRewardsServiceImplMock, microserviceTripPricerProxyMock);
 
@@ -95,6 +93,7 @@ public class TourGuideClientServiceImplTest {
         userTest2.setVisitedLocations(visitedLocationListTest);
         when(internalUserMapDAOMock.getUser(anyString())).thenReturn(userTest2);
         //WHEN
+        InternalTestHelper.setInternalUserNumber(0);
         VisitedLocation visitedLocationResult = tourGuideClientServiceTest.getUserLocation(userTest2.getUserName());
         //THEN
         assertEquals(userTest2.getUserId(), visitedLocationResult.getUserId());
@@ -113,27 +112,6 @@ public class TourGuideClientServiceImplTest {
         //THEN
         assertThrows(UserNotFoundException.class, () -> tourGuideClientServiceTest.getUserLocation("Unknown"));
         verify(internalUserMapDAOMock, times(1)).getUser(anyString());
-    }
-
-    @Test
-    public void getTripDealsTest_whenUserNotFound_thenReturnUserNotFoundException() {
-        //GIVEN
-        when(internalUserMapDAOMock.getUser(anyString())).thenReturn(null);
-        //WHEN
-        //THEN
-        assertThrows(UserNotFoundException.class, () -> tourGuideClientServiceTest.getTripDeals("Unknown"));
-        verify(internalUserMapDAOMock, times(1)).getUser(anyString());
-    }
-
-    @Test
-    public void getTripDealsTest_whenUserRewardsNotFound_thenReturnUserRewardsNotFoundException() {
-        //GIVEN
-        List<UserReward> emptyList = new ArrayList<>();
-        when(internalUserMapDAOMock.getUser(anyString())).thenReturn(userTest);
-        userTest.setUserRewards(emptyList);
-        //WHEN
-        //THEN
-        assertThrows(UserRewardsNotFoundException.class, () -> tourGuideClientServiceTest.getTripDeals("jon"));
     }
 
     @Test
@@ -171,6 +149,28 @@ public class TourGuideClientServiceImplTest {
         assertEquals(200 , userTest.getUserRewards().get(0).getRewardPoints());
         assertEquals(700 , userTest.getUserRewards().stream().mapToInt(i -> i.getRewardPoints()).sum());
     }
+
+    @Test
+    public void getTripDealsTest_whenUserNotFound_thenReturnUserNotFoundException() {
+        //GIVEN
+        when(internalUserMapDAOMock.getUser(anyString())).thenReturn(null);
+        //WHEN
+        //THEN
+        assertThrows(UserNotFoundException.class, () -> tourGuideClientServiceTest.getTripDeals("Unknown"));
+        verify(internalUserMapDAOMock, times(1)).getUser(anyString());
+    }
+
+    @Test
+    public void getTripDealsTest_whenUserRewardsIsEmpty_thenReturnUserRewardsNotFoundException() {
+        //GIVEN
+        List<UserReward> emptyList = new ArrayList<>();
+        when(internalUserMapDAOMock.getUser(anyString())).thenReturn(userTest);
+        userTest.setUserRewards(emptyList);
+        //WHEN
+        //THEN
+        assertThrows(UserRewardsNotFoundException.class, () -> tourGuideClientServiceTest.getTripDeals("jon"));
+    }
+
 
     @Test
     public void getNearByAttractionsTest_whenTwoAttractionsHaveDistanceLessThanAttractionProximityRange_thenReturnListAttractionWithTwoAttractions() {
@@ -222,6 +222,6 @@ public class TourGuideClientServiceImplTest {
         verify(microserviceUserGpsProxyMock, times(1)).getAttractions();
         verify(tourGuideClientRewardsServiceImplMock, times(3)).isWithinAttractionProximity(any(Attraction.class), any(Location.class));
         verify(tourGuideClientRewardsServiceImplMock, times(3)).getDistance(any(Location.class), any(Location.class));
-
     }
+
 }
