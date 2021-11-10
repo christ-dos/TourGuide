@@ -59,6 +59,62 @@ public class TourGuideClientServiceImplTest {
     }
 
     @Test
+    public void addUserTest_thenVerifyUserWasAdded() {
+        //GIVEN
+        doNothing().when(internalUserMapDAOMock).addUser(any(User.class));
+        when(internalUserMapDAOMock.getUser(anyString())).thenReturn(userTest);
+        //WHEN
+        tourGuideClientServiceTest.addUser(userTest);
+
+        User retrivedUserTest = tourGuideClientServiceTest.getUser("jon");
+        //THEN
+        assertEquals(userTest, retrivedUserTest);
+        verify(internalUserMapDAOMock, times(1)).getUser(anyString());
+        verify(internalUserMapDAOMock, times(1)).addUser(any(User.class));
+    }
+
+    @Test
+    public void getAllUsersTest_thenReturnListWithTwoUsersWhichContainUserAndUserOne() {
+        //GIVEN
+        List<User> usersListTest = Arrays.asList(
+                new User(UUID.randomUUID(), "jon", "000", "jon@tourGuide.com"),
+                new User(UUID.randomUUID(), "jon1", "000", "jon2@tourGuide.com")
+        );
+        when(internalUserMapDAOMock.getAllUsers()).thenReturn(usersListTest);
+        //WHEN
+
+        List<User> allUsers = tourGuideClientServiceTest.getAllUsers();
+        //THEN
+        assertTrue(allUsers.size() > 0);
+        assertTrue(allUsers.containsAll(usersListTest));
+        verify(internalUserMapDAOMock, times(1)).getAllUsers();
+    }
+
+    @Test
+    public void getUserTest_whenUserExistAndUserNameIsJon_thenReturnUser() {
+        //GIVEN
+        when(internalUserMapDAOMock.getUser(anyString())).thenReturn(userTest);
+        //WHEN
+        User userResult = tourGuideClientServiceTest.getUser("jon");
+        //THEN
+        assertNotNull(userResult);
+        assertEquals(userTest.getUserId(), userResult.getUserId());
+        assertEquals(userTest.getEmailAddress(), userResult.getEmailAddress());
+        verify(internalUserMapDAOMock, times(1)).getUser(anyString());
+    }
+
+    @Test
+    public void getUserTest_whenUserNotExist_thenThrowUserNotFoundException() {
+        //GIVEN
+        when(internalUserMapDAOMock.getUser(anyString())).thenReturn(null);
+        //WHEN
+        //THEN
+        assertThrows(UserNotFoundException.class, () -> tourGuideClientServiceTest.getUser("Unknown"));
+        verify(internalUserMapDAOMock, times(1)).getUser(anyString());
+
+    }
+
+    @Test
     public void getUserLocationTest_whenVisitedLocationsListIsEmpty_thenCallMethodTrackUserLocation() {
         //GIVEN
         VisitedLocation visitedLocationMock = new VisitedLocation(userTest.getUserId(), new Location(33.817595D, -116.922008D), new Date());
@@ -124,9 +180,9 @@ public class TourGuideClientServiceImplTest {
         VisitedLocation visitedLocation2 = new VisitedLocation(userTest.getUserId(), new Location(34.817595D, -117.922008D), new Date());
 
         List<UserReward> rewardsTest = Arrays.asList(
-                new UserReward(visitedLocation1,attraction1,200),
-                new UserReward(visitedLocation2,attraction2, 500)
-                );
+                new UserReward(visitedLocation1, attraction1, 200),
+                new UserReward(visitedLocation2, attraction2, 500)
+        );
 
         List<Provider> providersTest = Arrays.asList(
                 new Provider(UUID.randomUUID(), "Holiday Travels", 200D),
@@ -143,11 +199,11 @@ public class TourGuideClientServiceImplTest {
         //WHEN
         List<Provider> providersResult = tourGuideClientServiceTest.getTripDeals("jon");
         //THEN
-        assertEquals(3,providersResult.size());
-        assertEquals("Holiday Travels",providersResult.get(0).getName());
+        assertEquals(3, providersResult.size());
+        assertEquals("Holiday Travels", providersResult.get(0).getName());
         assertEquals(200, providersResult.get(0).getPrice());
-        assertEquals(200 , userTest.getUserRewards().get(0).getRewardPoints());
-        assertEquals(700 , userTest.getUserRewards().stream().mapToInt(i -> i.getRewardPoints()).sum());
+        assertEquals(200, userTest.getUserRewards().get(0).getRewardPoints());
+        assertEquals(700, userTest.getUserRewards().stream().mapToInt(i -> i.getRewardPoints()).sum());
     }
 
     @Test

@@ -41,6 +41,22 @@ public class TourGuideClientServiceImpl implements TourGuideClientService {
         return visitedLocation;
     }
 
+    public User getUser(String userName) {
+        User user = internalUserMapDAO.getUser(userName);
+        if(user == null){
+            throw new UserNotFoundException("User not found");
+        }
+        return user;
+    }
+
+    public List<User> getAllUsers() {
+        return internalUserMapDAO.getAllUsers();
+    }
+
+    public void addUser(User user) {
+        internalUserMapDAO.addUser(user);
+    }
+
     @Override
     public VisitedLocation getUserLocation(String userName) {
         User user = internalUserMapDAO.getUser(userName);

@@ -2,6 +2,7 @@ package com.tripMaster.tourguideclient.DAO;
 
 import com.tripMaster.tourguideclient.helper.InternalTestHelper;
 import com.tripMaster.tourguideclient.model.*;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
@@ -14,6 +15,7 @@ import java.util.stream.IntStream;
 
 @Repository
 @Slf4j
+@NoArgsConstructor
 public class InternalUserMapDAO {
 
     /**********************************************************************************
