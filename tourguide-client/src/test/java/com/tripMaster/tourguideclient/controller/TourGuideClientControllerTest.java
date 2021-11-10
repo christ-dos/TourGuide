@@ -17,6 +17,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -53,7 +54,7 @@ public class TourGuideClientControllerTest {
     @Test
     public void userGpsGetLocationTest_whenUserNameIsJonAndVisitedLocationsListIsNotEmpty_thenReturnVisitedLocationOfJon() throws Exception {
         //GIVEN
-        List<VisitedLocation> visitedLocationListTest = Arrays.asList(
+        CopyOnWriteArrayList<VisitedLocation> visitedLocationListTest = (CopyOnWriteArrayList<VisitedLocation>) Arrays.asList(
                 new VisitedLocation(userTest.getUserId(), new Location(33.817595D, -116.922008D), new Date()),
                 new VisitedLocation(userTest.getUserId(), new Location(34.817595D, -117.922008D), new Date()),
                 new VisitedLocation(userTest.getUserId(), new Location(35.817595D, -118.922008D), new Date())
@@ -74,7 +75,7 @@ public class TourGuideClientControllerTest {
     public void userGpsGetLocationTest_whenUserNameIsJonAndVisitedLocationsIsEmpty_thenReturnVisitedLocationOfJonTracked() throws Exception {
         //GIVEN
         VisitedLocation visitedLocationTest = new VisitedLocation(userTest.getUserId(), new Location(33.817595D, -116.922008D), new Date());
-        List<VisitedLocation> visitedLocationListEmptyTest = new ArrayList<>();
+        CopyOnWriteArrayList<VisitedLocation> visitedLocationListEmptyTest = new CopyOnWriteArrayList<>();
         when(tourGuideClientServiceTest.getUserLocation(anyString())).thenReturn(visitedLocationTest);
         //WHEN
         userTest.setVisitedLocations(visitedLocationListEmptyTest);

@@ -24,9 +24,6 @@ public class TourGuideClientController {
     @Autowired
     private TourGuideClientRewardsService tourGuideClientRewardsService;
 
-    @Autowired
-    private InternalUserMapDAO internalUserMapDAO;
-
     @GetMapping("/")
     public String index() {
         return "Greetings from TourGuide!";

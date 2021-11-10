@@ -11,37 +11,46 @@ import com.tripMaster.tourguideclient.proxies.MicroserviceTripPricerProxy;
 import com.tripMaster.tourguideclient.proxies.MicroserviceUserGpsProxy;
 import com.tripMaster.tourguideclient.service.TourGuideClientRewardsServiceImpl;
 import com.tripMaster.tourguideclient.service.TourGuideClientServiceImpl;
+import com.tripMaster.tourguideclient.utils.Tracker;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.apache.commons.lang3.time.StopWatch;
+import org.springframework.boot.test.context.SpringBootTest;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
-
+@SpringBootTest
 public class TestPerformance {
 
 	@Autowired
 	private MicroserviceUserGpsProxy microserviceUserGpsProxy;
-	@Autowired
-	private InternalUserMapDAO internalUserMapDAO;
+
 	@Autowired
 	private MicroserviceTripPricerProxy microserviceTripPricerProxy;
+
 	@Autowired
 	private MicroserviceRewardsProxy microserviceRewardsProxy;
 
+	@Autowired
 	private TourGuideClientServiceImpl tourGuideClientService;
 
+	@Autowired
 	private TourGuideClientRewardsServiceImpl tourGuideClientRewardsService;
+
+	@Autowired
+	private InternalUserMapDAO internalUserMapDAO ;
+
+	private Tracker tracker = new Tracker(tourGuideClientService) ;
 
 	@BeforeEach
 	public void setUpPerTest() {
 		tourGuideClientService = new TourGuideClientServiceImpl(microserviceUserGpsProxy,
 				internalUserMapDAO,tourGuideClientRewardsService,microserviceTripPricerProxy);
-
 		tourGuideClientRewardsService = new TourGuideClientRewardsServiceImpl(microserviceRewardsProxy,microserviceUserGpsProxy, internalUserMapDAO);
 	}
 	
@@ -69,13 +78,9 @@ public class TestPerformance {
 	@Test
 	public void highVolumeTrackLocation() {
 
-
-//		GpsUtil gpsUtil = new GpsUtil();
 //		CompletableFuture<VisitedLocation> completableFuture = new CompletableFuture<>();
-//		RewardsService rewardsService = new RewardsService(gpsUtil, new RewardCentral());
 		// Users should be incremented up to 100,000, and test finishes within 15 minutes
 		InternalTestHelper.setInternalUserNumber(100);
-
 
 		List<User> allUsers = new ArrayList<>();
 		allUsers = tourGuideClientService.getAllUsers();
@@ -98,13 +103,11 @@ public class TestPerformance {
 //	@Ignore
 	@Test
 	public void highVolumeGetRewards() {
-//		GpsUtil gpsUtil = new GpsUtil();
 
 		// Users should be incremented up to 100,000, and test finishes within 20 minutes
 		InternalTestHelper.setInternalUserNumber(100);
 		StopWatch stopWatch = new StopWatch();
 		stopWatch.start();
-//		TourGuideService tourGuideService = new TourGuideService(gpsUtil, rewardsService);
 
 	    Attraction attraction = microserviceUserGpsProxy.getAttractions().get(0);
 		List<User> allUsers = tourGuideClientService.getAllUsers();

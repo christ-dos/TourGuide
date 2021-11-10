@@ -6,6 +6,7 @@ import com.tripMaster.tourguideclient.model.*;
 import com.tripMaster.tourguideclient.proxies.MicroserviceRewardsProxy;
 import com.tripMaster.tourguideclient.proxies.MicroserviceTripPricerProxy;
 import com.tripMaster.tourguideclient.proxies.MicroserviceUserGpsProxy;
+import com.tripMaster.tourguideclient.utils.Tracker;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,6 +14,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -33,6 +35,9 @@ public class TourGuideClientRewardsServiceImplTest {
 
     @Mock
     private MicroserviceTripPricerProxy microserviceTripPricerProxyMock;
+
+    @Mock
+    private Tracker tracker;
 
 
     private User userTest;
@@ -58,7 +63,7 @@ public class TourGuideClientRewardsServiceImplTest {
         VisitedLocation visitedLocationMock = new VisitedLocation(userTest.getUserId(), new Location(33.817595D, -116.922008D), new Date());
         VisitedLocation visitedLocationMock1 = new VisitedLocation(userTest.getUserId(), new Location(34.817595D, -117.922008D), new Date());
 
-        userTest.setVisitedLocations(Arrays.asList(visitedLocationMock, visitedLocationMock1));
+        userTest.setVisitedLocations((CopyOnWriteArrayList<VisitedLocation>) Arrays.asList(visitedLocationMock, visitedLocationMock1));
         List<VisitedLocation> visitedLocations = userTest.getVisitedLocations();
         when(microserviceUserGpsProxyMock.getAttractions()).thenReturn(attractions);
         //WHEN
@@ -153,7 +158,7 @@ public class TourGuideClientRewardsServiceImplTest {
     @Test
     public void nearAllAttractionsTest() {
         //GIVEN
-        List<VisitedLocation> visitedLocationsTest = Arrays.asList(
+        CopyOnWriteArrayList<VisitedLocation> visitedLocationsTest = (CopyOnWriteArrayList<VisitedLocation>) Arrays.asList(
                 new VisitedLocation(userTest.getUserId(), new Location(33.817595D, -116.922008D), new Date()),
                 new VisitedLocation(userTest.getUserId(), new Location(34.817595D, -117.922008D), new Date())
         );

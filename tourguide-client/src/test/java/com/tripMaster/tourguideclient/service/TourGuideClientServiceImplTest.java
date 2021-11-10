@@ -7,6 +7,7 @@ import com.tripMaster.tourguideclient.helper.InternalTestHelper;
 import com.tripMaster.tourguideclient.model.*;
 import com.tripMaster.tourguideclient.proxies.MicroserviceTripPricerProxy;
 import com.tripMaster.tourguideclient.proxies.MicroserviceUserGpsProxy;
+import com.tripMaster.tourguideclient.utils.Tracker;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -14,6 +15,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -32,6 +34,8 @@ public class TourGuideClientServiceImplTest {
     private TourGuideClientRewardsServiceImpl tourGuideClientRewardsServiceImplMock;
     @Mock
     private MicroserviceTripPricerProxy microserviceTripPricerProxyMock;
+    @Mock
+    private Tracker tracker;
 
     private User userTest;
 
@@ -87,7 +91,6 @@ public class TourGuideClientServiceImplTest {
         //THEN
         assertTrue(allUsers.size() > 0);
         assertTrue(allUsers.containsAll(usersListTest));
-        verify(internalUserMapDAOMock, times(1)).getAllUsers();
     }
 
     @Test
@@ -118,7 +121,7 @@ public class TourGuideClientServiceImplTest {
     public void getUserLocationTest_whenVisitedLocationsListIsEmpty_thenCallMethodTrackUserLocation() {
         //GIVEN
         VisitedLocation visitedLocationMock = new VisitedLocation(userTest.getUserId(), new Location(33.817595D, -116.922008D), new Date());
-        List<VisitedLocation> emptyListTest = new ArrayList<>();
+        CopyOnWriteArrayList<VisitedLocation> emptyListTest = new CopyOnWriteArrayList<>();
         userTest.setVisitedLocations(emptyListTest);
 
         when(internalUserMapDAOMock.getUser(anyString())).thenReturn(userTest);
@@ -141,7 +144,7 @@ public class TourGuideClientServiceImplTest {
         //GIVEN
         User userTest2 = new User(UUID.randomUUID(), "jona", "000", "jona@tourGuide.com");
 
-        List<VisitedLocation> visitedLocationListTest = Arrays.asList(
+        CopyOnWriteArrayList<VisitedLocation> visitedLocationListTest = (CopyOnWriteArrayList<VisitedLocation>) Arrays.asList(
                 new VisitedLocation(userTest2.getUserId(), new Location(33.817595D, -116.922008D), new Date()),
                 new VisitedLocation(userTest2.getUserId(), new Location(34.817595D, -117.922008D), new Date()),
                 new VisitedLocation(userTest2.getUserId(), new Location(35.817595D, -118.922008D), new Date())

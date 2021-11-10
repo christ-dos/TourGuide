@@ -15,7 +15,6 @@ import java.util.stream.IntStream;
 
 @Repository
 @Slf4j
-@NoArgsConstructor
 public class InternalUserMapDAO {
 
     /**********************************************************************************

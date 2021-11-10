@@ -19,18 +19,29 @@ import java.util.UUID;
 @Service
 @Slf4j
 public class TourGuideClientServiceImpl implements TourGuideClientService {
-    public Tracker tracker;
+    public final Tracker tracker;
     private MicroserviceUserGpsProxy microserviceUserGpsProxy;
     private InternalUserMapDAO internalUserMapDAO;
     private TourGuideClientRewardsServiceImpl tourGuideClientRewardsServiceImpl;
     private MicroserviceTripPricerProxy microserviceTripPricerProxy;
+    boolean testMode = true;
 
     @Autowired
-    public TourGuideClientServiceImpl(MicroserviceUserGpsProxy microserviceUserGpsProxy, InternalUserMapDAO internalUserMapDAO, TourGuideClientRewardsServiceImpl tourGuideClientRewardsServiceImpl, MicroserviceTripPricerProxy microserviceTripPricerProxy) {
+    public TourGuideClientServiceImpl( MicroserviceUserGpsProxy microserviceUserGpsProxy, InternalUserMapDAO internalUserMapDAO, TourGuideClientRewardsServiceImpl tourGuideClientRewardsServiceImpl, MicroserviceTripPricerProxy microserviceTripPricerProxy) {
         this.microserviceUserGpsProxy = microserviceUserGpsProxy;
         this.internalUserMapDAO = internalUserMapDAO;
         this.tourGuideClientRewardsServiceImpl = tourGuideClientRewardsServiceImpl;
         this.microserviceTripPricerProxy = microserviceTripPricerProxy;
+
+        if (testMode) {
+            log.info("TestMode enabled");
+            log.debug("Initializing users");
+            internalUserMapDAO.initializeInternalUsers();
+            log.debug("Finished initializing users");
+        }
+        tracker = new Tracker(this);
+        addShutDownHook();
+
     }
 
     public VisitedLocation trackUserLocation(User user) {
@@ -128,6 +139,14 @@ public class TourGuideClientServiceImpl implements TourGuideClientService {
         return distances.stream().mapToDouble(s -> s)
                 .average()
                 .orElse(0D);
+    }
+
+    private void addShutDownHook() {
+        Runtime.getRuntime().addShutdownHook(new Thread() {
+            public void run() {
+                tracker.stopTracking();
+            }
+        });
     }
 
 
