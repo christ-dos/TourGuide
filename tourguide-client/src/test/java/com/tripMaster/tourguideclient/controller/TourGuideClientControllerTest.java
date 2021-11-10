@@ -4,6 +4,7 @@ import com.tripMaster.tourguideclient.exception.UserNotFoundException;
 import com.tripMaster.tourguideclient.model.*;
 import com.tripMaster.tourguideclient.service.TourGuideClientRewardsService;
 import com.tripMaster.tourguideclient.service.TourGuideClientServiceImpl;
+import com.tripMaster.tourguideclient.utils.Tracker;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -39,6 +40,7 @@ public class TourGuideClientControllerTest {
 
     @MockBean
     private TourGuideClientRewardsService tourGuideClientRewardsService;
+
 
     private User userTest;
 

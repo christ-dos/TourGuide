@@ -26,7 +26,8 @@ public class TestPerformance {
 
 	@Autowired
 	private MicroserviceUserGpsProxy microserviceUserGpsProxy;
-	private InternalUserMapDAO internalUserMapDAO = new InternalUserMapDAO();
+	@Autowired
+	private InternalUserMapDAO internalUserMapDAO;
 	@Autowired
 	private MicroserviceTripPricerProxy microserviceTripPricerProxy;
 	@Autowired
