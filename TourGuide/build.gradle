@@ -30,20 +30,13 @@ repositories {
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
-//ext {
-//    set('springCloudVersion', "2020.0.4")
-//}
-
 dependencies {
     compile("org.springframework.boot:spring-boot-starter-web")
     compile("org.springframework.boot:spring-boot-starter-actuator")
     compile group: 'org.javamoney', name: 'moneta', version: '1.3'
 	compile group: 'com.jsoniter', name: 'jsoniter', version: '0.9.23'
 
-// https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-openfeign
-    implementation 'org.springframework.cloud:spring-cloud-starter-openfeign:2.1.5.RELEASE'
 
-//    implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
     compile(name:'gpsUtil', ext:'jar')
     compile(name:'RewardCentral', ext:'jar')
     compile(name:'TripPricer', ext:'jar')
@@ -60,18 +53,8 @@ dependencies {
     // https://mvnrepository.com/artifact/org.projectlombok/lombok
     compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.20'
 
-//    // https://mvnrepository.com/artifact/org.javamoney/moneta
-//    implementation 'org.javamoney:moneta:1.3'
-
 
 }
-
-//dependencyManagement {
-//    imports {
-//        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
-//    }
-//}
-
 
 jacoco {
     toolVersion = "0.8.4"

@@ -6,6 +6,7 @@ import com.tripMaster.tourguideclient.exception.UserRewardsNotFoundException;
 import com.tripMaster.tourguideclient.model.*;
 import com.tripMaster.tourguideclient.proxies.MicroserviceTripPricerProxy;
 import com.tripMaster.tourguideclient.proxies.MicroserviceUserGpsProxy;
+import com.tripMaster.tourguideclient.utils.Tracker;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,7 +19,7 @@ import java.util.UUID;
 @Service
 @Slf4j
 public class TourGuideClientServiceImpl implements TourGuideClientService {
-
+    public Tracker tracker;
     private MicroserviceUserGpsProxy microserviceUserGpsProxy;
     private InternalUserMapDAO internalUserMapDAO;
     private TourGuideClientRewardsServiceImpl tourGuideClientRewardsServiceImpl;
@@ -116,7 +117,7 @@ public class TourGuideClientServiceImpl implements TourGuideClientService {
         return nearbyAttractions;
     }
 
-    private void addToVisitedLocations(VisitedLocation visitedLocation, User user) {
+    public void addToVisitedLocations(VisitedLocation visitedLocation, User user) {
         List<VisitedLocation> visitedLocations = user.getVisitedLocations();
         visitedLocations.add(visitedLocation);
         log.debug("Service - Visited location added for user: " + user.getUserName());
