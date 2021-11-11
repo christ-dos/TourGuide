@@ -51,11 +51,11 @@ public class TourGuideClientControllerTest {
     @Test
     public void userGpsGetLocationTest_whenUserNameIsJonAndVisitedLocationsListIsNotEmpty_thenReturnVisitedLocationOfJon() throws Exception {
         //GIVEN
-        CopyOnWriteArrayList<VisitedLocation> visitedLocationListTest = (CopyOnWriteArrayList<VisitedLocation>) Arrays.asList(
+        CopyOnWriteArrayList<VisitedLocation> visitedLocationListTest = new CopyOnWriteArrayList<>(Arrays.asList(
                 new VisitedLocation(userTest.getUserId(), new Location(33.817595D, -116.922008D), new Date()),
                 new VisitedLocation(userTest.getUserId(), new Location(34.817595D, -117.922008D), new Date()),
                 new VisitedLocation(userTest.getUserId(), new Location(35.817595D, -118.922008D), new Date())
-        );
+        ));
         when(tourGuideClientServiceMock.getUserLocation(anyString())).thenReturn(visitedLocationListTest.get(2));
         //WHEN
         userTest.setVisitedLocations(visitedLocationListTest);
