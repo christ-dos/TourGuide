@@ -63,15 +63,17 @@ public class TourGuideClientRewardsServiceImplTest {
         VisitedLocation visitedLocationMock = new VisitedLocation(userTest.getUserId(), new Location(33.817595D, -116.922008D), new Date());
         VisitedLocation visitedLocationMock1 = new VisitedLocation(userTest.getUserId(), new Location(34.817595D, -117.922008D), new Date());
 
-        userTest.setVisitedLocations((CopyOnWriteArrayList<VisitedLocation>) Arrays.asList(visitedLocationMock, visitedLocationMock1));
-        List<VisitedLocation> visitedLocations = userTest.getVisitedLocations();
+        CopyOnWriteArrayList<VisitedLocation> visitedLocations = new CopyOnWriteArrayList<>(Arrays.asList(visitedLocationMock,visitedLocationMock1));
+        userTest.setVisitedLocations(visitedLocations);
+
+        List<VisitedLocation> visitedLocationsUserTest = userTest.getVisitedLocations();
         when(microserviceUserGpsProxyMock.getAttractions()).thenReturn(attractions);
         //WHEN
         tourGuideClientRewardsService.setProximityBuffer(150);
         tourGuideClientRewardsService.calculateRewards(userTest);
         List<UserReward> userRewards = userTest.getUserRewards();
         //THEN
-        assertEquals(2, userTest.getVisitedLocations().size());
+        assertEquals(2, visitedLocationsUserTest.size());
         assertTrue(userRewards.size() > 0);
         assertEquals(2, userRewards.size());
         assertEquals("Disneyland", userTest.getUserRewards().get(0).getAttraction().getAttractionName());
@@ -158,10 +160,10 @@ public class TourGuideClientRewardsServiceImplTest {
     @Test
     public void nearAllAttractionsTest() {
         //GIVEN
-        CopyOnWriteArrayList<VisitedLocation> visitedLocationsTest = (CopyOnWriteArrayList<VisitedLocation>) Arrays.asList(
+        CopyOnWriteArrayList<VisitedLocation> visitedLocationsTest = new CopyOnWriteArrayList<>(Arrays.asList(
                 new VisitedLocation(userTest.getUserId(), new Location(33.817595D, -116.922008D), new Date()),
                 new VisitedLocation(userTest.getUserId(), new Location(34.817595D, -117.922008D), new Date())
-        );
+        ));
         userTest.setVisitedLocations(visitedLocationsTest);
 
         tourGuideClientRewardsService.setProximityBuffer(Integer.MAX_VALUE);
@@ -194,4 +196,5 @@ public class TourGuideClientRewardsServiceImplTest {
         //THEN
         assertTrue(userRewards.size() == 1);
     }
+
 }

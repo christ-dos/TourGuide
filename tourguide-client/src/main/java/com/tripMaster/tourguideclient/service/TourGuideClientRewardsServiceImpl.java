@@ -99,6 +99,7 @@ public class TourGuideClientRewardsServiceImpl implements TourGuideClientRewards
 
     private boolean nearAttraction(VisitedLocation visitedLocation, Attraction attraction) {
 //        setProximityBuffer(200);
+        //todo clean code
         return getDistance(attraction, visitedLocation.getLocation()) > proximityBuffer ? false : true;
     }
 

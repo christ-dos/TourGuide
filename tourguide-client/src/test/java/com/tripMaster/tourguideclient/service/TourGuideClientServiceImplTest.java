@@ -147,11 +147,11 @@ public class TourGuideClientServiceImplTest {
         //GIVEN
         User userTest2 = new User(UUID.randomUUID(), "jona", "000", "jona@tourGuide.com");
 
-        CopyOnWriteArrayList<VisitedLocation> visitedLocationListTest = (CopyOnWriteArrayList<VisitedLocation>) Arrays.asList(
+        CopyOnWriteArrayList<VisitedLocation> visitedLocationListTest = new CopyOnWriteArrayList<>(Arrays.asList(
                 new VisitedLocation(userTest2.getUserId(), new Location(33.817595D, -116.922008D), new Date()),
                 new VisitedLocation(userTest2.getUserId(), new Location(34.817595D, -117.922008D), new Date()),
                 new VisitedLocation(userTest2.getUserId(), new Location(35.817595D, -118.922008D), new Date())
-        );
+        ));
         userTest2.setVisitedLocations(visitedLocationListTest);
         when(internalUserMapDAOMock.getUser(anyString())).thenReturn(userTest2);
         //WHEN
@@ -235,7 +235,7 @@ public class TourGuideClientServiceImplTest {
 
 
     @Test
-    public void getNearByAttractionsTest_whenTwoAttractionsHaveDistanceLessThanAttractionProximityRange_thenReturnListAttractionWithTwoAttractions() {
+    public void getNearByAttractionsTest_whenTwoAttractionsHaveDistanceLessThanAttractionProximityRange_thenReturnListAttractionWithThreeAttractionsRetrievedByNewProximityRangeSetWithAverageDistanceCalculate() {
         //GIVEN
         User user = new User(UUID.randomUUID(), "jon", "000", "jon@tourGuide.com");
         VisitedLocation visitedLocation = new VisitedLocation(user.getUserId(), new Location(33.817595D, -117.922008D), new Date());
@@ -247,19 +247,72 @@ public class TourGuideClientServiceImplTest {
         when(microserviceUserGpsProxyMock.getAttractions()).thenReturn(attractions);
         //first and last attraction in method IsWithinAttraction give true and second attraction give false
         when(tourGuideClientRewardsServiceImplMock.isWithinAttractionProximity(any(Attraction.class), any(Location.class))).thenReturn(true, false, true);
-       when(tourGuideClientRewardsServiceImplMock.getDistance(any(Attraction.class),any(Location.class)))
-               .thenReturn(2500D);
-       doNothing().when(tourGuideClientRewardsServiceImplMock).setAttractionProximityRange(2500);
+        when(tourGuideClientRewardsServiceImplMock.getDistance(any(Attraction.class), any(Location.class)))
+                .thenReturn(2500D,200D,500D,1500D);
+        doNothing().when(tourGuideClientRewardsServiceImplMock).setAttractionProximityRange(2500);
+        when(microserviceRewardsProxyMock.getRewardsPoints(any(UUID.class), any(UUID.class)))
+                .thenReturn(750,200,600);
         //WHEN
         InternalTestHelper.setInternalUserNumber(0);
         List<NearByAttraction> attractionsResult = tourGuideClientServiceTest.getNearByAttractions(visitedLocation);
         //THEN
-        //two attractions are near of position
+        //3 attractions are near of average distance of position
         assertEquals(3, attractionsResult.size());
         assertEquals("Disneyland", attractionsResult.get(0).getAttractionName());
-        assertFalse(attractionsResult.containsAll(attractions));
+        assertEquals(200, attractionsResult.get(0).getDistance());
+        assertEquals(500, attractionsResult.get(1).getDistance());
+        //stored order ascending
+        assertTrue(attractionsResult.get(0).getDistance() < attractionsResult.get(1).getDistance());
         verify(microserviceUserGpsProxyMock, times(1)).getAttractions();
+        //3 times first loop and 3 times second loop
         verify(tourGuideClientRewardsServiceImplMock, times(6)).isWithinAttractionProximity(any(Attraction.class), any(Location.class));
+        verify(tourGuideClientRewardsServiceImplMock, times(4)).getDistance(any(Location.class), any(Location.class));
+
+        verify(tourGuideClientRewardsServiceImplMock, times(1)).setAttractionProximityRange(anyInt());
+        verify(microserviceRewardsProxyMock, times(3)).getRewardsPoints(any(UUID.class),any(UUID.class));
+
+    }
+
+    @Test
+    public void getNearByAttractionsTest_whenSixAttractionsHaveDistanceLessThanAttractionProximityRange_thenReturnListAttractionWith5Attractions() {
+        //GIVEN
+        User user = new User(UUID.randomUUID(), "jon", "000", "jon@tourGuide.com");
+        VisitedLocation visitedLocation = new VisitedLocation(user.getUserId(), new Location(33.817595D, -117.922008D), new Date());
+
+        List<Attraction> attractions = new ArrayList();
+        attractions.add(new Attraction("Disneyland", "Paris", "France", 48.871900D, 2.776623D));
+        attractions.add(new Attraction("Belem", "Lisbon", "Portugal", -1.455755D, -48.490180));
+        attractions.add(new Attraction("Mojave National Preserve", "Kelso", "CA", 35.141689D, -115.510399D));
+        attractions.add(new Attraction("Disneyland", "Anaheim", "CA", 33.817595D, -117.922008D));
+        attractions.add(new Attraction("Jackson Hole", "Jackson Hole", "WY", 43.582767D, -110.821999D));
+        attractions.add(new Attraction("Mojave National Preserve", "Kelso", "CA", 35.141689D, -115.510399D));
+
+        when(microserviceUserGpsProxyMock.getAttractions()).thenReturn(attractions);
+        //first and last attraction in method IsWithinAttraction give true and second attraction give false
+        when(tourGuideClientRewardsServiceImplMock.isWithinAttractionProximity(any(Attraction.class), any(Location.class))).thenReturn(true);
+        when(tourGuideClientRewardsServiceImplMock.getDistance(any(Attraction.class), any(Location.class)))
+                .thenReturn(150D, 100D, 50D);
+        when(microserviceRewardsProxyMock.getRewardsPoints(any(UUID.class), any(UUID.class)))
+                .thenReturn(750,200,600);
+        //WHEN
+        InternalTestHelper.setInternalUserNumber(0);
+        List<NearByAttraction> attractionsResult = tourGuideClientServiceTest.getNearByAttractions(visitedLocation);
+        //THEN
+        //3 attractions are near of average distance of position
+        assertEquals(5, attractionsResult.size());
+        assertEquals("Mojave National Preserve", attractionsResult.get(0).getAttractionName());
+        assertEquals(50, attractionsResult.get(0).getDistance());
+        //we take so five NearbyAttraction the sixth with distance 150 not stored
+        assertEquals(100, attractionsResult.get(4).getDistance());
+        //stored order ascending
+        assertTrue(attractionsResult.get(0).getDistance() < attractionsResult.get(4).getDistance());
+
+        verify(microserviceUserGpsProxyMock, times(1)).getAttractions();
+        //3 times first loop and 3 times second loop
+        verify(tourGuideClientRewardsServiceImplMock, times(6)).isWithinAttractionProximity(any(Attraction.class), any(Location.class));
+        verify(tourGuideClientRewardsServiceImplMock, times(6)).getDistance(any(Location.class), any(Location.class));
+        verify(microserviceRewardsProxyMock, times(6)).getRewardsPoints(any(UUID.class),any(UUID.class));
+
 
     }
 
@@ -269,41 +322,54 @@ public class TourGuideClientServiceImplTest {
         User user = new User(UUID.randomUUID(), "jon", "000", "jon@tourGuide.com");
         VisitedLocation visitedLocation = new VisitedLocation(user.getUserId(), new Location(33.817595D, -117.922008D), new Date());
         List<Attraction> attractions = new ArrayList();
-        attractions.add(new Attraction("Tour de belem", "Lisbon", "Portugal", 38.691389D, -9.215833D));
-        attractions.add(new Attraction("Pasteis de Belem", "Lisbon", "Portugal", -1.455755D, -48.490180));
-        attractions.add(new Attraction("Capela dos Ossos", "Armação de Pêra", "Portugal", 37.01997D, -7.93471D));
+        attractions.add(new Attraction("Disneyland", "Paris", "France", 48.871900D, 2.776623D));
+        attractions.add(new Attraction("Belem", "Lisbon", "Portugal", -1.455755D, -48.490180));
+        attractions.add(new Attraction("Mojave National Preserve", "Kelso", "CA", 35.141689D, -115.510399D));
+        attractions.add(new Attraction("Disneyland", "Anaheim", "CA", 33.817595D, -117.922008D));
+        attractions.add(new Attraction("Jackson Hole", "Jackson Hole", "WY", 43.582767D, -110.821999D));
+        attractions.add(new Attraction("Mojave National Preserve", "Kelso", "CA", 35.141689D, -115.510399D));
 
         when(microserviceUserGpsProxyMock.getAttractions()).thenReturn(attractions);
-        when(tourGuideClientRewardsServiceImplMock.getDistance(any(Location.class), any(Location.class))).thenReturn(250D);
         //all attractions in method IsWithinAttraction give false
-        when(tourGuideClientRewardsServiceImplMock.isWithinAttractionProximity(any(Attraction.class), any(Location.class))).thenReturn(false);
+        when(tourGuideClientRewardsServiceImplMock.isWithinAttractionProximity(any(Attraction.class), any(Location.class))).thenReturn(false,false,false,false,false,false,true);
+        when(tourGuideClientRewardsServiceImplMock.getDistance(any(Attraction.class), any(Location.class)))
+                .thenReturn(250D,300D,500D,800D,1000D,1500D,250D,300D,500D,800D,1000D,1500D);
+        doNothing().when(tourGuideClientRewardsServiceImplMock).setAttractionProximityRange(725);
+        when(microserviceRewardsProxyMock.getRewardsPoints(any(UUID.class), any(UUID.class)))
+                .thenReturn(150,20,300, 600,300);
         //WHEN
         InternalTestHelper.setInternalUserNumber(0);
         List<NearByAttraction> attractionsResult = tourGuideClientServiceTest.getNearByAttractions(visitedLocation);
         //THEN
-        //two attractions are near of position
-        assertEquals(0, attractionsResult.size());
-        assertFalse(attractionsResult.contains(attractions));
+        //five attractions are near of position calculated with average distnace of position
+        assertEquals(5, attractionsResult.size());
+        //stored order ascending
+        assertEquals(250, attractionsResult.get(0).getDistance());
+        assertEquals(1000, attractionsResult.get(4).getDistance());
+        assertTrue(attractionsResult.get(0).getDistance() < attractionsResult.get(4).getDistance());
+
         verify(microserviceUserGpsProxyMock, times(1)).getAttractions();
-        verify(tourGuideClientRewardsServiceImplMock, times(3)).isWithinAttractionProximity(any(Attraction.class), any(Location.class));
-        verify(tourGuideClientRewardsServiceImplMock, times(3)).getDistance(any(Location.class), any(Location.class));
+        //3 times first loop and 3 times second loop
+        verify(tourGuideClientRewardsServiceImplMock, times(12)).isWithinAttractionProximity(any(Attraction.class), any(Location.class));
+        verify(tourGuideClientRewardsServiceImplMock, times(12)).getDistance(any(Location.class), any(Location.class));
+
+        verify(tourGuideClientRewardsServiceImplMock, times(1)).setAttractionProximityRange(anyInt());
+        verify(microserviceRewardsProxyMock, times(6)).getRewardsPoints(any(UUID.class),any(UUID.class));
     }
 
     @Test
-    public void addToVisitedLocation(){
+    public void addToVisitedLocation() {
         //GIVEN
         VisitedLocation visitedLocation = new VisitedLocation(userTest.getUserId(), new Location(33.817595D, -117.922008D), new Date());
         //WHEN
-        tourGuideClientServiceTest.addToVisitedLocations(visitedLocation,userTest);
+        tourGuideClientServiceTest.addToVisitedLocations(visitedLocation, userTest);
         List<VisitedLocation> visitedLocations = userTest.getVisitedLocations();
         //THEN
         assertNotNull(visitedLocations);
-        assertEquals(userTest.getUserId(),visitedLocation.getUserId());
-        assertEquals(visitedLocation.getLocation().getLatitude(),visitedLocations.get(0).getLocation().getLatitude());
-        assertEquals(visitedLocation.getLocation().getLongitude(),visitedLocations.get(0).getLocation().getLongitude());
-
+        assertEquals(userTest.getUserId(), visitedLocation.getUserId());
+        assertEquals(visitedLocation.getLocation().getLatitude(), visitedLocations.get(0).getLocation().getLatitude());
+        assertEquals(visitedLocation.getLocation().getLongitude(), visitedLocations.get(0).getLocation().getLongitude());
     }
-
 
 
 }

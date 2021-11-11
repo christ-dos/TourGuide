@@ -152,31 +152,36 @@ public class TourGuideClientServiceImpl implements TourGuideClientService {
             }
         }
         double averageDistances = 0;
+        List<NearByAttraction> nearbyAttractionsList = new ArrayList<>();
         if (nearbyAttractions.size() < 5) {
             averageDistances = getAverageDistanceByAttraction(distances);
             tourGuideClientRewardsServiceImpl.setAttractionProximityRange((int) averageDistances);
-            nearbyAttractions.clear();
-            for (Attraction attraction : attractions) {
-                if (tourGuideClientRewardsServiceImpl.isWithinAttractionProximity(attraction, visitedLocation.getLocation())) {
-                    nearbyAttractions.add(attraction);
-                    log.debug("Service - Attraction added in nearbyAttraction list,a ttraction with ID: " + attraction.getAttractionId());
 
-                }
-            }
-
+            nearbyAttractionsList = attractions.stream()
+                    .filter(attraction -> tourGuideClientRewardsServiceImpl.isWithinAttractionProximity(attraction, visitedLocation.getLocation()))
+                    .map(attraction ->
+                            new NearByAttraction(attraction.getAttractionName(),
+                                    new Location(attraction.getLatitude(), attraction.getLongitude()),
+                                    visitedLocation.getLocation(),
+                                    (int) tourGuideClientRewardsServiceImpl.getDistance(attraction, visitedLocation.getLocation()),
+                                    microserviceRewardsProxy.getRewardsPoints(attraction.getAttractionId(), visitedLocation.getUserId())))
+                    .sorted()
+                    .limit(5)
+                    .collect(Collectors.toList());
+            return nearbyAttractionsList;
         }
-        List<NearByAttraction> nearbyAttraction = attractions.stream().map(attraction ->
+        nearbyAttractionsList = nearbyAttractions.stream()
+                .map(attraction ->
                         new NearByAttraction(attraction.getAttractionName(),
                                 new Location(attraction.getLatitude(), attraction.getLongitude()),
                                 visitedLocation.getLocation(),
                                 (int) tourGuideClientRewardsServiceImpl.getDistance(attraction, visitedLocation.getLocation()),
                                 microserviceRewardsProxy.getRewardsPoints(attraction.getAttractionId(), visitedLocation.getUserId())))
+                .sorted()
+                .limit(5)
                 .collect(Collectors.toList());
-        if (nearbyAttraction.size() > 5) {
-            return nearbyAttraction.stream().sorted().collect(Collectors.toList()).subList(0, 5);
-        }
-        return nearbyAttraction.stream().sorted().collect(Collectors.toList());
 
+        return nearbyAttractionsList;
     }
 
     public void addToVisitedLocations(VisitedLocation visitedLocation, User user) {
