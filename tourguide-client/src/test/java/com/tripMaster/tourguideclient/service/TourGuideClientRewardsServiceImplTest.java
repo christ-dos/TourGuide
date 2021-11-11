@@ -178,7 +178,7 @@ public class TourGuideClientRewardsServiceImplTest {
     @Test
     public void userGetRewardsTest_whenVisitedLocationIsNearOfOnlyOneAttractionInListAttractions_thenReturnOneUserRewards() {
         //GIVEN
-        TourGuideClientServiceImpl tourGuideClientService = new TourGuideClientServiceImpl(
+        TourGuideClientServiceImpl tourGuideClientService = new TourGuideClientServiceImpl(microserviceRewardsProxyMock,
                 microserviceUserGpsProxyMock, internalUserMapDAOMock, tourGuideClientRewardsService, microserviceTripPricerProxyMock);
         //location  in Monastere dos Jeronimos located in Belem/Lisbon
         VisitedLocation visitedLocation = new VisitedLocation(userTest.getUserId(), new Location(38.697500D, -9.206667D), new Date());

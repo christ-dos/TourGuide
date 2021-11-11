@@ -49,7 +49,7 @@ public class TestPerformance {
 
 	@BeforeEach
 	public void setUpPerTest() {
-		tourGuideClientService = new TourGuideClientServiceImpl(microserviceUserGpsProxy,
+		tourGuideClientService = new TourGuideClientServiceImpl(microserviceRewardsProxy ,microserviceUserGpsProxy,
 				internalUserMapDAO,tourGuideClientRewardsService,microserviceTripPricerProxy);
 		tourGuideClientRewardsService = new TourGuideClientRewardsServiceImpl(microserviceRewardsProxy,microserviceUserGpsProxy, internalUserMapDAO);
 	}

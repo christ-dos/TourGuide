@@ -5,6 +5,7 @@ import com.tripMaster.tourguideclient.exception.UserNotFoundException;
 import com.tripMaster.tourguideclient.exception.UserRewardsNotFoundException;
 import com.tripMaster.tourguideclient.helper.InternalTestHelper;
 import com.tripMaster.tourguideclient.model.*;
+import com.tripMaster.tourguideclient.proxies.MicroserviceRewardsProxy;
 import com.tripMaster.tourguideclient.proxies.MicroserviceTripPricerProxy;
 import com.tripMaster.tourguideclient.proxies.MicroserviceUserGpsProxy;
 import com.tripMaster.tourguideclient.utils.Tracker;
@@ -35,13 +36,15 @@ public class TourGuideClientServiceImplTest {
     @Mock
     private MicroserviceTripPricerProxy microserviceTripPricerProxyMock;
     @Mock
-    private Tracker tracker;
+    private MicroserviceRewardsProxy microserviceRewardsProxyMock;
+    @Mock
+    private Tracker trackerMock;
 
     private User userTest;
 
     @BeforeEach
     public void setUpPerTest() {
-        tourGuideClientServiceTest = new TourGuideClientServiceImpl(
+        tourGuideClientServiceTest = new TourGuideClientServiceImpl(microserviceRewardsProxyMock,
                 microserviceUserGpsProxyMock, internalUserMapDAOMock, tourGuideClientRewardsServiceImplMock, microserviceTripPricerProxyMock);
 
         userTest = new User(UUID.randomUUID(), "jon", "000", "jon@tourGuide.com");
@@ -244,16 +247,19 @@ public class TourGuideClientServiceImplTest {
         when(microserviceUserGpsProxyMock.getAttractions()).thenReturn(attractions);
         //first and last attraction in method IsWithinAttraction give true and second attraction give false
         when(tourGuideClientRewardsServiceImplMock.isWithinAttractionProximity(any(Attraction.class), any(Location.class))).thenReturn(true, false, true);
+       when(tourGuideClientRewardsServiceImplMock.getDistance(any(Attraction.class),any(Location.class)))
+               .thenReturn(2500D);
+       doNothing().when(tourGuideClientRewardsServiceImplMock).setAttractionProximityRange(2500);
         //WHEN
         InternalTestHelper.setInternalUserNumber(0);
-        List<Attraction> attractionsResult = tourGuideClientServiceTest.getNearByAttractions(visitedLocation);
+        List<NearByAttraction> attractionsResult = tourGuideClientServiceTest.getNearByAttractions(visitedLocation);
         //THEN
         //two attractions are near of position
-        assertEquals(2, attractionsResult.size());
+        assertEquals(3, attractionsResult.size());
         assertEquals("Disneyland", attractionsResult.get(0).getAttractionName());
         assertFalse(attractionsResult.containsAll(attractions));
         verify(microserviceUserGpsProxyMock, times(1)).getAttractions();
-        verify(tourGuideClientRewardsServiceImplMock, times(3)).isWithinAttractionProximity(any(Attraction.class), any(Location.class));
+        verify(tourGuideClientRewardsServiceImplMock, times(6)).isWithinAttractionProximity(any(Attraction.class), any(Location.class));
 
     }
 
@@ -273,7 +279,7 @@ public class TourGuideClientServiceImplTest {
         when(tourGuideClientRewardsServiceImplMock.isWithinAttractionProximity(any(Attraction.class), any(Location.class))).thenReturn(false);
         //WHEN
         InternalTestHelper.setInternalUserNumber(0);
-        List<Attraction> attractionsResult = tourGuideClientServiceTest.getNearByAttractions(visitedLocation);
+        List<NearByAttraction> attractionsResult = tourGuideClientServiceTest.getNearByAttractions(visitedLocation);
         //THEN
         //two attractions are near of position
         assertEquals(0, attractionsResult.size());
@@ -282,5 +288,22 @@ public class TourGuideClientServiceImplTest {
         verify(tourGuideClientRewardsServiceImplMock, times(3)).isWithinAttractionProximity(any(Attraction.class), any(Location.class));
         verify(tourGuideClientRewardsServiceImplMock, times(3)).getDistance(any(Location.class), any(Location.class));
     }
+
+    @Test
+    public void addToVisitedLocation(){
+        //GIVEN
+        VisitedLocation visitedLocation = new VisitedLocation(userTest.getUserId(), new Location(33.817595D, -117.922008D), new Date());
+        //WHEN
+        tourGuideClientServiceTest.addToVisitedLocations(visitedLocation,userTest);
+        List<VisitedLocation> visitedLocations = userTest.getVisitedLocations();
+        //THEN
+        assertNotNull(visitedLocations);
+        assertEquals(userTest.getUserId(),visitedLocation.getUserId());
+        assertEquals(visitedLocation.getLocation().getLatitude(),visitedLocations.get(0).getLocation().getLatitude());
+        assertEquals(visitedLocation.getLocation().getLongitude(),visitedLocations.get(0).getLocation().getLongitude());
+
+    }
+
+
 
 }
