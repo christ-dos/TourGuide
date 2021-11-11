@@ -21,7 +21,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -120,6 +121,38 @@ public class TourGuideClientControllerTest {
                 .andExpect(jsonPath("$.[0].visitedLocation.userId", is(String.valueOf(userTest.getUserId()))))
                 .andExpect(jsonPath("$.[0].attraction.attractionName", is("Disneyland")))
                 .andExpect(jsonPath("$.[0].rewardPoints", is(250)))
+                .andDo(print());
+    }
+
+    @Test
+    public void getAllCurrentLocationsTest() throws Exception {
+        //GIVEN
+        List<UserCurrentLocation> currentLocations = Arrays.asList(
+                new UserCurrentLocation(UUID.randomUUID(), new Location(33.817595D, -116.922008D)),
+                new UserCurrentLocation(UUID.randomUUID(), new Location(35.817595D, -118.922008D))
+        );
+        when(tourGuideClientServiceMock.getAllCurrentLocations()).thenReturn(currentLocations);
+        //WHEN
+        //THEN
+        mockMvcUserGps.perform(MockMvcRequestBuilders.get("/getAllCurrentLocations"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()", is(2)))
+                .andExpect(jsonPath("$.[0].userId", is(String.valueOf(currentLocations.get(0).getUserId()))))
+                .andExpect(jsonPath("$.[0].location.latitude", is(33.817595)))
+                .andExpect(jsonPath("$.[0].location.longitude", is(-116.922008)))
+                .andDo(print());
+    }
+
+    @Test
+    public void getAllCurrentLocationsTest_whenUserListIsEmpty() throws Exception {
+        //GIVEN
+        List<UserCurrentLocation> currentLocationsEmpty = new ArrayList<>();
+        when(tourGuideClientServiceMock.getAllCurrentLocations()).thenReturn(currentLocationsEmpty);
+        //WHEN
+        //THEN
+        mockMvcUserGps.perform(MockMvcRequestBuilders.get("/getAllCurrentLocations"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()", is(0)))
                 .andDo(print());
     }
 

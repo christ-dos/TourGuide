@@ -192,6 +192,45 @@ public class TourGuideClientServiceImplTest {
     }
 
     @Test
+    public void getAllCurrentLocationsTest_whenUserListNotEmpty_thneReturnListofUsers(){
+        //GIVEN
+        List<User> usersListTest = Arrays.asList(
+                new User(UUID.randomUUID(), "jon", "000", "jon@tourGuide.com"),
+                new User(UUID.randomUUID(), "jon1", "000", "jon2@tourGuide.com")
+        );
+        CopyOnWriteArrayList<VisitedLocation> visitedLocationListTestUserJon = new CopyOnWriteArrayList<>(Arrays.asList(
+                new VisitedLocation(usersListTest.get(0).getUserId(), new Location(33.817595D, -116.922008D), new Date()),
+                new VisitedLocation(usersListTest.get(0).getUserId(), new Location(34.817595D, -117.922008D), new Date())
+        ));
+        CopyOnWriteArrayList<VisitedLocation> visitedLocationListTestUserJon1 = new CopyOnWriteArrayList<>(Arrays.asList(
+                new VisitedLocation(usersListTest.get(1).getUserId(), new Location(35.817595D, -118.922008D), new Date()),
+                new VisitedLocation(usersListTest.get(1).getUserId(), new Location(36.817595D, -119.922008D), new Date())
+        ));
+        usersListTest.get(0).setVisitedLocations(visitedLocationListTestUserJon);
+        usersListTest.get(1).setVisitedLocations(visitedLocationListTestUserJon1);
+
+        when(internalUserMapDAOMock.getAllUsers()).thenReturn(usersListTest);
+        //WHEN
+        List<UserCurrentLocation> currentLocations = tourGuideClientServiceTest.getAllCurrentLocations();
+        //THEN
+        assertTrue(currentLocations.size() == 2);
+        assertEquals(usersListTest.get(0).getUserId(),currentLocations.get(0).getUserId());
+        assertEquals(-117.922008,currentLocations.get(0).getLocation().getLongitude());
+        assertEquals(34.817595,currentLocations.get(0).getLocation().getLatitude());
+    }
+
+    @Test
+    public void getAllCurrentLocationsTest_whenUserListIsEmpty_thenReturnEmptyList(){
+        //GIVEN
+        List<User> usersListEmpty = new ArrayList<>();
+        when(internalUserMapDAOMock.getAllUsers()).thenReturn(usersListEmpty);
+        //WHEN
+        List<UserCurrentLocation> currentLocations = tourGuideClientServiceTest.getAllCurrentLocations();
+        //THEN
+        assertTrue(currentLocations.isEmpty());
+    }
+
+    @Test
     public void getTripDealsTest_whenUserExistAndUserRewardsListIsNotEmpty_thenReturnListProviders() {
         //GIVEN
         Attraction attraction1 = new Attraction("Disneyland", "Anaheim", "CA", 33.817595D, -117.922008D);

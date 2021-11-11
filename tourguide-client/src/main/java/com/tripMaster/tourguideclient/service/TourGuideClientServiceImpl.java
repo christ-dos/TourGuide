@@ -95,11 +95,11 @@ public class TourGuideClientServiceImpl implements TourGuideClientService {
     @Override
     public List<UserCurrentLocation> getAllCurrentLocations() {
         List<User> users = internalUserMapDAO.getAllUsers();
-        List<UserCurrentLocation> currentUsersLocations = users.stream().map(u ->
+
+        log.debug("Service - current location for all users getted");
+        return  users.stream().map(u ->
                         new UserCurrentLocation(u.getUserId(), u.getVisitedLocations().get(u.getVisitedLocations().size() - 1).getLocation()))
                 .collect(Collectors.toList());
-        log.debug("Service - current location for all users getted");
-        return currentUsersLocations;
     }
 
     @Override
