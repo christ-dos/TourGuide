@@ -50,7 +50,6 @@ public class TourGuideClientController {
     @RequestMapping("/getNearbyAttractions")
     public List<NearByAttraction> getNearbyAttractions(@RequestParam String userName) {
         VisitedLocation visitedLocation = tourGuideClientService.getUserLocation(userName);
-//        return JsonStream.serialize(tourGuideClientService.getNearByAttractions(visitedLocation));
         return tourGuideClientService.getNearByAttractions(visitedLocation);
     }
 
