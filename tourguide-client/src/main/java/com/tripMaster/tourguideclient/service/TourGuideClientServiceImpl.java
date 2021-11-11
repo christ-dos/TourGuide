@@ -53,6 +53,7 @@ public class TourGuideClientServiceImpl implements TourGuideClientService {
         VisitedLocation visitedLocation = microserviceUserGpsProxy.trackUserLocation(user.getUserId());
         addToVisitedLocations(visitedLocation, user);
         tourGuideClientRewardsServiceImpl.calculateRewards(user);
+
         log.debug("Service - user location tracked for username: " + user.getUserName());
         return visitedLocation;
     }
@@ -60,8 +61,10 @@ public class TourGuideClientServiceImpl implements TourGuideClientService {
     public User getUser(String userName) {
         User user = internalUserMapDAO.getUser(userName);
         if (user == null) {
+            log.error("Service - user not found");
             throw new UserNotFoundException("User not found");
         }
+        log.debug(("Service - user found: " + userName));
         return user;
     }
 
@@ -77,26 +80,38 @@ public class TourGuideClientServiceImpl implements TourGuideClientService {
     public VisitedLocation getUserLocation(String userName) {
         User user = internalUserMapDAO.getUser(userName);
         if (user == null) {
+            log.error("Service - user not found");
             throw new UserNotFoundException("User not found");
         }
         List<VisitedLocation> visitedLocations = user.getVisitedLocations();
-
         VisitedLocation visitedLocation = (user.getVisitedLocations().size() > 0) ?
                 user.getVisitedLocations().get(visitedLocations.size() - 1) :
                 trackUserLocation(user);
 
-        log.debug("Service - get user location for user: " + user.getUserName());
+        log.debug("Service - get user location for user: " + userName);
         return visitedLocation;
+    }
+
+    @Override
+    public List<UserCurrentLocation> getAllCurrentLocations() {
+        List<User> users = internalUserMapDAO.getAllUsers();
+        List<UserCurrentLocation> currentUsersLocations = users.stream().map(u ->
+                        new UserCurrentLocation(u.getUserId(), u.getVisitedLocations().get(u.getVisitedLocations().size() - 1).getLocation()))
+                .collect(Collectors.toList());
+        log.debug("Service - current location for all users getted");
+        return currentUsersLocations;
     }
 
     @Override
     public List<Provider> getTripDeals(String userName) {
         User user = internalUserMapDAO.getUser(userName);
         if (user == null) {
+            log.error("Service - user not found");
             throw new UserNotFoundException("User not found");
         }
         List<UserReward> userRewards = user.getUserRewards();
         if (userRewards.isEmpty()) {
+            log.error("Service - userRewards not found");
             throw new UserRewardsNotFoundException("User Rewards not found");
         }
         UUID attractionId = userRewards.get(userRewards.size() - 1).getAttraction().getAttractionId();
@@ -111,29 +126,9 @@ public class TourGuideClientServiceImpl implements TourGuideClientService {
                         user.getUserPreferences().getTripDuration(),
                         cumulativeRewardPoints);
         user.setTripDeals(providers);
+        log.debug("Service - list of providers getted for user: " + userName);
         return providers;
     }
-
-//    @Override
-//    public List<Attraction> getNearByAttractions(VisitedLocation visitedLocation) {
-//        List<Attraction> nearbyAttractions = new ArrayList<>();
-//        List<Double> distances = new ArrayList<>();
-//
-//
-//        for (Attraction attraction : microserviceUserGpsProxy.getAttractions()) {
-//            if (tourGuideClientRewardsServiceImpl.isWithinAttractionProximity(attraction, visitedLocation.getLocation())) {
-//                nearbyAttractions.add(attraction);
-//                log.debug("Service - Attraction added in nearbyAttraction list,a ttraction with ID: " + attraction.getAttractionId());
-//
-//            } else {
-//                distances.add(tourGuideClientRewardsServiceImpl.getDistance(attraction, visitedLocation.getLocation()));
-//                log.info("Service - Distance added in list distances attraction is far");
-//            }
-//        }
-//        //todo a verifier ajouter par moi methode non tester
-////        tourGuideClientRewardsServiceImpl.setAttractionProximityRange((int)getAverageDistanceByAttraction(distances));
-//       return nearbyAttractions;
-//    }
 
     @Override
     public List<NearByAttraction> getNearByAttractions(VisitedLocation visitedLocation) {
@@ -180,7 +175,7 @@ public class TourGuideClientServiceImpl implements TourGuideClientService {
                 .sorted()
                 .limit(5)
                 .collect(Collectors.toList());
-
+        log.debug("Service - list of attractions near by position for user: " + visitedLocation.getUserId());
         return nearbyAttractionsList;
     }
 
@@ -191,7 +186,7 @@ public class TourGuideClientServiceImpl implements TourGuideClientService {
     }
 
     private double getAverageDistanceByAttraction(List<Double> distances) {
-
+        log.debug("Service - Average calculated");
         return distances.stream().mapToDouble(s -> s)
                 .average()
                 .orElse(0D);
@@ -201,9 +196,8 @@ public class TourGuideClientServiceImpl implements TourGuideClientService {
         Runtime.getRuntime().addShutdownHook(new Thread() {
             public void run() {
                 tracker.stopTracking();
+                log.info("Service - Stop tracking");
             }
         });
     }
-
-
 }

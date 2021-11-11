@@ -1,10 +1,6 @@
 package com.tripMaster.tourguideclient.controller;
 
-import com.jsoniter.output.JsonStream;
-import com.tripMaster.tourguideclient.model.NearByAttraction;
-import com.tripMaster.tourguideclient.model.Provider;
-import com.tripMaster.tourguideclient.model.UserReward;
-import com.tripMaster.tourguideclient.model.VisitedLocation;
+import com.tripMaster.tourguideclient.model.*;
 import com.tripMaster.tourguideclient.service.TourGuideClientRewardsService;
 import com.tripMaster.tourguideclient.service.TourGuideClientService;
 import lombok.extern.slf4j.Slf4j;
@@ -50,16 +46,18 @@ public class TourGuideClientController {
     @RequestMapping("/getNearbyAttractions")
     public List<NearByAttraction> getNearbyAttractions(@RequestParam String userName) {
         VisitedLocation visitedLocation = tourGuideClientService.getUserLocation(userName);
+        log.debug("Controller - get list of attraction near by position of user: " + userName);
         return tourGuideClientService.getNearByAttractions(visitedLocation);
     }
 
     @GetMapping("/getRewards")
     public List<UserReward> getRewards(@RequestParam String userName) {
+        log.debug("Controller - get list of rewards for username: " + userName);
        return tourGuideClientRewardsService.getUserRewards(userName);
     }
 
     @RequestMapping("/getAllCurrentLocations")
-    public String getAllCurrentLocations() {
+    public List<UserCurrentLocation> getAllCurrentLocations() {
         // TODO: Get a list of every user's most recent location as JSON
         //- Note: does not use gpsUtil to query for their current location,
         //        but rather gathers the user's current location from their stored location history.
@@ -69,14 +67,15 @@ public class TourGuideClientController {
         //        "019b04a9-067a-4c76-8817-ee75088c3822": {"longitude":-48.188821,"latitude":74.84371}
         //        ...
         //     }
-
-        return JsonStream.serialize("");
+        List<UserCurrentLocation> locations = tourGuideClientService.getAllCurrentLocations();
+       log.info("Controller - request to get current position of all users");
+        return locations;
     }
 
     @GetMapping("/getTripDeals")
     public List<Provider> getTripDeals(@RequestParam String userName) {
+        log.debug("Controller - request to get Trip deals for user: " + userName);
         return tourGuideClientService.getTripDeals(userName);
-
     }
 
 }

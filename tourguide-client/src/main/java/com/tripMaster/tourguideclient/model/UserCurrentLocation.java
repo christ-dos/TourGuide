@@ -1,30 +1,27 @@
 package com.tripMaster.tourguideclient.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreType;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonRawValue;
+import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Date;
 import java.util.UUID;
-
-
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
-public class VisitedLocation {
+public class UserCurrentLocation {
 
-    private UUID userId;
-    private Location location;
-    private Date timeVisited;
+    UUID userId;
+    Location location;
 
     @Override
     public String toString() {
-        return "VisitedLocation{" +
+        return "UserCurrentLocation{" +
                 "userId=" + userId +
                 ", location=" + location +
-                ", timeVisited=" + timeVisited +
                 '}';
     }
 }
