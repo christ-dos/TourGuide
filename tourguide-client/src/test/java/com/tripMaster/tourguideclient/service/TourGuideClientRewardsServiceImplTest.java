@@ -1,6 +1,7 @@
 package com.tripMaster.tourguideclient.service;
 
 import com.tripMaster.tourguideclient.DAO.InternalUserMapDAO;
+import com.tripMaster.tourguideclient.exception.UserNotFoundException;
 import com.tripMaster.tourguideclient.helper.InternalTestHelper;
 import com.tripMaster.tourguideclient.model.*;
 import com.tripMaster.tourguideclient.proxies.MicroserviceRewardsProxy;
@@ -145,6 +146,19 @@ public class TourGuideClientRewardsServiceImplTest {
         List<UserReward> rewardsResult = tourGuideClientRewardsService.getUserRewards("jon");
         //THEN
         assertTrue(rewardsResult.isEmpty());
+    }
+
+    @Test
+    public void getUserRewardsTest_whenUserNotExist_thenThrowUserNotFoundexception(){
+        when(internalUserMapDAOMock.getUser(anyString())).thenReturn(null);
+        //WHEN
+        //THEN
+        tracker.stopTracking();
+
+        assertThrows(UserNotFoundException.class, () -> tourGuideClientRewardsService.getUserRewards("Unknown"));
+        verify(internalUserMapDAOMock, times(1)).getUser(anyString());
+
+
     }
 
     @Test

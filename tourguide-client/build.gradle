@@ -70,9 +70,6 @@ dependencies {
     // https://mvnrepository.com/artifact/org.springframework/spring-test
     testImplementation 'org.springframework:spring-test:5.3.12'
 
-    // https://mvnrepository.com/artifact/org.thymeleaf/thymeleaf
-    implementation 'org.thymeleaf:thymeleaf:2.0.5'
-
 
 }
 
