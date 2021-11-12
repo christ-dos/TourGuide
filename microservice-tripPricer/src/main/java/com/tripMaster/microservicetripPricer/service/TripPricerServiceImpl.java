@@ -17,7 +17,6 @@ public class TripPricerServiceImpl implements TripPricerService {
 
     @Autowired
     public TripPricerServiceImpl(TripPricer tripPricer) {
-
         this.tripPricer = tripPricer;
     }
 

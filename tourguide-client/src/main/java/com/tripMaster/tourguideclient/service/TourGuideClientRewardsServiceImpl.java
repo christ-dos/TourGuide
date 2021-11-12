@@ -1,6 +1,7 @@
 package com.tripMaster.tourguideclient.service;
 
 import com.tripMaster.tourguideclient.DAO.InternalUserMapDAO;
+import com.tripMaster.tourguideclient.exception.UserNotFoundException;
 import com.tripMaster.tourguideclient.model.*;
 import com.tripMaster.tourguideclient.proxies.MicroserviceRewardsProxy;
 import com.tripMaster.tourguideclient.proxies.MicroserviceUserGpsProxy;
@@ -66,6 +67,9 @@ public class TourGuideClientRewardsServiceImpl implements TourGuideClientRewards
     @Override
     public List<UserReward> getUserRewards(String userName) {
         User user = internalUserMapDAO.getUser(userName);
+        if(user == null){
+            throw new UserNotFoundException("User not found");
+        }
         return user.getUserRewards();
     }
 
@@ -99,6 +103,7 @@ public class TourGuideClientRewardsServiceImpl implements TourGuideClientRewards
 
     private boolean nearAttraction(VisitedLocation visitedLocation, Attraction attraction) {
 //        setProximityBuffer(200);
+        //todo clean code
         return getDistance(attraction, visitedLocation.getLocation()) > proximityBuffer ? false : true;
     }
 

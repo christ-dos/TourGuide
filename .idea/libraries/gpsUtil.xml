@@ -1,11 +1,11 @@
 <component name="libraryTable">
-  <library name="Gradle: :gpsUtil:">
+  <library name="gpsUtil">
     <CLASSES>
       <root url="jar://$PROJECT_DIR$/tourguide-client/libs/gpsUtil.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
-      <root url="jar://$PROJECT_DIR$/TourGuide/libs/gpsUtil.jar!/org/apache/commons/lang3/time" />
+      <root url="jar://$PROJECT_DIR$/tourguide-client/libs/gpsUtil.jar!/" />
     </SOURCES>
   </library>
 </component>

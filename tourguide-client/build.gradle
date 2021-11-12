@@ -47,13 +47,15 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.junit.jupiter:junit-jupiter:5.7.0'
     implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
+    implementation 'org.apache.commons:commons-lang3:3.12.0'
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
     compileOnly(name: 'gpsUtil', ext: 'jar')
     compileOnly(name: 'RewardCentral', ext: 'jar')
     compileOnly(name: 'TripPricer', ext: 'jar')
-//	compileOnly group: 'org.javamoney', name: 'moneta', version: '1.3'
+
     compileOnly group: 'com.jsoniter', name: 'jsoniter', version: '0.9.23'
 
     // https://mvnrepository.com/artifact/org.javamoney/moneta
@@ -68,8 +70,6 @@ dependencies {
     // https://mvnrepository.com/artifact/org.springframework/spring-test
     testImplementation 'org.springframework:spring-test:5.3.12'
 
-//    // https://mvnrepository.com/artifact/javax.money/money-api
-//    implementation 'javax.money:money-api:1.1'
 
 }
 
