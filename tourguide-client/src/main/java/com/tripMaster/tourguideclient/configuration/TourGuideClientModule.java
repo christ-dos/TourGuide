@@ -20,6 +20,7 @@ import java.util.UUID;
 
 @Configuration
 public class TourGuideClientModule {
+
 	//todo clean code suppression class
 //	@Bean
 //	public InternalUserMapDAO getInternalMapDAP(){

@@ -12,7 +12,8 @@ import tripPricer.Provider;
 import java.util.List;
 import java.util.UUID;
 
-import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -35,7 +36,7 @@ public class TripPricerTestIT {
     private TripPricerServiceImpl tripPricerService;
 
     @Test
-    public void getProvidersTest_thenReturnListOfProvider() throws Exception {
+    public void getProvidersTest_whenTwoAdulteOneChildrenAndFiveNightsStayAndRewards200_thenReturnListOfProvider() throws Exception {
         //GIVEN
         String apiKey = "apiKey";
         int adults = 2;
@@ -61,6 +62,39 @@ public class TripPricerTestIT {
 
         assertTrue(providers.size() > 0);
         assertNotNull(providers.get(0).tripId);
+        assertNotNull(providers.get(0).price);
+        assertTrue(providers.get(0).price > 0);
+
+    }
+
+    @Test
+    public void getProvidersTest_whenOneAdultsNoChildrenAndOneNightsStayAndRewards500_thenReturnListOfProvider() throws Exception {
+        //GIVEN
+        String apiKey = "apiKey";
+        int adults = 1;
+        int children = 0;
+        int nightsStay = 1;
+        int rewardsPoints = 500;
+        UUID attractionId = UUID.randomUUID();
+        //WHEN
+        List<Provider> providers = tripPricerService.getPrice(apiKey, attractionId, adults, children, nightsStay, rewardsPoints);
+        //THEN
+        mockMvcTripPricer.perform(MockMvcRequestBuilders.get("/getTripDeals")
+                        .param("apiKey", apiKey)
+                        .param("attractionId", String.valueOf(attractionId))
+                        .param("adults", String.valueOf(adults))
+                        .param("children", String.valueOf(children))
+                        .param("nightsStay", String.valueOf(nightsStay))
+                        .param("rewardsPoints", String.valueOf(rewardsPoints)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.[0].name", is(notNullValue(String.class))))
+                .andExpect(jsonPath("$.[0].tripId", is(notNullValue(UUID.class))))
+                .andExpect(jsonPath("$.[0].price", is(notNullValue(Double.class))))
+                .andDo(print());
+
+        assertTrue(providers.size() > 0);
+        assertNotNull(providers.get(0).tripId);
+        assertNotNull(providers.get(0).price);
 
     }
 }

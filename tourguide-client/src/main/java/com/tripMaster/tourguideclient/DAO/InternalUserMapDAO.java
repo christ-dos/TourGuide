@@ -2,7 +2,6 @@ package com.tripMaster.tourguideclient.DAO;
 
 import com.tripMaster.tourguideclient.helper.InternalTestHelper;
 import com.tripMaster.tourguideclient.model.*;
-import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
@@ -25,6 +24,7 @@ public class InternalUserMapDAO {
     private static final String tripPricerApiKey = "test-server-api-key";
     // Database connection will be used for external users, but for testing purposes internal users are provided and stored in memory
     private final Map<String, User> internalUserMap = new HashMap<>();
+
     @PostConstruct
     public void initializeInternalUsers() {
         IntStream.range(0, InternalTestHelper.getInternalUserNumber()).forEach(i -> {
@@ -43,11 +43,11 @@ public class InternalUserMapDAO {
         IntStream.range(0, 3).forEach(i -> {
             user.getVisitedLocations().add(
                     new VisitedLocation(user.getUserId(), new Location(generateRandomLatitude(), generateRandomLongitude()), getRandomTime()));
-////            user.getUserRewards().add(
-////                    new UserReward(new VisitedLocation(user.getUserId(), new Location(generateRandomLatitude(), generateRandomLongitude()), getRandomTime()),
-////                            new Attraction("Disneyland", "Anaheim", "CA", 33.817595D, -117.922008D),200)
-////            );
-//            //todo clean code
+            user.getUserRewards().add(
+                    new UserReward(new VisitedLocation(user.getUserId(), new Location(generateRandomLatitude(), generateRandomLongitude()), getRandomTime()),
+                            new Attraction("Disneyland", "Anaheim", "CA", 33.817595D, -117.922008D), 200)
+            );
+            //todo clean code
         });
     }
 
@@ -73,7 +73,6 @@ public class InternalUserMapDAO {
     }
 
     public List<User> getAllUsers() {
-
         return internalUserMap.values().stream().collect(Collectors.toList());
     }
 
