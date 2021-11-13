@@ -32,7 +32,7 @@ public class UserGpsController {
     @GetMapping("/getAttractions")
     public List<Attraction> getAttractions() {
         log.info("Request to get list attractions");
-        return userGpsService.getAttractions();
+        return userGpsService.getAttractions().join();
     }
 
 }

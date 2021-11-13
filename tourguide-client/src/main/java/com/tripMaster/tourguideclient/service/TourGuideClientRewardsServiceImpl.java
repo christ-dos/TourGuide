@@ -14,6 +14,7 @@ import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -50,12 +51,12 @@ public class TourGuideClientRewardsServiceImpl implements TourGuideClientRewards
     }
 
     @Override
-    public void calculateRewards(User user) {
+    public void  calculateRewards(User user) {
         final ExecutorService executorService = Executors.newFixedThreadPool(1000);
 
         List<VisitedLocation> userLocations = user.getVisitedLocations();
         CompletableFuture<List<Attraction>> attractions = CompletableFuture.supplyAsync(() -> microserviceUserGpsProxy.getAttractions(), executorService)
-                .thenApply(attraction -> attraction);
+                .thenApply(attractions1-> attractions1);
 //        List<Attraction> attractions = microserviceUserGpsProxy.getAttractions();
 
         log.info("Service - Calcul en cours....");
@@ -74,7 +75,7 @@ public class TourGuideClientRewardsServiceImpl implements TourGuideClientRewards
                         });
 //                            UserReward userReward = new UserReward(visitedLocation, attraction, rewardsPointsFuture.join());
 //							addUserReward(rewardsPointsFuture.join(),user);
-                        System.out.println("rewards points: " + rewardsPointsFuture.join());
+                        System.out.println("rewards points: " + rewardsPointsFuture);
 
 
 //                        addUserReward(new UserReward(visitedLocation, attraction, getRewardPoints(attraction.getAttractionId(), user.getUserId())), user);

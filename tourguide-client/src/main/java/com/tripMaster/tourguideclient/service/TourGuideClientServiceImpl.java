@@ -52,7 +52,7 @@ public class TourGuideClientServiceImpl implements TourGuideClientService {
 
     }
 
-    public VisitedLocation trackUserLocation(User user) {
+    public CompletableFuture<VisitedLocation> trackUserLocation(User user) {
         Locale.setDefault(new Locale("en", "US"));
 //        final ExecutorService executorService = Executors.newFixedThreadPool(1600, r -> {
 //            Thread t = new Thread(r);
@@ -61,18 +61,19 @@ public class TourGuideClientServiceImpl implements TourGuideClientService {
 //        });
         final ExecutorService executorService = Executors.newFixedThreadPool(1000);
 
-        CompletableFuture<VisitedLocation> futureVL =
-                CompletableFuture.supplyAsync(() -> microserviceUserGpsProxy.trackUserLocation(user.getUserId()),executorService);
-        futureVL.thenApply(visitedLocation->visitedLocation);
-                futureVL.thenAccept(visitedLocation -> CompletableFuture.runAsync(
-                ()->tourGuideClientRewardsServiceImpl.calculateRewards(user)));
-        VisitedLocation visitedLocation = microserviceUserGpsProxy.trackUserLocation(user.getUserId());
-        addToVisitedLocations(futureVL.join(), user);
+//        VisitedLocation visitedLocation = microserviceUserGpsProxy.trackUserLocation(user.getUserId());
+
+        CompletableFuture<VisitedLocation> visitedLocationFuture =
+                CompletableFuture.supplyAsync(() -> microserviceUserGpsProxy.trackUserLocation(user.getUserId()), executorService);
+        visitedLocationFuture.thenAccept(visitedLocation -> addToVisitedLocations(visitedLocation, user));
+//                .thenAcceptAsync(visitedLocation->tourGuideClientRewardsServiceImpl.calculateRewards(user));
+        visitedLocationFuture.thenCompose(visitedLocation -> CompletableFuture.runAsync(
+                () -> tourGuideClientRewardsServiceImpl.calculateRewards(user)));
 
 //                tourGuideClientRewardsServiceImpl.calculateRewards(user);
 
         log.debug("Service - user location tracked for username: " + user.getUserName());
-        return futureVL.join();
+        return visitedLocationFuture;
     }
 
     public User getUser(String userName) {
@@ -103,7 +104,7 @@ public class TourGuideClientServiceImpl implements TourGuideClientService {
         List<VisitedLocation> visitedLocations = user.getVisitedLocations();
         VisitedLocation visitedLocation = (user.getVisitedLocations().size() > 0) ?
                 user.getVisitedLocations().get(visitedLocations.size() - 1) :
-                trackUserLocation(user);
+                trackUserLocation(user).join();
 
         log.debug("Service - get user location for user: " + userName);
         return visitedLocation;

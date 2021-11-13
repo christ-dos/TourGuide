@@ -82,7 +82,7 @@ public class TestPerformance {
 
 //		CompletableFuture<VisitedLocation> completableFuture = new CompletableFuture<>();
 		// Users should be incremented up to 100,000, and test finishes within 15 minutes
-		InternalTestHelper.setInternalUserNumber(1);
+		InternalTestHelper.setInternalUserNumber(100);
 		tourGuideClientRewardsService.setProximityBuffer(Integer.MAX_VALUE);
 		List<User> allUsers = new ArrayList<>();
 		allUsers = tourGuideClientService.getAllUsers();

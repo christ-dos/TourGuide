@@ -56,7 +56,7 @@ public class TourGuideClientServiceImplTest {
         VisitedLocation visitedLocationMock = new com.tripMaster.tourguideclient.model.VisitedLocation(userTest.getUserId(), new Location(33.817595D, -116.922008D), new Date());
         when(microserviceUserGpsProxyMock.trackUserLocation(any(UUID.class))).thenReturn(visitedLocationMock);
         //WHEN
-        VisitedLocation visitedLocationResult = tourGuideClientServiceTest.trackUserLocation(userTest);
+        VisitedLocation visitedLocationResult = tourGuideClientServiceTest.trackUserLocation(userTest).join();
         //THEN
         tourGuideClientServiceTest.tracker.stopTracking();
 
