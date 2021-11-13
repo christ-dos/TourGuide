@@ -20,9 +20,9 @@ public class RewardsServiceImpl implements RewardsService {
     }
 
     public int getRewardPoints(UUID attractionId, UUID userId) {
-        System.out.println("Calculate reward on: " + Thread.currentThread().getName());
+        System.out.println("Calculate reward on microserviceRewards: " + Thread.currentThread().getName());
         //TODO RETIRER SYS.OUT
-        log.info("rewards points for user:"  + userId);
+        log.info("Service - Rewards points getted in microserviceRewards fir user:"  + userId);
         return rewardsCentral.getAttractionRewardPoints(attractionId, userId);
     }
 }

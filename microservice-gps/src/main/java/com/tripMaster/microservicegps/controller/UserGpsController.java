@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * Class of controller that manage requests to obtaining user positions
@@ -32,7 +33,7 @@ public class UserGpsController {
     @GetMapping("/getAttractions")
     public List<Attraction> getAttractions() {
         log.info("Request to get list attractions");
-        return userGpsService.getAttractions().join();
+        return userGpsService.getAttractions();
     }
 
 }

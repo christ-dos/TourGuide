@@ -5,7 +5,6 @@ import gpsUtil.location.VisitedLocation;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
 
 /**
  * Interface that exposes methodes of {@link UserGpsServiceImpl}
@@ -16,5 +15,5 @@ public interface UserGpsService {
 
     VisitedLocation trackUserLocation(UUID userId);
 
-    CompletableFuture<List<Attraction>> getAttractions();
+    List<Attraction> getAttractions();
 }

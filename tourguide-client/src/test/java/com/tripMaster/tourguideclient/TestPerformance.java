@@ -117,10 +117,13 @@ public class TestPerformance {
 
 		allUsers.forEach(user -> tourGuideClientService.addToVisitedLocations(new VisitedLocation(user.getUserId(), new Location(attraction.getLatitude(),attraction.getLongitude()), new Date()),user));
 		allUsers.forEach(user -> tourGuideClientRewardsService.calculateRewards(user));
-
+		int i =0;
+		//todo clean code
 		for(User user : allUsers) {
+			i++;
 			assertTrue(user.getUserRewards().size() > 0);
 		}
+		System.out.println("nombre user: " + i);
 		stopWatch.stop();
 		tourGuideClientService.tracker.stopTracking();
 

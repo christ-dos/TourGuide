@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
 
 /**
  * Class of service that manage obtaining user visited location
@@ -37,10 +36,9 @@ public class UserGpsServiceImpl implements UserGpsService {
     }
 
     @Override
-    public CompletableFuture<List<Attraction>> getAttractions() {
+    public List<Attraction> getAttractions() {
         log.info("Service - Attraction getted");
-//        return gpsUtil.getAttractions();
-        return CompletableFuture.supplyAsync(()->gpsUtil.getAttractions()).thenApply(attractions -> attractions);
+        return gpsUtil.getAttractions();
     }
 
 }
