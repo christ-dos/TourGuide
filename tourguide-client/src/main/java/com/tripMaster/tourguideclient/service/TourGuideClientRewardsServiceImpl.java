@@ -68,7 +68,7 @@ public class TourGuideClientRewardsServiceImpl implements TourGuideClientRewards
 
                         CompletableFuture<UserReward> rewardsPointsFuture = CompletableFuture.supplyAsync(() -> getRewardPoints(attraction.getAttractionId(), user.getUserId()), executorService)
                                 .thenApplyAsync(rewardPoints -> new UserReward(visitedLocation, attraction, rewardPoints));
-                        rewardsPointsFuture.thenComposeAsync(userReward ->
+                        rewardsPointsFuture.thenApply(userReward ->
                                 CompletableFuture.runAsync(() -> addUserReward(userReward, user)));
 
 //                        addUserReward(new UserReward(visitedLocation, attraction, getRewardPoints(attraction.getAttractionId(), user.getUserId())), user);
@@ -106,8 +106,9 @@ public class TourGuideClientRewardsServiceImpl implements TourGuideClientRewards
         if (userRewards.stream().filter(r -> r.getAttraction().getAttractionName().equals(userReward.getAttraction().getAttractionName())).count() == 0) {
             //TODO quand on change le filter on  enleve la negation(!) le test NearAllAttractions passe au vert
             userRewards.add(userReward);
-            log.info("Service - Reward added for use: " + user.getUserName());
             user.setUserRewards(userRewards);
+            log.info("Service - Reward added for user: " + user.getUserName());
+
         }
     }
 

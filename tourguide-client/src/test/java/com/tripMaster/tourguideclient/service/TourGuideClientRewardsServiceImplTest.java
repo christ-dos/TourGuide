@@ -13,10 +13,12 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -24,9 +26,9 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class TourGuideClientRewardsServiceImplTest {
-    private TourGuideClientRewardsServiceImpl tourGuideClientRewardsService;
+    private TourGuideClientRewardsServiceImpl tourGuideClientRewardsServiceTest;
 
-    private TourGuideClientServiceImpl tourGuideClientService;
+    private TourGuideClientServiceImpl tourGuideClientServiceTest;
 
     @Mock
     private MicroserviceRewardsProxy microserviceRewardsProxyMock;
@@ -40,7 +42,7 @@ public class TourGuideClientRewardsServiceImplTest {
     @Mock
     private MicroserviceTripPricerProxy microserviceTripPricerProxyMock;
 
-    private Tracker tracker = new Tracker(tourGuideClientService);
+    private Tracker tracker = new Tracker(tourGuideClientServiceTest);
 
 
     private User userTest;
@@ -49,7 +51,7 @@ public class TourGuideClientRewardsServiceImplTest {
 
     @BeforeEach
     public void setUpPerTest() {
-        tourGuideClientRewardsService = new TourGuideClientRewardsServiceImpl(microserviceRewardsProxyMock, microserviceUserGpsProxyMock, internalUserMapDAOMock);
+        tourGuideClientRewardsServiceTest = new TourGuideClientRewardsServiceImpl(microserviceRewardsProxyMock, microserviceUserGpsProxyMock, internalUserMapDAOMock);
         userTest = new User(UUID.randomUUID(), "jon", "000", "jon@tourGuide.com");
 
         attractions = new ArrayList();
@@ -74,10 +76,15 @@ public class TourGuideClientRewardsServiceImplTest {
         List<VisitedLocation> visitedLocationsUserTest = userTest.getVisitedLocations();
         when(microserviceUserGpsProxyMock.getAttractions()).thenReturn(attractions);
         //WHEN
-        tourGuideClientRewardsService.setProximityBuffer(150);
-        tourGuideClientRewardsService.calculateRewards(userTest);
+        tourGuideClientRewardsServiceTest.setProximityBuffer(150);
+        tourGuideClientRewardsServiceTest.calculateRewards(userTest);
         List<UserReward> userRewards = userTest.getUserRewards();
         //THEN
+        try {
+            TimeUnit.MILLISECONDS.sleep(20);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         tracker.stopTracking();
 
         assertEquals(2, visitedLocationsUserTest.size());
@@ -100,9 +107,14 @@ public class TourGuideClientRewardsServiceImplTest {
         InternalTestHelper.setInternalUserNumber(0);
         //WHEN
         visitedLocations.add(visitedLocation);
-        tourGuideClientRewardsService.calculateRewards(user);
+        tourGuideClientRewardsServiceTest.calculateRewards(user);
         List<UserReward> userRewards = user.getUserRewards();
         //THEN
+        try {
+            TimeUnit.MILLISECONDS.sleep(10);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         tracker.stopTracking();
 
         assertTrue(user.getUserRewards().isEmpty());
@@ -130,7 +142,7 @@ public class TourGuideClientRewardsServiceImplTest {
 
         InternalTestHelper.setInternalUserNumber(0);
         //WHEN
-        List<UserReward> rewardsResult = tourGuideClientRewardsService.getUserRewards("jon");
+        List<UserReward> rewardsResult = tourGuideClientRewardsServiceTest.getUserRewards("jon");
         //THEN
         tracker.stopTracking();
 
@@ -143,7 +155,7 @@ public class TourGuideClientRewardsServiceImplTest {
         //GIVEN
         when(internalUserMapDAOMock.getUser(anyString())).thenReturn(userTest);
         //WHEN
-        List<UserReward> rewardsResult = tourGuideClientRewardsService.getUserRewards("jon");
+        List<UserReward> rewardsResult = tourGuideClientRewardsServiceTest.getUserRewards("jon");
         //THEN
         assertTrue(rewardsResult.isEmpty());
     }
@@ -155,7 +167,7 @@ public class TourGuideClientRewardsServiceImplTest {
         //THEN
         tracker.stopTracking();
 
-        assertThrows(UserNotFoundException.class, () -> tourGuideClientRewardsService.getUserRewards("Unknown"));
+        assertThrows(UserNotFoundException.class, () -> tourGuideClientRewardsServiceTest.getUserRewards("Unknown"));
         verify(internalUserMapDAOMock, times(1)).getUser(anyString());
 
 
@@ -164,11 +176,11 @@ public class TourGuideClientRewardsServiceImplTest {
     @Test
     public void isWithinAttractionProximityTest_whenDistanceLessThanAttractionProximityRange_thenReturnTrue() {
         //GIVEN
-        tourGuideClientRewardsService.setAttractionProximityRange(200);
+        tourGuideClientRewardsServiceTest.setAttractionProximityRange(200);
         Attraction attraction = new Attraction("Disneyland", "Anaheim", "CA", 33.817595D, -116.922008D);
         VisitedLocation visitedLocation = new VisitedLocation(userTest.getUserId(), new Location(33.817595D, -116.922008D), new Date());
         //WHEN
-        Boolean result = tourGuideClientRewardsService.isWithinAttractionProximity(attraction, visitedLocation.getLocation());
+        Boolean result = tourGuideClientRewardsServiceTest.isWithinAttractionProximity(attraction, visitedLocation.getLocation());
         //THEN
         tracker.stopTracking();
 
@@ -178,11 +190,11 @@ public class TourGuideClientRewardsServiceImplTest {
     @Test
     public void isWithinAttractionProximityTest_whenDistanceGreaterThanAttractionProximityRange_thenReturnFalse() {
         //GIVEN
-        tourGuideClientRewardsService.setAttractionProximityRange(200);
+        tourGuideClientRewardsServiceTest.setAttractionProximityRange(200);
         Attraction attraction = new Attraction("Belem", "Lisbon", "Portugal", -1.455755D, -48.490180);
         VisitedLocation visitedLocation = new VisitedLocation(userTest.getUserId(), new Location(33.817595D, -116.922008D), new Date());
         //WHEN
-        Boolean result = tourGuideClientRewardsService.isWithinAttractionProximity(attraction, visitedLocation.getLocation());
+        Boolean result = tourGuideClientRewardsServiceTest.isWithinAttractionProximity(attraction, visitedLocation.getLocation());
         //THEN
         assertFalse(result);
     }
@@ -196,15 +208,20 @@ public class TourGuideClientRewardsServiceImplTest {
         ));
         userTest.setVisitedLocations(visitedLocationsTest);
 
-        tourGuideClientRewardsService.setProximityBuffer(Integer.MAX_VALUE);
+        tourGuideClientRewardsServiceTest.setProximityBuffer(Integer.MAX_VALUE);
         when(internalUserMapDAOMock.getUser(anyString())).thenReturn(userTest);
         when(microserviceUserGpsProxyMock.getAttractions()).thenReturn(attractions);
 
         InternalTestHelper.setInternalUserNumber(0);
         //WHEN
-        tourGuideClientRewardsService.calculateRewards(userTest);
-        List<UserReward> userRewardsResult = tourGuideClientRewardsService.getUserRewards(userTest.getUserName());
+        tourGuideClientRewardsServiceTest.calculateRewards(userTest);
+        List<UserReward> userRewardsResult = tourGuideClientRewardsServiceTest.getUserRewards(userTest.getUserName());
         //THEN
+        try {
+            TimeUnit.MILLISECONDS.sleep(10);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         tracker.stopTracking();
 
         assertEquals(attractions.size(), userRewardsResult.size());
@@ -213,20 +230,26 @@ public class TourGuideClientRewardsServiceImplTest {
     @Test
     public void userGetRewardsTest_whenVisitedLocationIsNearOfOnlyOneAttractionInListAttractions_thenReturnOneUserRewards() {
         //GIVEN
-        TourGuideClientServiceImpl tourGuideClientService = new TourGuideClientServiceImpl(microserviceRewardsProxyMock,
-                microserviceUserGpsProxyMock, internalUserMapDAOMock, tourGuideClientRewardsService, microserviceTripPricerProxyMock);
-        //location  in Monastere dos Jeronimos located in Belem/Lisbon
+        tourGuideClientServiceTest = new TourGuideClientServiceImpl(microserviceRewardsProxyMock,
+                microserviceUserGpsProxyMock, internalUserMapDAOMock, tourGuideClientRewardsServiceTest, microserviceTripPricerProxyMock);
+        //location  in Monastère dos Jeronimos located in Belèm/Lisbon
         VisitedLocation visitedLocation = new VisitedLocation(userTest.getUserId(), new Location(38.697500D, -9.206667D), new Date());
 
-        Attraction attraction = new Attraction("Pasteis Belem", "Lisbon", "Portugal", 38.697417D, -9.203334D);
         when(microserviceUserGpsProxyMock.getAttractions()).thenReturn(attractions);
+        when(microserviceRewardsProxyMock.getRewardsPoints(any(UUID.class),any(UUID.class))).thenReturn(200);
         when(microserviceUserGpsProxyMock.trackUserLocation(any(UUID.class))).thenReturn(visitedLocation);
 
         InternalTestHelper.setInternalUserNumber(0);
         //WHEN
-        tourGuideClientService.trackUserLocation(userTest);
-        tourGuideClientRewardsService.calculateRewards(userTest);
+        tourGuideClientServiceTest.trackUserLocation(userTest);
+        tourGuideClientRewardsServiceTest.calculateRewards(userTest);
         List<UserReward> userRewards = userTest.getUserRewards();
+        userTest.setUserRewards(userRewards);
+        try {
+            TimeUnit.MILLISECONDS.sleep(10);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         //THEN
         tracker.stopTracking();
         assertTrue(userRewards.size() == 1);
