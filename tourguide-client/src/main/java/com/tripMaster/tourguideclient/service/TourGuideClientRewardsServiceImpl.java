@@ -11,6 +11,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 @Service
 @Slf4j
@@ -48,16 +51,33 @@ public class TourGuideClientRewardsServiceImpl implements TourGuideClientRewards
 
     @Override
     public void calculateRewards(User user) {
+        final ExecutorService executorService = Executors.newFixedThreadPool(1000);
+
         List<VisitedLocation> userLocations = user.getVisitedLocations();
-        List<Attraction> attractions = microserviceUserGpsProxy.getAttractions();
+        CompletableFuture<List<Attraction>> attractions = CompletableFuture.supplyAsync(() -> microserviceUserGpsProxy.getAttractions(), executorService)
+                .thenApply(attraction -> attraction);
+//        List<Attraction> attractions = microserviceUserGpsProxy.getAttractions();
+
         log.info("Service - Calcul en cours....");
         //todo retirer log
-//        setDefaultProximityBuffer(10);
+//        setProximityBuffer(Integer.MAX_VALUE);
         for (VisitedLocation visitedLocation : userLocations) {
-            for (Attraction attraction : attractions) {
+            for (Attraction attraction : attractions.join()) {
                 if (user.getUserRewards().stream().filter(r -> r.getAttraction().getAttractionName().equals(attraction.getAttractionName())).count() == 0) {
                     if (nearAttraction(visitedLocation, attraction)) {
-                        addUserReward(new UserReward(visitedLocation, attraction, getRewardPoints(attraction.getAttractionId(), user.getUserId())), user);
+//                        CompletableFuture.supplyAsync(() -> getRewardPoints(attraction.getAttractionId(), user.getUserId())).thenAccept(rewardPoints -> {
+                        CompletableFuture<UserReward> rewardsPointsFuture = CompletableFuture.supplyAsync(() -> getRewardPoints(attraction.getAttractionId(), user.getUserId()),executorService)
+                                .thenApplyAsync(rewardPoints -> new UserReward(visitedLocation, attraction, rewardPoints));
+                        CompletableFuture<Void> userRewardFuture = rewardsPointsFuture.thenAcceptAsync(userReward -> {
+                            addUserReward(userReward, user);
+                            System.out.println("**********************"+ userReward);
+                        });
+//                            UserReward userReward = new UserReward(visitedLocation, attraction, rewardsPointsFuture.join());
+//							addUserReward(rewardsPointsFuture.join(),user);
+                        System.out.println("rewards points: " + rewardsPointsFuture.join());
+
+
+//                        addUserReward(new UserReward(visitedLocation, attraction, getRewardPoints(attraction.getAttractionId(), user.getUserId())), user);
                     }
                 }
             }
@@ -67,7 +87,7 @@ public class TourGuideClientRewardsServiceImpl implements TourGuideClientRewards
     @Override
     public List<UserReward> getUserRewards(String userName) {
         User user = internalUserMapDAO.getUser(userName);
-        if(user == null){
+        if (user == null) {
             throw new UserNotFoundException("User not found");
         }
         return user.getUserRewards();
@@ -110,7 +130,7 @@ public class TourGuideClientRewardsServiceImpl implements TourGuideClientRewards
     private int getRewardPoints(UUID attractionId, UUID userId) {
         System.out.println("Calculate reward on: " + Thread.currentThread().getName());
         //TODO RETIRER SYS0OUT
-        return  microserviceRewardsProxy.getRewardsPoints(attractionId,userId);
+        return microserviceRewardsProxy.getRewardsPoints(attractionId, userId);
     }
 }
 

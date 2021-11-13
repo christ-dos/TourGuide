@@ -16,17 +16,21 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
 @Service
 @Slf4j
 public class TourGuideClientServiceImpl implements TourGuideClientService {
     public final Tracker tracker;
-    private MicroserviceUserGpsProxy microserviceUserGpsProxy;
-    private MicroserviceRewardsProxy microserviceRewardsProxy;
-    private InternalUserMapDAO internalUserMapDAO;
-    private TourGuideClientRewardsServiceImpl tourGuideClientRewardsServiceImpl;
-    private MicroserviceTripPricerProxy microserviceTripPricerProxy;
+    private final MicroserviceUserGpsProxy microserviceUserGpsProxy;
+    private final MicroserviceRewardsProxy microserviceRewardsProxy;
+    private final InternalUserMapDAO internalUserMapDAO;
+    private final TourGuideClientRewardsServiceImpl tourGuideClientRewardsServiceImpl;
+    private final MicroserviceTripPricerProxy microserviceTripPricerProxy;
     boolean testMode = true;
 
     @Autowired
@@ -50,12 +54,25 @@ public class TourGuideClientServiceImpl implements TourGuideClientService {
 
     public VisitedLocation trackUserLocation(User user) {
         Locale.setDefault(new Locale("en", "US"));
+//        final ExecutorService executorService = Executors.newFixedThreadPool(1600, r -> {
+//            Thread t = new Thread(r);
+//            t.setDaemon(true);
+//            return t;
+//        });
+        final ExecutorService executorService = Executors.newFixedThreadPool(1000);
+
+        CompletableFuture<VisitedLocation> futureVL =
+                CompletableFuture.supplyAsync(() -> microserviceUserGpsProxy.trackUserLocation(user.getUserId()),executorService);
+        futureVL.thenApply(visitedLocation->visitedLocation);
+                futureVL.thenAccept(visitedLocation -> CompletableFuture.runAsync(
+                ()->tourGuideClientRewardsServiceImpl.calculateRewards(user)));
         VisitedLocation visitedLocation = microserviceUserGpsProxy.trackUserLocation(user.getUserId());
-        addToVisitedLocations(visitedLocation, user);
-        tourGuideClientRewardsServiceImpl.calculateRewards(user);
+        addToVisitedLocations(futureVL.join(), user);
+
+//                tourGuideClientRewardsServiceImpl.calculateRewards(user);
 
         log.debug("Service - user location tracked for username: " + user.getUserName());
-        return visitedLocation;
+        return futureVL.join();
     }
 
     public User getUser(String userName) {
@@ -97,7 +114,7 @@ public class TourGuideClientServiceImpl implements TourGuideClientService {
         List<User> users = internalUserMapDAO.getAllUsers();
 
         log.debug("Service - current location for all users getted");
-        return  users.stream().map(u ->
+        return users.stream().map(u ->
                         new UserCurrentLocation(u.getUserId(), u.getVisitedLocations().get(u.getVisitedLocations().size() - 1).getLocation()))
                 .collect(Collectors.toList());
     }
@@ -180,8 +197,9 @@ public class TourGuideClientServiceImpl implements TourGuideClientService {
     }
 
     public void addToVisitedLocations(VisitedLocation visitedLocation, User user) {
-        List<VisitedLocation> visitedLocations = user.getVisitedLocations();
+        CopyOnWriteArrayList<VisitedLocation> visitedLocations = user.getVisitedLocations();
         visitedLocations.add(visitedLocation);
+        user.setVisitedLocations(visitedLocations);
         log.debug("Service - Visited location added for user: " + user.getUserName());
     }
 

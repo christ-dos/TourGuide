@@ -20,5 +20,15 @@ public class Attraction extends Location {
         this.state = state;
         this.attractionId = UUID.randomUUID();
     }
+
+    @Override
+    public String toString() {
+        return "Attraction{" +
+                "attractionName='" + attractionName + '\'' +
+                ", city='" + city + '\'' +
+                ", state='" + state + '\'' +
+                ", attractionId=" + attractionId +
+                '}';
+    }
 }
 

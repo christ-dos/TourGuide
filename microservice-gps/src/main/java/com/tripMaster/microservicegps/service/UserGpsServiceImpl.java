@@ -37,6 +37,7 @@ public class UserGpsServiceImpl implements UserGpsService {
 
     @Override
     public List<Attraction> getAttractions() {
+        log.info("Service - Attraction getted");
         return gpsUtil.getAttractions();
     }
 
