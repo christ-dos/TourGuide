@@ -20,13 +20,13 @@
 <tr>
 <td>
 <div class="infoBox" id="tests">
-<div class="counter">1</div>
+<div class="counter">41</div>
 <p>tests</p>
 </div>
 </td>
 <td>
 <div class="infoBox" id="failures">
-<div class="counter">0</div>
+<div class="counter">5</div>
 <p>failures</p>
 </div>
 </td>
@@ -38,7 +38,7 @@
 </td>
 <td>
 <div class="infoBox" id="duration">
-<div class="counter">1.863s</div>
+<div class="counter">2.558s</div>
 <p>duration</p>
 </div>
 </td>
@@ -47,8 +47,8 @@
 </div>
 </td>
 <td>
-<div class="infoBox success" id="successRate">
-<div class="percent">100%</div>
+<div class="infoBox failures" id="successRate">
+<div class="percent">87%</div>
 <p>successful</p>
 </div>
 </td>
@@ -58,13 +58,41 @@
 <div id="tabs">
 <ul class="tabLinks">
 <li>
-<a href="#tab0">Packages</a>
+<a href="#tab0">Failed tests</a>
 </li>
 <li>
-<a href="#tab1">Classes</a>
+<a href="#tab1">Packages</a>
+</li>
+<li>
+<a href="#tab2">Classes</a>
 </li>
 </ul>
 <div id="tab0" class="tab">
+<h2>Failed tests</h2>
+<ul class="linkList">
+<li>
+<a href="classes/com.tripMaster.tourguideclient.TestPerformance.html">TestPerformance</a>.
+<a href="classes/com.tripMaster.tourguideclient.TestPerformance.html#highVolumeGetRewards()">highVolumeGetRewards()</a>
+</li>
+<li>
+<a href="classes/com.tripMaster.tourguideclient.service.TourGuideClientRewardsServiceImplTest.html">TourGuideClientRewardsServiceImplTest</a>.
+<a href="classes/com.tripMaster.tourguideclient.service.TourGuideClientRewardsServiceImplTest.html#calculateRewardsTest_whenUserHasTwoVisitedLocationsAndTwoAttractionsIsNear_thenUserRewardsAdded()">calculateRewardsTest_whenUserHasTwoVisitedLocationsAndTwoAttractionsIsNear_thenUserRewardsAdded()</a>
+</li>
+<li>
+<a href="classes/com.tripMaster.tourguideclient.service.TourGuideClientRewardsServiceImplTest.html">TourGuideClientRewardsServiceImplTest</a>.
+<a href="classes/com.tripMaster.tourguideclient.service.TourGuideClientRewardsServiceImplTest.html#calculateRewardsTest_whenVisitedLocationIsFarOfAttractions_thenUserHasNoRewardsAdded()">calculateRewardsTest_whenVisitedLocationIsFarOfAttractions_thenUserHasNoRewardsAdded()</a>
+</li>
+<li>
+<a href="classes/com.tripMaster.tourguideclient.service.TourGuideClientRewardsServiceImplTest.html">TourGuideClientRewardsServiceImplTest</a>.
+<a href="classes/com.tripMaster.tourguideclient.service.TourGuideClientRewardsServiceImplTest.html#nearAllAttractionsTest()">nearAllAttractionsTest()</a>
+</li>
+<li>
+<a href="classes/com.tripMaster.tourguideclient.service.TourGuideClientRewardsServiceImplTest.html">TourGuideClientRewardsServiceImplTest</a>.
+<a href="classes/com.tripMaster.tourguideclient.service.TourGuideClientRewardsServiceImplTest.html#userGetRewardsTest_whenVisitedLocationIsNearOfOnlyOneAttractionInListAttractions_thenReturnOneUserRewards()">userGetRewardsTest_whenVisitedLocationIsNearOfOnlyOneAttractionInListAttractions_thenReturnOneUserRewards()</a>
+</li>
+</ul>
+</div>
+<div id="tab1" class="tab">
 <h2>Packages</h2>
 <table>
 <thead>
@@ -79,19 +107,49 @@
 </thead>
 <tbody>
 <tr>
-<td class="success">
+<td class="failures">
 <a href="packages/com.tripMaster.tourguideclient.html">com.tripMaster.tourguideclient</a>
 </td>
+<td>2</td>
 <td>1</td>
 <td>0</td>
+<td>1.955s</td>
+<td class="failures">50%</td>
+</tr>
+<tr>
+<td class="success">
+<a href="packages/com.tripMaster.tourguideclient.DAO.html">com.tripMaster.tourguideclient.DAO</a>
+</td>
+<td>4</td>
 <td>0</td>
-<td>1.863s</td>
+<td>0</td>
+<td>0.001s</td>
 <td class="success">100%</td>
+</tr>
+<tr>
+<td class="success">
+<a href="packages/com.tripMaster.tourguideclient.controller.html">com.tripMaster.tourguideclient.controller</a>
+</td>
+<td>9</td>
+<td>0</td>
+<td>0</td>
+<td>0.404s</td>
+<td class="success">100%</td>
+</tr>
+<tr>
+<td class="failures">
+<a href="packages/com.tripMaster.tourguideclient.service.html">com.tripMaster.tourguideclient.service</a>
+</td>
+<td>26</td>
+<td>4</td>
+<td>0</td>
+<td>0.198s</td>
+<td class="failures">84%</td>
 </tr>
 </tbody>
 </table>
 </div>
-<div id="tab1" class="tab">
+<div id="tab2" class="tab">
 <h2>Classes</h2>
 <table>
 <thead>
@@ -106,13 +164,53 @@
 </thead>
 <tbody>
 <tr>
-<td class="success">
+<td class="failures">
 <a href="classes/com.tripMaster.tourguideclient.TestPerformance.html">com.tripMaster.tourguideclient.TestPerformance</a>
 </td>
+<td>2</td>
 <td>1</td>
 <td>0</td>
+<td>1.955s</td>
+<td class="failures">50%</td>
+</tr>
+<tr>
+<td class="success">
+<a href="classes/com.tripMaster.tourguideclient.DAO.InternalUserMapDAOTest.html">com.tripMaster.tourguideclient.DAO.InternalUserMapDAOTest</a>
+</td>
+<td>4</td>
 <td>0</td>
-<td>1.863s</td>
+<td>0</td>
+<td>0.001s</td>
+<td class="success">100%</td>
+</tr>
+<tr>
+<td class="success">
+<a href="classes/com.tripMaster.tourguideclient.controller.TourGuideClientControllerTest.html">com.tripMaster.tourguideclient.controller.TourGuideClientControllerTest</a>
+</td>
+<td>9</td>
+<td>0</td>
+<td>0</td>
+<td>0.404s</td>
+<td class="success">100%</td>
+</tr>
+<tr>
+<td class="failures">
+<a href="classes/com.tripMaster.tourguideclient.service.TourGuideClientRewardsServiceImplTest.html">com.tripMaster.tourguideclient.service.TourGuideClientRewardsServiceImplTest</a>
+</td>
+<td>9</td>
+<td>4</td>
+<td>0</td>
+<td>0.100s</td>
+<td class="failures">55%</td>
+</tr>
+<tr>
+<td class="success">
+<a href="classes/com.tripMaster.tourguideclient.service.TourGuideClientServiceImplTest.html">com.tripMaster.tourguideclient.service.TourGuideClientServiceImplTest</a>
+</td>
+<td>17</td>
+<td>0</td>
+<td>0</td>
+<td>0.098s</td>
 <td class="success">100%</td>
 </tr>
 </tbody>
@@ -126,7 +224,7 @@
 <input id="line-wrapping-toggle" type="checkbox" autocomplete="off"/>
 </label>
 </div>Generated by 
-<a href="http://www.gradle.org">Gradle 7.2</a> at 13 nov. 2021 19:56:50</p>
+<a href="http://www.gradle.org">Gradle 7.2</a> at 13 nov. 2021 22:12:10</p>
 </div>
 </div>
 </body>

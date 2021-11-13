@@ -31,6 +31,11 @@ configurations {
 	}
 }
 
+bootJar {
+	baseName = 'tripPricer'
+	version =  '1.0.0'
+}
+
 repositories {
 	mavenCentral()
 	flatDir {
