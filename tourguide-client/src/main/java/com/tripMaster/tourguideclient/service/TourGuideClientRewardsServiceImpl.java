@@ -36,7 +36,6 @@ public class TourGuideClientRewardsServiceImpl implements TourGuideClientRewards
         this.internalUserMapDAO = internalUserMapDAO;
     }
 
-
     public void setDefaultProximityBuffer(int defaultProximityBuffer) {
         this.defaultProximityBuffer = defaultProximityBuffer;
     }
@@ -51,25 +50,31 @@ public class TourGuideClientRewardsServiceImpl implements TourGuideClientRewards
 
     @Override
     public void calculateRewards(User user) {
-        final ExecutorService executorService = Executors.newFixedThreadPool(1000);
+        final ExecutorService executorService = Executors.newFixedThreadPool(1600);
 
         List<VisitedLocation> userLocations = user.getVisitedLocations();
-        CompletableFuture<List<Attraction>> attractions = CompletableFuture.supplyAsync(() -> microserviceUserGpsProxy.getAttractions(), executorService)
-                .thenApply(attractions1 -> attractions1);
-//        List<Attraction> attractions = microserviceUserGpsProxy.getAttractions();
+//        CompletableFuture<List<Attraction>> attractions = CompletableFuture.supplyAsync(() -> microserviceUserGpsProxy.getAttractions(), executorService)
+//                .thenApply(attractions1 -> attractions1);
+        List<Attraction> attractions = microserviceUserGpsProxy.getAttractions();
 
         log.info("Service - Calcul en cours...." + user.getUserName());
-        //todo retirer log
+        //todo retirer log + clean code
 //        setProximityBuffer(Integer.MAX_VALUE);
         for (VisitedLocation visitedLocation : userLocations) {
-            for (Attraction attraction : attractions.join()) {
+            for (Attraction attraction : attractions) {
                 if (user.getUserRewards().stream().filter(r -> r.getAttraction().getAttractionName().equals(attraction.getAttractionName())).count() == 0) {
                     if (nearAttraction(visitedLocation, attraction)) {
 
-                        CompletableFuture<UserReward> rewardsPointsFuture = CompletableFuture.supplyAsync(() -> getRewardPoints(attraction.getAttractionId(), user.getUserId()), executorService)
-                                .thenApplyAsync(rewardPoints -> new UserReward(visitedLocation, attraction, rewardPoints));
-                        rewardsPointsFuture.thenApply(userReward ->
-                                CompletableFuture.runAsync(() -> addUserReward(userReward, user)));
+//                        CompletableFuture<UserReward> rewardsPointsFuture = CompletableFuture.supplyAsync(() -> getRewardPoints(attraction.getAttractionId(), user.getUserId()), executorService)
+//                                .thenApplyAsync(rewardPoints -> new UserReward(visitedLocation, attraction, rewardPoints), executorService);
+//                        rewardsPointsFuture.thenApply(userReward ->
+//                                CompletableFuture.runAsync(() -> addUserReward(userReward, user),executorService));
+                    //todo clean code
+                        CompletableFuture.supplyAsync(() -> getRewardPoints(attraction.getAttractionId(), user.getUserId()), executorService)
+                                .thenAccept(rewardPoints -> {
+                                    UserReward userReward = new UserReward(visitedLocation, attraction, rewardPoints);
+                                    addUserReward(userReward, user);
+                                });
 
 //                        addUserReward(new UserReward(visitedLocation, attraction, getRewardPoints(attraction.getAttractionId(), user.getUserId())), user);
                     }

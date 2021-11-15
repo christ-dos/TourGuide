@@ -1,7 +1,7 @@
 <component name="libraryTable">
   <library name="Gradle: :gpsUtil:">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/tourguide-client/libs/gpsUtil.jar!/" />
+      <root url="jar://$PROJECT_DIR$/microservice-gps/libs/gpsUtil.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>

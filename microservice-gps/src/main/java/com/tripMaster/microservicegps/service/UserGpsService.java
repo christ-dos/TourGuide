@@ -1,6 +1,7 @@
 package com.tripMaster.microservicegps.service;
 
 import gpsUtil.location.Attraction;
+import gpsUtil.location.Location;
 import gpsUtil.location.VisitedLocation;
 
 import java.util.List;
@@ -16,4 +17,6 @@ public interface UserGpsService {
     VisitedLocation trackUserLocation(UUID userId);
 
     List<Attraction> getAttractions();
+
+    List<Attraction> getAttractionsByAverageDistance(Location location);
 }

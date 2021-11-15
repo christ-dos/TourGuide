@@ -30,5 +30,7 @@ public class Attraction extends Location {
                 ", attractionId=" + attractionId +
                 '}';
     }
+
+
 }
 

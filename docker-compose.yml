@@ -1,0 +1,25 @@
+version: '3.1'
+
+services:
+#  *****************Toutguide-client******************************
+  tourguide-client-app:
+    image: tourguide-client-image
+    container_name: tourguide-client
+    restart: always
+    build:
+      context: ./tourguide-client
+      dockerfile: Dockerfile
+    depends_on:
+      - microservice-gps-app
+    ports:
+      - "9090:9090"
+  #*****************microservice-gps******************************
+  microservice-gps-app:
+    image: microservice-gps-image
+    container_name: microservice-gps
+    restart: always
+    build:
+      context: ./microservice-gps
+      dockerfile: Dockerfile
+    ports:
+      - "9091:9091"

@@ -304,12 +304,13 @@ public class TourGuideClientServiceImplTest {
         attractions.add(new Attraction("Disneyland", "Anaheim", "CA", 33.817595D, -117.922008D));
         attractions.add(new Attraction("Belem", "Lisbon", "Portugal", -1.455755D, -48.490180));
         attractions.add(new Attraction("Mojave National Preserve", "Kelso", "CA", 35.141689D, -115.510399D));
-        when(microserviceUserGpsProxyMock.getAttractions()).thenReturn(attractions);
+//        when(microserviceUserGpsProxyMock.getAttractions()).thenReturn(attractions);
+        when(microserviceUserGpsProxyMock.getAttractionsByAverageDistance(anyDouble(),anyDouble())).thenReturn(attractions);
         //first and last attraction in method IsWithinAttraction give true and second attraction give false
-        when(tourGuideClientRewardsServiceImplMock.isWithinAttractionProximity(any(Attraction.class), any(Location.class))).thenReturn(true, false, true);
+//        when(tourGuideClientRewardsServiceImplMock.isWithinAttractionProximity(any(Attraction.class), any(Location.class))).thenReturn(true, false, true);
         when(tourGuideClientRewardsServiceImplMock.getDistance(any(Attraction.class), any(Location.class)))
-                .thenReturn(2500D,200D,500D,1500D);
-        doNothing().when(tourGuideClientRewardsServiceImplMock).setAttractionProximityRange(2500);
+                .thenReturn(10D,200D,500D);
+        doNothing().when(tourGuideClientRewardsServiceImplMock).setAttractionProximityRange(200);
         when(microserviceRewardsProxyMock.getRewardsPoints(any(UUID.class), any(UUID.class)))
                 .thenReturn(750,200,600);
         //WHEN
