@@ -406,7 +406,7 @@ public class TourGuideClientServiceImplTest {
         //THEN
         tourGuideClientServiceTest.tracker.stopTracking();
 
-        //five attractions are near of position calculated with average distnace of position
+        //five attractions are near of position calculated with average distance of position
         assertEquals(5, attractionsResult.size());
         //stored order ascending
         assertEquals(250, attractionsResult.get(0).getDistance());

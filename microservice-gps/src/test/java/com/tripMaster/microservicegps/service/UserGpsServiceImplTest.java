@@ -55,7 +55,7 @@ public class UserGpsServiceImplTest {
     }
 
     @Test
-    public void getAttractionsTest(){
+    public void getAttractionsTest_thenReturnListAllAttractions(){
         //GIVEN
         List<Attraction> attractions = new ArrayList();
         attractions.add(new Attraction("Disneyland", "Anaheim", "CA", 33.817595D, -117.922008D));
@@ -69,6 +69,47 @@ public class UserGpsServiceImplTest {
         assertEquals("Disneyland",attractionsResult.get(0).attractionName);
         assertEquals(33.817595D,attractionsResult.get(0).latitude);
         assertEquals(-117.922008D,attractionsResult.get(0).longitude);
+    }
+
+    @Test
+    public void getAttractionsByAverageDistanceTest_whenFourAttractionsAreNearPositionAndFourAreFar_thenReturnListAttractionsBelowAverageDistance() {
+        //GIVEN
+        VisitedLocation visitedLocation = new VisitedLocation(UUID.randomUUID(), new Location(33.817595D, -117.922008D), new Date());
+        List<Attraction> attractions = new ArrayList();
+        attractions.add(new Attraction("Mojave National Preserve", "Kelso", "CA", 35.141689D, -115.510399D));
+        attractions.add(new Attraction("Disneyland", "Anaheim", "CA", 33.817595D, -117.922008D));
+        attractions.add(new Attraction("Jackson Hole", "Jackson Hole", "WY", 43.582767D, -110.821999D));
+        attractions.add(new Attraction("Mojave National Preserve", "Kelso", "CA", 35.141689D, -115.510399D));
+        attractions.add(new Attraction("Big Ben", "London", "Royaume-Uni", 51.500729D, -0.124625D));
+        attractions.add(new Attraction("Himalaya", "Namche Barwa", "Tibet", 55.742793D, 37.615401D));
+        attractions.add(new Attraction("Belem", "Lisbon", "Portugal", -1.455755D, -48.490180));
+        attractions.add(new Attraction("Disneyland", "Paris", "France", 48.871900D, 2.776623D));
+
+        when(gpsUtilMock.getAttractions()).thenReturn(attractions);
+        //WHEN
+        List<Attraction> attractionsBelowAverageDistance = userGpsServiceTest.getAttractionsByAverageDistance(visitedLocation.location);
+        //THEN
+        assertEquals(4,attractionsBelowAverageDistance.size());
+        assertEquals("Disneyland", attractionsBelowAverageDistance.get(1).attractionName);
+        assertEquals("Mojave National Preserve", attractionsBelowAverageDistance.get(0).attractionName);
+    }
+
+    @Test
+    public void getAttractionsByAverageDistanceTest_whenAllAttractionsAreFarOfPosition_thenReturnListAttractionsBelowAverageDistance() {
+        //GIVEN
+        VisitedLocation visitedLocation = new VisitedLocation(UUID.randomUUID(), new Location(33.817595D, -117.922008D), new Date());
+        List<Attraction> attractions = new ArrayList();
+        attractions.add(new Attraction("Disneyland", "Paris", "France", 48.871900D, 2.776623D));
+        attractions.add(new Attraction("Belem", "Lisbon", "Portugal", -1.455755D, -48.490180));
+        attractions.add(new Attraction("Big Ben", "London", "Royaume-Uni", 51.500729D, -0.124625D));
+        attractions.add(new Attraction("Himalaya", "Namche Barwa", "Tibet", 55.742793D, 37.615401D));
+        when(gpsUtilMock.getAttractions()).thenReturn(attractions);
+        //WHEN
+        List<Attraction> attractionsBelowAverageDistance = userGpsServiceTest.getAttractionsByAverageDistance(visitedLocation.location);
+        //THEN
+        assertEquals(2,attractionsBelowAverageDistance.size());
+        assertEquals("Big Ben", attractionsBelowAverageDistance.get(1).attractionName);
+        assertEquals("Belem", attractionsBelowAverageDistance.get(0).attractionName);
     }
 
 }
