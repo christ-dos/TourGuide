@@ -15,8 +15,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.*;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.TimeUnit;
 
@@ -68,7 +66,7 @@ public class TourGuideClientRewardsServiceImplTest {
         VisitedLocation visitedLocationMock = new VisitedLocation(userTest.getUserId(), new Location(33.817595D, -116.922008D), new Date());
         VisitedLocation visitedLocationMock1 = new VisitedLocation(userTest.getUserId(), new Location(34.817595D, -117.922008D), new Date());
 
-        CopyOnWriteArrayList<VisitedLocation> visitedLocations = new CopyOnWriteArrayList<>(Arrays.asList(visitedLocationMock,visitedLocationMock1));
+        CopyOnWriteArrayList<VisitedLocation> visitedLocations = new CopyOnWriteArrayList<>(Arrays.asList(visitedLocationMock, visitedLocationMock1));
         userTest.setVisitedLocations(visitedLocations);
 
         InternalTestHelper.setInternalUserNumber(0);
@@ -161,7 +159,7 @@ public class TourGuideClientRewardsServiceImplTest {
     }
 
     @Test
-    public void getUserRewardsTest_whenUserNotExist_thenThrowUserNotFoundexception(){
+    public void getUserRewardsTest_whenUserNotExist_thenThrowUserNotFoundexception() {
         when(internalUserMapDAOMock.getUser(anyString())).thenReturn(null);
         //WHEN
         //THEN
@@ -169,8 +167,6 @@ public class TourGuideClientRewardsServiceImplTest {
 
         assertThrows(UserNotFoundException.class, () -> tourGuideClientRewardsServiceTest.getUserRewards("Unknown"));
         verify(internalUserMapDAOMock, times(1)).getUser(anyString());
-
-
     }
 
     @Test
@@ -236,7 +232,7 @@ public class TourGuideClientRewardsServiceImplTest {
         VisitedLocation visitedLocation = new VisitedLocation(userTest.getUserId(), new Location(38.697500D, -9.206667D), new Date());
 
         when(microserviceUserGpsProxyMock.getAttractions()).thenReturn(attractions);
-        when(microserviceRewardsProxyMock.getRewardsPoints(any(UUID.class),any(UUID.class))).thenReturn(200);
+        when(microserviceRewardsProxyMock.getRewardsPoints(any(UUID.class), any(UUID.class))).thenReturn(200);
         when(microserviceUserGpsProxyMock.trackUserLocation(any(UUID.class))).thenReturn(visitedLocation);
 
         InternalTestHelper.setInternalUserNumber(0);

@@ -49,13 +49,11 @@ public class TourGuideClientServiceImpl implements TourGuideClientService {
         }
         tracker = new Tracker(this);
         addShutDownHook();
-
     }
 
     public CompletableFuture<VisitedLocation> trackUserLocation(User user) {
         Locale.setDefault(new Locale("en", "US"));
         final ExecutorService executorService = Executors.newFixedThreadPool(1000);
-
 //        VisitedLocation visitedLocation = microserviceUserGpsProxy.trackUserLocation(user.getUserId());
 
         CompletableFuture<VisitedLocation> visitedLocationFuture =
@@ -71,7 +69,6 @@ public class TourGuideClientServiceImpl implements TourGuideClientService {
                     tourGuideClientRewardsServiceImpl.calculateRewards(user);
                 }, executorService)
         );
-
 //                tourGuideClientRewardsServiceImpl.calculateRewards(user);
 
         log.debug("Service - user location tracked for username: " + user.getUserName());
@@ -115,8 +112,8 @@ public class TourGuideClientServiceImpl implements TourGuideClientService {
     @Override
     public List<UserCurrentLocation> getAllCurrentLocations() {
         List<User> users = internalUserMapDAO.getAllUsers();
-
         log.debug("Service - current location for all users getted");
+
         return users.stream().map(u ->
                         new UserCurrentLocation(u.getUserId(), u.getVisitedLocations().get(u.getVisitedLocations().size() - 1).getLocation()))
                 .collect(Collectors.toList());
@@ -176,7 +173,7 @@ public class TourGuideClientServiceImpl implements TourGuideClientService {
 //        log.debug("Service - Five attractions near of position of user: " + visitedLocation.getUserId());
 //
 //        return getAttractionsNearVisitedLocation(attractions, visitedLocation);
-//    }
+//    }//todo clean code
 
     @Override
     public List<NearByAttraction> getNearByAttractions(VisitedLocation visitedLocation) {//todo method a revoir
@@ -197,7 +194,7 @@ public class TourGuideClientServiceImpl implements TourGuideClientService {
                                 (int) tourGuideClientRewardsServiceImpl.getDistance(attraction, visitedLocation.getLocation()),
                                 microserviceRewardsProxy.getRewardsPoints(attraction.getAttractionId(), visitedLocation.getUserId())))
                 .collect(Collectors.toList());
-        log.debug("Service - Five attractions near of position of user: " + visitedLocation.getUserId());
+        log.debug("Service - Attractions near of position of user: " + visitedLocation.getUserId());
 
         return nearByAttractionsList;
     }

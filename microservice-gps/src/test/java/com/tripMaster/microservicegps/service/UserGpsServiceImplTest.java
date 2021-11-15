@@ -23,7 +23,6 @@ import static org.mockito.Mockito.*;
  * Class that test the {@link UserGpsServiceImpl}
  *
  * @author Christine Duarte
- *
  */
 @ExtendWith(MockitoExtension.class)
 public class UserGpsServiceImplTest {
@@ -39,7 +38,7 @@ public class UserGpsServiceImplTest {
     }
 
     @Test
-    public void trackUserLocationTest(){
+    public void trackUserLocationTest() {
         //GIVEN
         UUID userId = UUID.randomUUID();
         VisitedLocation visitedLocationMock = new VisitedLocation(userId, new Location(33.817595D, -116.922008D), new Date());
@@ -55,7 +54,7 @@ public class UserGpsServiceImplTest {
     }
 
     @Test
-    public void getAttractionsTest_thenReturnListAllAttractions(){
+    public void getAttractionsTest_thenReturnListAllAttractions() {
         //GIVEN
         List<Attraction> attractions = new ArrayList();
         attractions.add(new Attraction("Disneyland", "Anaheim", "CA", 33.817595D, -117.922008D));
@@ -66,9 +65,9 @@ public class UserGpsServiceImplTest {
         List<Attraction> attractionsResult = gpsUtilMock.getAttractions();
         //THEN
         assertTrue(attractionsResult.size() == 3);
-        assertEquals("Disneyland",attractionsResult.get(0).attractionName);
-        assertEquals(33.817595D,attractionsResult.get(0).latitude);
-        assertEquals(-117.922008D,attractionsResult.get(0).longitude);
+        assertEquals("Disneyland", attractionsResult.get(0).attractionName);
+        assertEquals(33.817595D, attractionsResult.get(0).latitude);
+        assertEquals(-117.922008D, attractionsResult.get(0).longitude);
     }
 
     @Test
@@ -89,7 +88,7 @@ public class UserGpsServiceImplTest {
         //WHEN
         List<Attraction> attractionsBelowAverageDistance = userGpsServiceTest.getAttractionsByAverageDistance(visitedLocation.location);
         //THEN
-        assertEquals(4,attractionsBelowAverageDistance.size());
+        assertEquals(4, attractionsBelowAverageDistance.size());
         assertEquals("Disneyland", attractionsBelowAverageDistance.get(1).attractionName);
         assertEquals("Mojave National Preserve", attractionsBelowAverageDistance.get(0).attractionName);
     }
@@ -107,7 +106,7 @@ public class UserGpsServiceImplTest {
         //WHEN
         List<Attraction> attractionsBelowAverageDistance = userGpsServiceTest.getAttractionsByAverageDistance(visitedLocation.location);
         //THEN
-        assertEquals(2,attractionsBelowAverageDistance.size());
+        assertEquals(2, attractionsBelowAverageDistance.size());
         assertEquals("Big Ben", attractionsBelowAverageDistance.get(1).attractionName);
         assertEquals("Belem", attractionsBelowAverageDistance.get(0).attractionName);
     }
