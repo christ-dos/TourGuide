@@ -282,7 +282,6 @@ public class TourGuideClientServiceImplTest {
         tourGuideClientServiceTest.tracker.stopTracking();
 
         assertThrows(UserNotFoundException.class, () -> tourGuideClientServiceTest.getTripDeals("Unknown"));
-        verify(internalUserMapDAOMock, times(1)).getUser(anyString());
     }
 
     @Test

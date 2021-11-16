@@ -118,7 +118,7 @@ public class TestPerformance {
 		allUsers.forEach(user -> tourGuideClientService.addToVisitedLocations(new VisitedLocation(user.getUserId(), new Location(attraction.getLatitude(),attraction.getLongitude()), new Date()),user));
 		allUsers.forEach(user -> tourGuideClientRewardsService.calculateRewards(user));
 //		try {
-//			TimeUnit.MILLISECONDS.sleep(20);
+//			TimeUnit.MILLISECONDS.sleep(2000);
 //		} catch (InterruptedException e) {
 //			e.printStackTrace();
 //		}
