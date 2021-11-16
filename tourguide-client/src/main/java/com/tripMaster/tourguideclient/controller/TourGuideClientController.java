@@ -43,7 +43,7 @@ public class TourGuideClientController {
     // The distance in miles between the user's location and each of the attractions.
     // The reward points for visiting each Attraction.
     //    Note: Attraction reward points can be gathered from RewardsCentral
-    @RequestMapping("/getNearbyAttractions")
+    @GetMapping("/getNearbyAttractions")
     public List<NearByAttraction> getNearbyAttractions(@RequestParam String userName) {
         VisitedLocation visitedLocation = tourGuideClientService.getUserLocation(userName);
         log.debug("Controller - get list of attraction near by position of user: " + userName);
@@ -56,7 +56,7 @@ public class TourGuideClientController {
        return tourGuideClientRewardsService.getUserRewards(userName);
     }
 
-    @RequestMapping("/getAllCurrentLocations")
+    @GetMapping("/getAllCurrentLocations")
     public List<UserCurrentLocation> getAllCurrentLocations() {
         // TODO: Get a list of every user's most recent location as JSON
         //- Note: does not use gpsUtil to query for their current location,
@@ -77,5 +77,4 @@ public class TourGuideClientController {
         log.debug("Controller - request to get Trip deals for user: " + userName);
         return tourGuideClientService.getTripDeals(userName);
     }
-
 }

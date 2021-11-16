@@ -53,15 +53,15 @@ public class TourGuideClientRewardsServiceImpl implements TourGuideClientRewards
         final ExecutorService executorService = Executors.newFixedThreadPool(1600);
 
         List<VisitedLocation> userLocations = user.getVisitedLocations();
-//        CompletableFuture<List<Attraction>> attractions = CompletableFuture.supplyAsync(() -> microserviceUserGpsProxy.getAttractions(), executorService)
-//                .thenApply(attractions1 -> attractions1);
-        List<Attraction> attractions = microserviceUserGpsProxy.getAttractions();
+        CompletableFuture<List<Attraction>> attractions = CompletableFuture.supplyAsync(() -> microserviceUserGpsProxy.getAttractions(), executorService)
+                .thenApply(attractions1 -> attractions1);
+//        List<Attraction> attractions = microserviceUserGpsProxy.getAttractions();
 
         log.info("Service - Calcul en cours...." + user.getUserName());
         //todo retirer log + clean code
 //        setProximityBuffer(Integer.MAX_VALUE);
         for (VisitedLocation visitedLocation : userLocations) {
-            for (Attraction attraction : attractions) {
+            for (Attraction attraction : attractions.join()) {
                 if (user.getUserRewards().stream().filter(r -> r.getAttraction().getAttractionName().equals(attraction.getAttractionName())).count() == 0) {
                     if (nearAttraction(visitedLocation, attraction)) {
 
@@ -70,6 +70,7 @@ public class TourGuideClientRewardsServiceImpl implements TourGuideClientRewards
 //                        rewardsPointsFuture.thenApply(userReward ->
 //                                CompletableFuture.runAsync(() -> addUserReward(userReward, user),executorService));
                     //todo clean code
+
                         CompletableFuture.supplyAsync(() -> getRewardPoints(attraction.getAttractionId(), user.getUserId()), executorService)
                                 .thenAccept(rewardPoints -> {
                                     UserReward userReward = new UserReward(visitedLocation, attraction, rewardPoints);
