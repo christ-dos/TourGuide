@@ -91,11 +91,14 @@ public class TestPerformance {
 		stopWatch.start();
 		//TODO clean code
 //		long size = allUsers.stream().parallel().map(u->tourGuideService.trackUserLocation(u)).collect(Collectors.toSet()).size();
-//		System.out.println("nombre:" + size);
+//		System.out.println(nombre:" + size);
+		int i=0;
 		for(User user : allUsers) {
 			tourGuideClientService.trackUserLocation(user);
+			i++;
 //			System.out.println("passage dans la boucle de test:");
 		}
+		System.out.println("*************************nombre************************: " + i);
 		tourGuideClientService.tracker.stopTracking();
 
 		System.out.println("highVolumeTrackLocation: Time Elapsed: " + TimeUnit.MILLISECONDS.toSeconds(stopWatch.getTime()) + " seconds.");

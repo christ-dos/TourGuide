@@ -174,6 +174,11 @@ public class TourGuideClientServiceImplTest {
         InternalTestHelper.setInternalUserNumber(0);
         VisitedLocation visitedLocationResult = tourGuideClientServiceTest.getUserLocation(userTest2.getUserName());
         //THEN
+        try {
+			TimeUnit.MILLISECONDS.sleep(20);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
         tourGuideClientServiceTest.tracker.stopTracking();
 
         assertEquals(userTest2.getUserId(), visitedLocationResult.getUserId());

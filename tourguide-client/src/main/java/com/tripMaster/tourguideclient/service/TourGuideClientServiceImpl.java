@@ -53,7 +53,7 @@ public class TourGuideClientServiceImpl implements TourGuideClientService {
 
     public CompletableFuture<VisitedLocation> trackUserLocation(User user) {
         Locale.setDefault(new Locale("en", "US"));
-        final ExecutorService executorService = Executors.newFixedThreadPool(1000);
+        final ExecutorService executorService = Executors.newFixedThreadPool(10000);
 //        VisitedLocation visitedLocation = microserviceUserGpsProxy.trackUserLocation(user.getUserId());
 
         CompletableFuture<VisitedLocation> visitedLocationFuture =

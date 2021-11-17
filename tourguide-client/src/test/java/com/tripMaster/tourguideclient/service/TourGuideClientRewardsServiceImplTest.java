@@ -242,7 +242,7 @@ public class TourGuideClientRewardsServiceImplTest {
         List<UserReward> userRewards = userTest.getUserRewards();
         userTest.setUserRewards(userRewards);
         try {
-            TimeUnit.MILLISECONDS.sleep(10);
+            TimeUnit.MILLISECONDS.sleep(50);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

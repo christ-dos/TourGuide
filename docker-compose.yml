@@ -4,12 +4,12 @@ services:
 #  *****************Toutguide-client******************************
   tourguide-client-app:
     image: tourguide-client-image
-    container_name: tourguide-client
+#    container_name: tourguide-client
     restart: always
     environment:
-      microservice-gps_url: microservice-gps-app:9091
-      microservice-rewards_url: microservice-rewards-app:9092
-      microservice-tripPricer_url: microservice-trippricer-app:9093
+      MICROSERVICE-GPS_URL: microservice-gps-app:9191
+      MICROSERVICE-REWARDS_URL: microservice-rewards-app:9292
+      MICROSERVICE-TRIPPRICER_URL: microservice-trippricer-app:9393
     build:
       context: ./tourguide-client
       dockerfile: Dockerfile
@@ -22,23 +22,29 @@ services:
 #  *****************microservice-gps******************************
   microservice-gps-app:
     image: microservice-gps-image
-    container_name: microservice-gps
+#    container_name: microservice-gps
     restart: always
     build:
       context: ./microservice-gps
       dockerfile: Dockerfile
     ports:
-      - "9091:9091"
+      - "9191-9198:9191"
+    deploy:
+      mode: replicated
+      replicas: 6
 #  *****************microservice-rewards******************************
   microservice-rewards-app:
     image: microservice-rewards-image
-    container_name: microservice-rewards
+#    container_name: microservice-rewards
     restart: always
     build:
       context: ./microservice-rewards
       dockerfile: Dockerfile
     ports:
-      - "9092:9092"
+      - "9292-9298:9292"
+    deploy:
+      mode: replicated
+      replicas: 6
 
   #  *****************microservice-tripPricer******************************
   microservice-trippricer-app:
@@ -49,4 +55,7 @@ services:
       context: ./microservice-tripPricer
       dockerfile: Dockerfile
     ports:
-      - "9093:9093"
+      - "9393-9395:9393"
+    deploy:
+      mode: replicated
+      replicas: 1
