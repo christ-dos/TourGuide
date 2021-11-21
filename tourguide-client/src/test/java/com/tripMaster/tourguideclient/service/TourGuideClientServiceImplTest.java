@@ -243,6 +243,7 @@ public class TourGuideClientServiceImplTest {
     @Test
     public void getTripDealsTest_whenUserExistAndUserRewardsListIsNotEmpty_thenReturnListProviders() {
         //GIVEN
+        UserPreferences userPreferences = new UserPreferences(200,5,2,1);
         Attraction attraction1 = new Attraction("Disneyland", "Anaheim", "CA", 33.817595D, -117.922008D);
         Attraction attraction2 = new Attraction("Jackson Hole", "Jackson Hole", "WY", 43.582767D, -110.821999D);
 
@@ -259,6 +260,7 @@ public class TourGuideClientServiceImplTest {
                 new Provider(UUID.randomUUID(), "FlyAway Trips", 150D),
                 new Provider(UUID.randomUUID(), "Sunny Days", 500D)
         );
+
         when(internalUserMapDAOMock.getUser(anyString())).thenReturn(userTest);
         when(internalUserMapDAOMock.getTripPricerApiKey()).thenReturn("apiKey");
         userTest.setUserRewards(rewardsTest);
@@ -267,6 +269,7 @@ public class TourGuideClientServiceImplTest {
                 getProviders(anyString(), any(UUID.class), anyInt(), anyInt(), anyInt(), anyInt()))
                 .thenReturn(providersTest);
         //WHEN
+        userTest.setUserPreferences(userPreferences);
         List<Provider> providersResult = tourGuideClientServiceTest.getTripDeals("jon");
         //THEN
         tourGuideClientServiceTest.tracker.stopTracking();
