@@ -6,7 +6,6 @@ import com.tripMaster.tourguideclient.service.TourGuideClientService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -53,7 +52,7 @@ public class TourGuideClientController {
     @GetMapping("/getRewards")
     public List<UserReward> getRewards(@RequestParam String userName) {
         log.debug("Controller - get list of rewards for username: " + userName);
-       return tourGuideClientRewardsService.getUserRewards(userName);
+        return tourGuideClientRewardsService.getUserRewards(userName);
     }
 
     @GetMapping("/getAllCurrentLocations")
@@ -68,7 +67,7 @@ public class TourGuideClientController {
         //        ...
         //     }
         List<UserCurrentLocation> locations = tourGuideClientService.getAllCurrentLocations();
-       log.info("Controller - request to get current position of all users");
+        log.info("Controller - request to get current position of all users");
         return locations;
     }
 

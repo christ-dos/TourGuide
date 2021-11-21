@@ -8,15 +8,14 @@ import tripPricer.TripPricer;
  * Class which configures a bean for lib {@link TripPricer }
  *
  * @author Christine Duarte
- *
  */
 @Configuration
 public class MicroServiceTripPricerModule {
-	
-	@Bean
-	public TripPricer getTripPricer() {
-		return new TripPricer();
-	}
-	
+
+    @Bean
+    public TripPricer getTripPricer() {
+        return new TripPricer();
+    }
+
 
 }

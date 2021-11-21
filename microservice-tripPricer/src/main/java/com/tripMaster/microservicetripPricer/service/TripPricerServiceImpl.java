@@ -9,6 +9,12 @@ import tripPricer.TripPricer;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Class of service that permit get price and list of providers which
+ * offers deals
+ *
+ * @author Christine Duarte
+ */
 @Service
 @Slf4j
 public class TripPricerServiceImpl implements TripPricerService {
