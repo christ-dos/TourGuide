@@ -10,6 +10,10 @@
         <module name="tourguide-client.main" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel target="1.6" />
+    <bytecodeTargetLevel target="1.6">
+      <module name="TourGuide" target="1.8" />
+      <module name="TourGuide.main" target="1.8" />
+      <module name="TourGuide.test" target="1.8" />
+    </bytecodeTargetLevel>
   </component>
 </project>

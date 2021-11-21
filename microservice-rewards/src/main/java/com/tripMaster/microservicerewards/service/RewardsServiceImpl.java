@@ -7,6 +7,11 @@ import rewardCentral.RewardCentral;
 
 import java.util.UUID;
 
+/**
+ * Class of service that permit get rewards points
+ *
+ * @author Christine Duarte
+ */
 @Service
 @Slf4j
 public class RewardsServiceImpl implements RewardsService {
