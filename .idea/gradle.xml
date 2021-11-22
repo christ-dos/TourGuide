@@ -5,55 +5,45 @@
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
         <option name="distributionType" value="DEFAULT_WRAPPED" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/../tourGuideProjet8/microservice-gps" />
+        <option name="gradleHome" value="$PROJECT_DIR$/../../../Gradle/gradle-7.3" />
+        <option name="gradleJvm" value="#JAVA_HOME" />
         <option name="modules">
           <set>
-            <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/../tourGuideProjet8/microservice-gps" />
           </set>
         </option>
       </GradleProjectSettings>
       <GradleProjectSettings>
         <option name="distributionType" value="DEFAULT_WRAPPED" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$/TourGuide" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/../tourGuideProjet8/microservice-rewards" />
+        <option name="gradleHome" value="$PROJECT_DIR$/../../../Gradle/gradle-7.3" />
+        <option name="gradleJvm" value="#JAVA_HOME" />
         <option name="modules">
           <set>
-            <option value="$PROJECT_DIR$/TourGuide" />
+            <option value="$PROJECT_DIR$/../tourGuideProjet8/microservice-rewards" />
           </set>
         </option>
       </GradleProjectSettings>
       <GradleProjectSettings>
         <option name="distributionType" value="DEFAULT_WRAPPED" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$/microservice-gps" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/../tourGuideProjet8/microservice-tripPricer" />
+        <option name="gradleHome" value="$PROJECT_DIR$/../../../Gradle/gradle-7.3" />
+        <option name="gradleJvm" value="#JAVA_HOME" />
         <option name="modules">
           <set>
-            <option value="$PROJECT_DIR$/microservice-gps" />
+            <option value="$PROJECT_DIR$/../tourGuideProjet8/microservice-tripPricer" />
           </set>
         </option>
       </GradleProjectSettings>
       <GradleProjectSettings>
         <option name="distributionType" value="DEFAULT_WRAPPED" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$/microservice-rewards" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/../tourGuideProjet8/tourguide-client" />
+        <option name="gradleHome" value="$PROJECT_DIR$/../../../Gradle/gradle-7.3" />
+        <option name="gradleJvm" value="#JAVA_HOME" />
         <option name="modules">
           <set>
-            <option value="$PROJECT_DIR$/microservice-rewards" />
-          </set>
-        </option>
-      </GradleProjectSettings>
-      <GradleProjectSettings>
-        <option name="distributionType" value="DEFAULT_WRAPPED" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$/microservice-tripPricer" />
-        <option name="modules">
-          <set>
-            <option value="$PROJECT_DIR$/microservice-tripPricer" />
-          </set>
-        </option>
-      </GradleProjectSettings>
-      <GradleProjectSettings>
-        <option name="distributionType" value="DEFAULT_WRAPPED" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$/tourguide-client" />
-        <option name="modules">
-          <set>
-            <option value="$PROJECT_DIR$/tourguide-client" />
+            <option value="$PROJECT_DIR$/../tourGuideProjet8/tourguide-client" />
           </set>
         </option>
       </GradleProjectSettings>

@@ -1,7 +1,9 @@
 package com.tripMaster.tourguideclient.DAO;
 
 import com.tripMaster.tourguideclient.helper.InternalTestHelper;
-import com.tripMaster.tourguideclient.model.*;
+import com.tripMaster.tourguideclient.model.Location;
+import com.tripMaster.tourguideclient.model.User;
+import com.tripMaster.tourguideclient.model.VisitedLocation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
@@ -12,6 +14,12 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+/**
+ * Class of Repository that manage the user
+ * for internal testing
+ *
+ * @author Christine Duarte
+ */
 @Repository
 @Slf4j
 public class InternalUserMapDAO {
@@ -41,8 +49,8 @@ public class InternalUserMapDAO {
 
     private void generateUserLocationHistory(User user) {
         IntStream.range(0, 3).forEach(i -> {
-//            user.getVisitedLocations().add(
-//                    new VisitedLocation(user.getUserId(), new Location(generateRandomLatitude(), generateRandomLongitude()), getRandomTime()));
+            user.getVisitedLocations().add(
+                    new VisitedLocation(user.getUserId(), new Location(generateRandomLatitude(), generateRandomLongitude()), getRandomTime()));
 //            user.getUserRewards().add(
 //                    new UserReward(new VisitedLocation(user.getUserId(), new Location(generateRandomLatitude(), generateRandomLongitude()), getRandomTime()),
 //                            new Attraction("Disneyland", "Anaheim", "CA", 33.817595D, -117.922008D), 200)
