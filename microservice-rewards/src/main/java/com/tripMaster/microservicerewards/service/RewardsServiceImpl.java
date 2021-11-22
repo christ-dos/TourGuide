@@ -7,6 +7,11 @@ import rewardCentral.RewardCentral;
 
 import java.util.UUID;
 
+/**
+ * Class of service that permit get rewards points
+ *
+ * @author Christine Duarte
+ */
 @Service
 @Slf4j
 public class RewardsServiceImpl implements RewardsService {
@@ -20,9 +25,7 @@ public class RewardsServiceImpl implements RewardsService {
     }
 
     public int getRewardPoints(UUID attractionId, UUID userId) {
-        System.out.println("Calculate reward on: " + Thread.currentThread().getName());
-        //TODO RETIRER SYS.OUT
-        log.info("rewards points for user:"  + userId);
+        log.info("Service - Rewards points getted for user:"  + userId);
         return rewardsCentral.getAttractionRewardPoints(attractionId, userId);
     }
 }

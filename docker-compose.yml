@@ -1,0 +1,51 @@
+version: '3.1'
+
+services:
+#  *****************Toutguide-client******************************
+  tourguide-client-app:
+    image: tourguide-client-image
+    container_name: tourguide-client
+    restart: always
+    environment:
+      MICROSERVICE-GPS_URL: microservice-gps-app:9191
+      MICROSERVICE-REWARDS_URL: microservice-rewards-app:9292
+      MICROSERVICE-TRIPPRICER_URL: microservice-trippricer-app:9393
+    build:
+      context: ./tourguide-client
+      dockerfile: Dockerfile
+    depends_on:
+      - microservice-gps-app
+      - microservice-rewards-app
+      - microservice-trippricer-app
+    ports:
+      - "9090:9090"
+#  *****************microservice-gps******************************
+  microservice-gps-app:
+    image: microservice-gps-image
+    container_name: microservice-gps
+    restart: always
+    build:
+      context: ./microservice-gps
+      dockerfile: Dockerfile
+    ports:
+      - "9191:9191"
+#  *****************microservice-rewards******************************
+  microservice-rewards-app:
+    image: microservice-rewards-image
+    container_name: microservice-rewards
+    restart: always
+    build:
+      context: ./microservice-rewards
+      dockerfile: Dockerfile
+    ports:
+      - "9292:9292"
+  #  *****************microservice-tripPricer******************************
+  microservice-trippricer-app:
+    image: microservice-trippricer-image
+    container_name: microservice-trippricer
+    restart: always
+    build:
+      context: ./microservice-tripPricer
+      dockerfile: Dockerfile
+    ports:
+      - "9393:9393"

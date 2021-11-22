@@ -16,17 +16,21 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
 @Service
 @Slf4j
 public class TourGuideClientServiceImpl implements TourGuideClientService {
     public final Tracker tracker;
-    private MicroserviceUserGpsProxy microserviceUserGpsProxy;
-    private MicroserviceRewardsProxy microserviceRewardsProxy;
-    private InternalUserMapDAO internalUserMapDAO;
-    private TourGuideClientRewardsServiceImpl tourGuideClientRewardsServiceImpl;
-    private MicroserviceTripPricerProxy microserviceTripPricerProxy;
+    private final MicroserviceUserGpsProxy microserviceUserGpsProxy;
+    private final MicroserviceRewardsProxy microserviceRewardsProxy;
+    private final InternalUserMapDAO internalUserMapDAO;
+    private final TourGuideClientRewardsServiceImpl tourGuideClientRewardsServiceImpl;
+    private final MicroserviceTripPricerProxy microserviceTripPricerProxy;
     boolean testMode = true;
 
     @Autowired
@@ -45,17 +49,35 @@ public class TourGuideClientServiceImpl implements TourGuideClientService {
         }
         tracker = new Tracker(this);
         addShutDownHook();
-
     }
 
-    public VisitedLocation trackUserLocation(User user) {
-        Locale.setDefault(new Locale("en", "US"));
-        VisitedLocation visitedLocation = microserviceUserGpsProxy.trackUserLocation(user.getUserId());
-        addToVisitedLocations(visitedLocation, user);
-        tourGuideClientRewardsServiceImpl.calculateRewards(user);
+    public CompletableFuture<VisitedLocation> trackUserLocation(User user) {
+        final ExecutorService executorService = Executors.newFixedThreadPool(10000);
+
+        CompletableFuture<VisitedLocation> visitedLocationFuture = null;
+        try {
+            Locale.setDefault(new Locale("en", "US"));
+//        VisitedLocation visitedLocation = microserviceUserGpsProxy.trackUserLocation(user.getUserId());
+
+            visitedLocationFuture = CompletableFuture.supplyAsync(() -> microserviceUserGpsProxy.trackUserLocation(user.getUserId()), executorService);
+//        visitedLocationFuture.thenAccept(visitedLocation -> addToVisitedLocations(visitedLocation, user));
+////                .thenAcceptAsync(visitedLocation->tourGuideClientRewardsServiceImpl.calculateRewards(user));
+//        visitedLocationFuture.thenCompose(visitedLocation -> CompletableFuture.runAsync(
+//                () -> tourGuideClientRewardsServiceImpl.calculateRewards(user)));
+            //todo clean code
+            visitedLocationFuture.thenCompose(visitedLocation ->
+                    CompletableFuture.runAsync(() -> {
+                        addToVisitedLocations(visitedLocation, user);
+                        tourGuideClientRewardsServiceImpl.calculateRewards(user);
+                    }, executorService)
+            );
+        } catch (NumberFormatException ex) {
+            log.debug("NumberFormatException:" + ex.getMessage());
+        }
+//                tourGuideClientRewardsServiceImpl.calculateRewards(user);
 
         log.debug("Service - user location tracked for username: " + user.getUserName());
-        return visitedLocation;
+        return visitedLocationFuture;
     }
 
     public User getUser(String userName) {
@@ -86,7 +108,7 @@ public class TourGuideClientServiceImpl implements TourGuideClientService {
         List<VisitedLocation> visitedLocations = user.getVisitedLocations();
         VisitedLocation visitedLocation = (user.getVisitedLocations().size() > 0) ?
                 user.getVisitedLocations().get(visitedLocations.size() - 1) :
-                trackUserLocation(user);
+                trackUserLocation(user).join();
 
         log.debug("Service - get user location for user: " + userName);
         return visitedLocation;
@@ -95,10 +117,10 @@ public class TourGuideClientServiceImpl implements TourGuideClientService {
     @Override
     public List<UserCurrentLocation> getAllCurrentLocations() {
         List<User> users = internalUserMapDAO.getAllUsers();
-
         log.debug("Service - current location for all users getted");
-        return  users.stream().map(u ->
-                        new UserCurrentLocation(u.getUserId(), u.getVisitedLocations().get(u.getVisitedLocations().size() - 1).getLocation()))
+
+        return users.stream()
+                .map(u -> new UserCurrentLocation(u.getUserId(), u.getVisitedLocations().get(u.getVisitedLocations().size() - 1).getLocation()))
                 .collect(Collectors.toList());
     }
 
@@ -130,58 +152,65 @@ public class TourGuideClientServiceImpl implements TourGuideClientService {
         return providers;
     }
 
+//    public List<NearByAttraction> getNearByAttractions(VisitedLocation visitedLocation) {//todo method a revoir
+//        List<Attraction> nearbyAttractions = new ArrayList<>();
+//        List<Double> distances = new ArrayList<>();
+//        List<Attraction> attractions = microserviceUserGpsProxy.getAttractions();
+
+//        for (Attraction attraction : attractions) {
+//            if (tourGuideClientRewardsServiceImpl.isWithinAttractionProximity(attraction, visitedLocation.getLocation())) {
+//                nearbyAttractions.add(attraction);
+//                log.debug("Service - Attraction added in nearbyAttraction list,attraction with ID: " + attraction.getAttractionId());
+//            } else {
+//                distances.add(tourGuideClientRewardsServiceImpl.getDistance(attraction, visitedLocation.getLocation()));
+//                log.info("Service - Distance added in list distances attraction is far");
+//            }
+//        }
+//        double averageDistances = 0;
+//        List<NearByAttraction> nearbyAttractionsList;
+//        if (nearbyAttractions.size() < 5) {
+//            averageDistances = getAverageDistanceByAttraction(distances);
+//            tourGuideClientRewardsServiceImpl.setAttractionProximityRange((int) averageDistances);
+//            log.debug("Service - Five attractions near of position after calculate average distance of user: " + visitedLocation.getUserId());
+//
+//            return getAttractionsNearVisitedLocation(attractions, visitedLocation);
+//        }
+//        log.debug("Service - Five attractions near of position of user: " + visitedLocation.getUserId());
+//
+//        return getAttractionsNearVisitedLocation(attractions, visitedLocation);
+//    }//todo clean code
+
     @Override
-    public List<NearByAttraction> getNearByAttractions(VisitedLocation visitedLocation) {
-        List<Attraction> nearbyAttractions = new ArrayList<>();
-        List<Double> distances = new ArrayList<>();
-        List<Attraction> attractions = microserviceUserGpsProxy.getAttractions();
+    public List<NearByAttraction> getNearByAttractions(VisitedLocation visitedLocation) {//todo method a revoir
+        List<Attraction> attractions = microserviceUserGpsProxy.getAttractionsByAverageDistance(visitedLocation.getLocation().getLatitude(), visitedLocation.getLocation().getLongitude());
 
-        for (Attraction attraction : attractions) {
-            if (tourGuideClientRewardsServiceImpl.isWithinAttractionProximity(attraction, visitedLocation.getLocation())) {
-                nearbyAttractions.add(attraction);
-                log.debug("Service - Attraction added in nearbyAttraction list,attraction with ID: " + attraction.getAttractionId());
+        List<NearByAttraction> nearByAttractionsList = attractions.stream()
+                .sorted((o1, o2) -> {
+                    Double distanceO1 = tourGuideClientRewardsServiceImpl.getDistance(o1, visitedLocation.getLocation());
+                    Double distanceO2 = tourGuideClientRewardsServiceImpl.getDistance(o2, visitedLocation.getLocation());
 
-            } else {
-                distances.add(tourGuideClientRewardsServiceImpl.getDistance(attraction, visitedLocation.getLocation()));
-                log.info("Service - Distance added in list distances attraction is far");
-            }
-        }
-        double averageDistances = 0;
-        List<NearByAttraction> nearbyAttractionsList = new ArrayList<>();
-        if (nearbyAttractions.size() < 5) {
-            averageDistances = getAverageDistanceByAttraction(distances);
-            tourGuideClientRewardsServiceImpl.setAttractionProximityRange((int) averageDistances);
-
-            nearbyAttractionsList = attractions.stream()
-                    .filter(attraction -> tourGuideClientRewardsServiceImpl.isWithinAttractionProximity(attraction, visitedLocation.getLocation()))
-                    .map(attraction ->
-                            new NearByAttraction(attraction.getAttractionName(),
-                                    new Location(attraction.getLatitude(), attraction.getLongitude()),
-                                    visitedLocation.getLocation(),
-                                    (int) tourGuideClientRewardsServiceImpl.getDistance(attraction, visitedLocation.getLocation()),
-                                    microserviceRewardsProxy.getRewardsPoints(attraction.getAttractionId(), visitedLocation.getUserId())))
-                    .sorted()
-                    .limit(5)
-                    .collect(Collectors.toList());
-            return nearbyAttractionsList;
-        }
-        nearbyAttractionsList = nearbyAttractions.stream()
-                .map(attraction ->
-                        new NearByAttraction(attraction.getAttractionName(),
-                                new Location(attraction.getLatitude(), attraction.getLongitude()),
-                                visitedLocation.getLocation(),
-                                (int) tourGuideClientRewardsServiceImpl.getDistance(attraction, visitedLocation.getLocation()),
-                                microserviceRewardsProxy.getRewardsPoints(attraction.getAttractionId(), visitedLocation.getUserId())))
-                .sorted()
+                    return distanceO1 == distanceO2 ? 0 : distanceO1 > distanceO2 ? 1 : -1;
+                })
                 .limit(5)
+                .map(attraction -> buildNearByAttraction(visitedLocation, attraction))
                 .collect(Collectors.toList());
-        log.debug("Service - list of attractions near by position for user: " + visitedLocation.getUserId());
-        return nearbyAttractionsList;
+        log.debug("Service - Attractions near of position of user: " + visitedLocation.getUserId());
+
+        return nearByAttractionsList;
+    }
+
+    private NearByAttraction buildNearByAttraction(VisitedLocation visitedLocation, Attraction attraction) {
+        return new NearByAttraction(attraction.getAttractionName(),
+                new Location(attraction.getLatitude(), attraction.getLongitude()),
+                visitedLocation.getLocation(),
+                (int) tourGuideClientRewardsServiceImpl.getDistance(attraction, visitedLocation.getLocation()),
+                microserviceRewardsProxy.getRewardsPoints(attraction.getAttractionId(), visitedLocation.getUserId()));
     }
 
     public void addToVisitedLocations(VisitedLocation visitedLocation, User user) {
-        List<VisitedLocation> visitedLocations = user.getVisitedLocations();
+        CopyOnWriteArrayList<VisitedLocation> visitedLocations = user.getVisitedLocations();
         visitedLocations.add(visitedLocation);
+        user.setVisitedLocations(visitedLocations);
         log.debug("Service - Visited location added for user: " + user.getUserName());
     }
 
@@ -190,6 +219,26 @@ public class TourGuideClientServiceImpl implements TourGuideClientService {
         return distances.stream().mapToDouble(s -> s)
                 .average()
                 .orElse(0D);
+    }
+
+    private List<NearByAttraction> getAttractionsNearVisitedLocation(List<Attraction> attractions, VisitedLocation visitedLocation) {
+        return attractions.stream()
+                .filter(attraction -> tourGuideClientRewardsServiceImpl.isWithinAttractionProximity(attraction, visitedLocation.getLocation()))
+                .sorted((o1, o2) -> {
+                    Double distanceO1 = tourGuideClientRewardsServiceImpl.getDistance(o1, visitedLocation.getLocation());
+                    Double distanceO2 = tourGuideClientRewardsServiceImpl.getDistance(o2, visitedLocation.getLocation());
+
+                    return distanceO1 == distanceO2 ? 0 : distanceO1 > distanceO2 ? 1 : -1;
+                })
+                .limit(5)
+                .map(attraction ->
+                        new NearByAttraction(attraction.getAttractionName(),
+                                new Location(attraction.getLatitude(), attraction.getLongitude()),
+                                visitedLocation.getLocation(),
+                                (int) tourGuideClientRewardsServiceImpl.getDistance(attraction, visitedLocation.getLocation()),
+                                microserviceRewardsProxy.getRewardsPoints(attraction.getAttractionId(), visitedLocation.getUserId())))
+                .collect(Collectors.toList());
+        //todo method private de la première version à retirer si on garde la deuxième version
     }
 
     private void addShutDownHook() {

@@ -1,7 +1,9 @@
 package com.tripMaster.tourguideclient.DAO;
 
 import com.tripMaster.tourguideclient.helper.InternalTestHelper;
-import com.tripMaster.tourguideclient.model.*;
+import com.tripMaster.tourguideclient.model.Location;
+import com.tripMaster.tourguideclient.model.User;
+import com.tripMaster.tourguideclient.model.VisitedLocation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
@@ -12,6 +14,12 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+/**
+ * Class of Repository that manage the user
+ * for internal testing
+ *
+ * @author Christine Duarte
+ */
 @Repository
 @Slf4j
 public class InternalUserMapDAO {

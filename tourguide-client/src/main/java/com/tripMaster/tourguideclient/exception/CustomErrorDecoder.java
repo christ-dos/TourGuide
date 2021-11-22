@@ -8,7 +8,7 @@ import feign.codec.ErrorDecoder;
  *
  * @author Christine Duarte
  */
-public class CustomErrorDecoder  implements ErrorDecoder {
+public class CustomErrorDecoder implements ErrorDecoder {
 
     private final ErrorDecoder defaultErrorDecoder = new Default();
 

@@ -1,21 +1,20 @@
 package com.tripMaster.microservicegps;
 
-import com.tripMaster.microservicegps.service.UserGpsService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.openfeign.EnableFeignClients;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
-import java.util.UUID;
-
+/**
+ * Class that start the application microservice-gps
+ *
+ * @author Christine Duarte
+ */
 @SpringBootApplication
-@EnableFeignClients("com.tripMaster.microservicegps")
+@EnableSwagger2
 public class MicroserviceGpsApplication {
-    @Autowired
-    UserGpsService userGpsService;
 
     public static void main(String[] args) {
         SpringApplication.run(MicroserviceGpsApplication.class, args);
     }
+
 }

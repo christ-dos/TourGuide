@@ -260,4 +260,28 @@ public class TourGuideClientControllerTest {
                         result.getResolvedException().getMessage()))
                 .andDo(print());
     }
+
+    @Test
+    public void getTripDealsTest() throws Exception {
+        //GIVEN
+        List<Provider> providersTest = Arrays.asList(
+                new Provider(UUID.randomUUID(), "Holiday Travels", 200D),
+                new Provider(UUID.randomUUID(), "FlyAway Trips", 150D),
+                new Provider(UUID.randomUUID(), "Sunny Days", 500D)
+        );
+        when(tourGuideClientServiceMock.getTripDeals(anyString())).thenReturn(providersTest);
+        //WHEN
+        //THEN
+        mockMvcUserGps.perform(MockMvcRequestBuilders.get("/getTripDeals?userName=jon"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.[0].tripId", is(String.valueOf(providersTest.get(0).getTripId()))))
+                .andExpect(jsonPath("$.[0].name", is("Holiday Travels")))
+                .andExpect(jsonPath("$.[0].price", is(200D)))
+                .andExpect(jsonPath("$.[2].tripId", is(String.valueOf(providersTest.get(2).getTripId()))))
+                .andExpect(jsonPath("$.[2].name", is("Sunny Days")))
+                .andExpect(jsonPath("$.[2].price", is(500D)))
+                .andExpect(jsonPath("$.length()", is(3)))
+                .andDo(print());
+
+    }
 }

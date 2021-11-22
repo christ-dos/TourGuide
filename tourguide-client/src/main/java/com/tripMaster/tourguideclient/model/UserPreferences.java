@@ -23,5 +23,24 @@ public class UserPreferences {
 	public UserPreferences() {
 	}
 
+	public UserPreferences(int attractionProximity, int tripDuration, int numberOfAdults, int numberOfChildren) {
+		this.attractionProximity = attractionProximity;
+		this.tripDuration = tripDuration;
+		this.numberOfAdults = numberOfAdults;
+		this.numberOfChildren = numberOfChildren;
+	}
 
+	@Override
+	public String toString() {
+		return "UserPreferences{" +
+				"attractionProximity=" + attractionProximity +
+				", currency=" + currency +
+				", lowerPricePoint=" + lowerPricePoint +
+				", highPricePoint=" + highPricePoint +
+				", tripDuration=" + tripDuration +
+				", ticketQuantity=" + ticketQuantity +
+				", numberOfAdults=" + numberOfAdults +
+				", numberOfChildren=" + numberOfChildren +
+				'}';
+	}
 }

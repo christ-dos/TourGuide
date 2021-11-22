@@ -12,4 +12,12 @@ import lombok.Setter;
 public class Location {
         private double latitude;
         private double longitude;
+
+        @Override
+        public String toString() {
+                return "Location{" +
+                        "latitude=" + latitude +
+                        ", longitude=" + longitude +
+                        '}';
+        }
 }

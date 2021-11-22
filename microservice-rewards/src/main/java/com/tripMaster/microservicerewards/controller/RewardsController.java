@@ -9,6 +9,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.UUID;
 
+/**
+ * Class of controller that manage requests to obtaining reward points
+ *
+ * @author Christine Duarte
+ */
 @RestController
 @Slf4j
 public class RewardsController {

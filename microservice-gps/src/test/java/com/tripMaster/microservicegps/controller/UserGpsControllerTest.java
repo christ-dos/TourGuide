@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.UUID;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -77,6 +78,26 @@ public class UserGpsControllerTest {
                 .andExpect(jsonPath("$.[0].attractionName", is("Disneyland")))
                 .andExpect(jsonPath("$.[0].latitude", is(33.817595)))
                 .andExpect(jsonPath("$.[0].longitude", is(-117.922008)))
+                .andDo(print());
+    }
+
+    @Test
+    public void getAttractionsByAverageDistanceTest_thenReturnListWithAttractionBelowAverageDistance() throws Exception {
+        //GIVEN
+        VisitedLocation visitedLocationMock = new VisitedLocation(UUID.randomUUID(), new Location(33.817595D, -117.922008D), new Date());
+        List<Attraction> attractions = new ArrayList();
+        attractions.add(new Attraction("Disneyland", "Anaheim", "CA", 33.817595D, -117.922008D));
+        attractions.add(new Attraction("Jackson Hole", "Jackson Hole", "WY", 43.582767D, -110.821999D));
+        attractions.add(new Attraction("Mojave National Preserve", "Kelso", "CA", 35.141689D, -115.510399D));
+
+        when(userGpsServiceMock.getAttractionsByAverageDistance(any(Location.class))).thenReturn(attractions);
+        //WHEN
+        mockMvcUserGps.perform(MockMvcRequestBuilders.get("/getAttractionsbydistance?latitude=33.697500D&longitude= -117.206667D"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.[0].attractionName", is("Disneyland")))
+                .andExpect(jsonPath("$.[0].latitude", is(33.817595)))
+                .andExpect(jsonPath("$.[0].longitude", is(-117.922008)))
+                .andExpect(jsonPath("$.length()", is(3)))
                 .andDo(print());
     }
 }
