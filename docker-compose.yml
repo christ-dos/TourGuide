@@ -19,9 +19,6 @@ services:
       - microservice-trippricer-app
     ports:
       - "9090:9090"
-#    deploy:
-#      mode: replicated
-#      replicas: 2
 #  *****************microservice-gps******************************
   microservice-gps-app:
     image: microservice-gps-image
@@ -32,10 +29,6 @@ services:
       dockerfile: Dockerfile
     ports:
       - "9191:9191"
-#      - "9191-9198:9191"
-#    deploy:
-#      mode: replicated
-#      replicas: 6
 #  *****************microservice-rewards******************************
   microservice-rewards-app:
     image: microservice-rewards-image
@@ -46,11 +39,6 @@ services:
       dockerfile: Dockerfile
     ports:
       - "9292:9292"
-#      - "9292-9298:9292"
-#    deploy:
-#      mode: replicated
-#      replicas: 2
-
   #  *****************microservice-tripPricer******************************
   microservice-trippricer-app:
     image: microservice-trippricer-image
@@ -60,8 +48,4 @@ services:
       context: ./microservice-tripPricer
       dockerfile: Dockerfile
     ports:
-#      - "9393-9395:9393"
       - "9393:9393"
-#    deploy:
-#      mode: replicated
-#      replicas: 1
