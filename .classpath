@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="src" path="microservice-gps/src/main/java"/>
+	<classpathentry kind="src" path="microservice-gps/src/test/java"/>
+	<classpathentry kind="src" path="microservice-rewards/src/main/java"/>
+	<classpathentry kind="src" path="microservice-rewards/src/test/java"/>
+	<classpathentry kind="src" path="microservice-tripPricer/src/main/java"/>
+	<classpathentry kind="src" path="microservice-tripPricer/src/test/java"/>
+	<classpathentry kind="src" path="tourguide-client/src/main/java"/>
+	<classpathentry kind="src" path="tourguide-client/src/test/java"/>
+	<classpathentry kind="lib" path="microservice-gps/build/libs/microservice-gps-0.0.1-SNAPSHOT-plain.jar"/>
+	<classpathentry kind="lib" path="microservice-gps/build/tmp/expandedArchives/org.jacoco.agent-0.8.4.jar_982888894296538c98d7324f3ca78d8f/jacocoagent.jar"/>
+	<classpathentry kind="lib" path="microservice-gps/gradle/wrapper/gradle-wrapper.jar"/>
+	<classpathentry kind="lib" path="microservice-gps/libs/gpsUtil.jar"/>
+	<classpathentry kind="lib" path="microservice-rewards/gradle/wrapper/gradle-wrapper.jar"/>
+	<classpathentry kind="lib" path="microservice-rewards/libs/RewardCentral.jar"/>
+	<classpathentry kind="lib" path="microservice-tripPricer/gradle/wrapper/gradle-wrapper.jar"/>
+	<classpathentry kind="lib" path="microservice-tripPricer/libs/TripPricer.jar"/>
+	<classpathentry kind="lib" path="tourguide-client/build/tmp/expandedArchives/org.jacoco.agent-0.8.4.jar_982888894296538c98d7324f3ca78d8f/jacocoagent.jar"/>
+	<classpathentry kind="lib" path="tourguide-client/gradle/wrapper/gradle-wrapper.jar"/>
+	<classpathentry kind="lib" path="tourguide-client/libs/gpsUtil.jar"/>
+	<classpathentry kind="lib" path="tourguide-client/libs/RewardCentral.jar"/>
+	<classpathentry kind="lib" path="tourguide-client/libs/TripPricer.jar"/>
+	<classpathentry kind="output" path="microservice-gps/build/classes/java/main"/>
+</classpath>
