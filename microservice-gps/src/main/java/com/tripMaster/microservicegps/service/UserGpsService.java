@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * Interface that exposes methodes of {@link UserGpsServiceImpl}
+ * Interface that exposes methods of {@link UserGpsServiceImpl}
  *
  * @author  Christine Duarte
  */

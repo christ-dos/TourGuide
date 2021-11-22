@@ -15,7 +15,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 /**
- * Class of service that manage obtaining user visited location
+ * Class of service that permit obtains user visited location
  *
  * @author Christine Duarte
  */
@@ -23,6 +23,7 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 @Slf4j
 public class UserGpsServiceImpl implements UserGpsService {
+
     private static final double STATUTE_MILES_PER_NAUTICAL_MILE = 1.15077945;
     private GpsUtil gpsUtil;
 
