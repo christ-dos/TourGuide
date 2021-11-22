@@ -5,11 +5,6 @@ import lombok.Setter;
 
 import java.util.UUID;
 
-/**
- * Class that models {@link Attraction}
- *
- * @author Christine Duarte
- */
 @Getter
 @Setter
 public class Attraction extends Location {

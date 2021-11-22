@@ -1,6 +1,5 @@
 package com.tripMaster.tourguideclient.DAO;
 
-import com.tripMaster.tourguideclient.controller.TourGuideClientControllerTest;
 import com.tripMaster.tourguideclient.model.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,11 +12,6 @@ import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-/**
- * Class that test {@link InternalUserMapDAO}
- *
- * @author Christine Duarte
- */
 public class InternalUserMapDAOTest {
     private InternalUserMapDAO internalUserMapDAO;
 

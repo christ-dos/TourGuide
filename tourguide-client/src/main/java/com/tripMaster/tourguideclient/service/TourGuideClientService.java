@@ -7,11 +7,6 @@ import com.tripMaster.tourguideclient.model.VisitedLocation;
 
 import java.util.List;
 
-/**
- * Interface that exposes methods of {@link TourGuideClientServiceImpl}
- *
- * @author Christine Duarte
- */
 public interface TourGuideClientService {
 
     VisitedLocation getUserLocation(String userName);

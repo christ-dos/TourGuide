@@ -11,13 +11,6 @@ import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-/**
- * Class that manage the response at the user when an exception is handle the
- * class extend ResponseEntityExceptionHandler
- *
- * @author christine Duarte
- *
- */
 @ControllerAdvice
 public class ControllerAdvisor extends ResponseEntityExceptionHandler {
 

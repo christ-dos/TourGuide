@@ -12,7 +12,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 
@@ -50,7 +50,7 @@ public class TripPricerServiceImplTest {
                 new Provider(UUID.randomUUID(), "FlyAway Trips", 150D),
                 new Provider(UUID.randomUUID(), "Sunny Days", 500D)
         );
-        when(tripPricerMock.getPrice(anyString(), any(UUID.class), anyInt(), anyInt(), anyInt(), anyInt()))
+        when(tripPricerMock.getPrice(anyString(),any(UUID.class),anyInt(),anyInt(),anyInt(),anyInt()))
                 .thenReturn(providersTest);
         //WHEN
         List<Provider> providersResult = tripPricerService.getPrice(apiKey, attractionId, adults, children, nightsStay, rewardsPoints);

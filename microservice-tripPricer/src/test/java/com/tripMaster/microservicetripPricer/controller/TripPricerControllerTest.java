@@ -36,7 +36,7 @@ public class TripPricerControllerTest {
     private MockMvc mockMvcTripPricer;
 
     @MockBean
-    private TripPricerServiceImpl tripPricerServiceMock;
+    private TripPricerServiceImpl tripPricerServiceMock ;
 
     @Test
     public void getProvidersTest_thenReturnListOfProvider() throws Exception {
@@ -57,16 +57,16 @@ public class TripPricerControllerTest {
         //WHEN
         //THEN
         mockMvcTripPricer.perform(MockMvcRequestBuilders.get("/getTripDeals")
-                        .param("apiKey", apiKey)
-                        .param("attractionId", String.valueOf(attractionId))
-                        .param("adults", String.valueOf(adults))
-                        .param("children", String.valueOf(children))
-                        .param("nightsStay", String.valueOf(nightsStay))
-                        .param("rewardsPoints", String.valueOf(rewardsPoints)))
+                        .param("apiKey" ,  apiKey)
+                        .param("attractionId" , String.valueOf(attractionId))
+                        .param("adults" , String.valueOf(adults))
+                        .param("children" , String.valueOf(children))
+                        .param("nightsStay" , String.valueOf(nightsStay))
+                        .param("rewardsPoints" , String.valueOf(rewardsPoints)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.[0].name", is("Holiday Travels")))
-                .andExpect(jsonPath("$.[0].tripId", is(String.valueOf(providersTest.get(0).tripId))))
-                .andExpect(jsonPath("$.[0].price", is(250D)))
+                .andExpect(jsonPath("$.[0].tripId",is(String.valueOf(providersTest.get(0).tripId))))
+                .andExpect(jsonPath("$.[0].price",is(250D)))
                 .andDo(print());
     }
 

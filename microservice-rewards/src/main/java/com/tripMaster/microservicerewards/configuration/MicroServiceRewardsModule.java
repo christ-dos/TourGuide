@@ -8,6 +8,7 @@ import rewardCentral.RewardCentral;
  * Class which configures a bean for lib {@link RewardCentral }
  *
  * @author Christine Duarte
+ *
  */
 @Configuration
 public class MicroServiceRewardsModule {

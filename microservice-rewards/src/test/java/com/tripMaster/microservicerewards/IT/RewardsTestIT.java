@@ -11,7 +11,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import java.util.UUID;
 
 import static org.hamcrest.CoreMatchers.isA;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -38,11 +38,11 @@ public class RewardsTestIT {
         UUID attractionId = UUID.randomUUID();
         UUID userId = UUID.randomUUID();
         //WHEN
-        int rewardsPoint = rewardsService.getRewardPoints(attractionId, userId);
+        int rewardsPoint = rewardsService.getRewardPoints(attractionId,userId);
         //THEN
         mockMvcRewards.perform(MockMvcRequestBuilders.get("/getRewards")
-                        .param("attractionId", String.valueOf(attractionId))
-                        .param("userId", String.valueOf(userId)))
+                        .param("attractionId" , String.valueOf(attractionId))
+                        .param("userId" , String.valueOf(userId)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", isA(Integer.class)))
                 .andDo(print());

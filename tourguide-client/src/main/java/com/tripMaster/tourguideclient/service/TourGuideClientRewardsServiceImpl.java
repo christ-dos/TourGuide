@@ -15,11 +15,6 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-/**
- * Class of service that manage user rewards
- *
- * @author Christine Duarte
- */
 @Service
 @Slf4j
 public class TourGuideClientRewardsServiceImpl implements TourGuideClientRewardsService {
@@ -58,22 +53,35 @@ public class TourGuideClientRewardsServiceImpl implements TourGuideClientRewards
         final ExecutorService executorService = Executors.newFixedThreadPool(1600);
 
         List<VisitedLocation> userLocations = user.getVisitedLocations();
+//        CompletableFuture<List<Attraction>> attractions = CompletableFuture.supplyAsync(() -> microserviceUserGpsProxy.getAttractions(), executorService)
+//                .thenApply(attractions1 -> attractions1);
         List<Attraction> attractions = microserviceUserGpsProxy.getAttractions();
 
+        log.info("Service - Calcul en cours...." + user.getUserName());
+        //todo retirer log + clean code
+//        setProximityBuffer(Integer.MAX_VALUE);
         for (VisitedLocation visitedLocation : userLocations) {
             for (Attraction attraction : attractions) {
                 if (user.getUserRewards().stream().filter(r -> r.getAttraction().getAttractionName().equals(attraction.getAttractionName())).count() == 0) {
                     if (nearAttraction(visitedLocation, attraction)) {
+
+//                        CompletableFuture<UserReward> rewardsPointsFuture = CompletableFuture.supplyAsync(() -> getRewardPoints(attraction.getAttractionId(), user.getUserId()), executorService)
+//                                .thenApplyAsync(rewardPoints -> new UserReward(visitedLocation, attraction, rewardPoints), executorService);
+//                        rewardsPointsFuture.thenApply(userReward ->
+//                                CompletableFuture.runAsync(() -> addUserReward(userReward, user),executorService));
+                    //todo clean code
+
                         CompletableFuture.supplyAsync(() -> getRewardPoints(attraction.getAttractionId(), user.getUserId()), executorService)
                                 .thenAccept(rewardPoints -> {
                                     UserReward userReward = new UserReward(visitedLocation, attraction, rewardPoints);
                                     addUserReward(userReward, user);
                                 });
+
+//                        addUserReward(new UserReward(visitedLocation, attraction, getRewardPoints(attraction.getAttractionId(), user.getUserId())), user);
                     }
                 }
             }
         }
-        log.info("Service - Calculate rewards points for user: " + user.getUserName());
     }
 
     @Override
@@ -82,8 +90,6 @@ public class TourGuideClientRewardsServiceImpl implements TourGuideClientRewards
         if (user == null) {
             throw new UserNotFoundException("User not found");
         }
-        log.info("Service - list of UserRewards getted fir user: " + userName);
-
         return user.getUserRewards();
     }
 
@@ -98,17 +104,17 @@ public class TourGuideClientRewardsServiceImpl implements TourGuideClientRewards
 
         double nauticalMiles = 60 * Math.toDegrees(angle);
         double statuteMiles = STATUTE_MILES_PER_NAUTICAL_MILE * nauticalMiles;
-        log.info("Service - Distance calculated: " + statuteMiles);
-
         return statuteMiles;
     }
 
     private void addUserReward(UserReward userReward, User user) {
         List<UserReward> userRewards = user.getUserRewards();
         if (userRewards.stream().filter(r -> r.getAttraction().getAttractionName().equals(userReward.getAttraction().getAttractionName())).count() == 0) {
+            //TODO quand on change le filter on  enleve la negation(!) le test NearAllAttractions passe au vert
             userRewards.add(userReward);
             user.setUserRewards(userRewards);
             log.info("Service - Reward added for user: " + user.getUserName());
+
         }
     }
 
@@ -117,10 +123,14 @@ public class TourGuideClientRewardsServiceImpl implements TourGuideClientRewards
     }
 
     private boolean nearAttraction(VisitedLocation visitedLocation, Attraction attraction) {
+//        setProximityBuffer(200);
+        //todo clean code
         return getDistance(attraction, visitedLocation.getLocation()) > proximityBuffer ? false : true;
     }
 
     private int getRewardPoints(UUID attractionId, UUID userId) {
+        System.out.println("Calculate reward on: " + Thread.currentThread().getName());
+        //TODO RETIRER SYS0OUT
         return microserviceRewardsProxy.getRewardsPoints(attractionId, userId);
     }
 }

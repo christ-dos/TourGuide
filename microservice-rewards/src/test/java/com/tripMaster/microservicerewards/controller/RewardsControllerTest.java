@@ -46,8 +46,8 @@ public class RewardsControllerTest {
         //WHEN
         //THEN
         mockMvcRewards.perform(MockMvcRequestBuilders.get("/getRewards")
-                        .param("attractionId", String.valueOf(attractionId))
-                        .param("userId", String.valueOf(userId)))
+                        .param("attractionId" , String.valueOf(attractionId))
+                        .param("userId" , String.valueOf(userId)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", is(220)))
                 .andDo(print());

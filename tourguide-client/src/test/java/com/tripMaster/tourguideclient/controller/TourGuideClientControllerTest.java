@@ -28,11 +28,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-/**
- * Class that test {@link TourGuideClientController}
- *
- * @author Christine Duarte
- */
 @WebMvcTest(TourGuideClientController.class)
 @ExtendWith(MockitoExtension.class)
 @AutoConfigureMockMvc

@@ -5,11 +5,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
-/**
- * Class that start the application TourGuideClientApplication
- *
- * @author Christine Duarte
- */
 @SpringBootApplication
 @EnableFeignClients("com.tripMaster.tourguideclient")
 @EnableSwagger2

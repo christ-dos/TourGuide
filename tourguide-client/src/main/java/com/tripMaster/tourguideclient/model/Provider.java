@@ -2,16 +2,11 @@ package com.tripMaster.tourguideclient.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.UUID;
 
-/**
- * Class that models {@link Provider}
- * providers that offer trip deals
- *
- * @author Christine Duarte
- */
 @AllArgsConstructor
 @Getter
 @Setter

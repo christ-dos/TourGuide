@@ -47,7 +47,7 @@ public class UserGpsControllerTest {
     private GpsUtil gpsUtil;
 
     @Test
-    public void trackUserLocationTest() throws Exception {
+    public  void trackUserLocationTest() throws Exception {
         //GIVEN
         UUID userId = UUID.randomUUID();
         VisitedLocation visitedLocationMock = new VisitedLocation(userId, new Location(33.817595D, -116.922008D), new Date());
@@ -64,7 +64,7 @@ public class UserGpsControllerTest {
     }
 
     @Test
-    public void getAttractionsTest_whenListContainedThreeElements_thenReturnListWithThreeAttractions() throws Exception {
+    public  void getAttractionsTest_whenListContainedThreeElements_thenReturnListWithThreeAttractions() throws Exception {
         //GIVEN
         List<Attraction> attractions = new ArrayList();
         attractions.add(new Attraction("Disneyland", "Anaheim", "CA", 33.817595D, -117.922008D));
