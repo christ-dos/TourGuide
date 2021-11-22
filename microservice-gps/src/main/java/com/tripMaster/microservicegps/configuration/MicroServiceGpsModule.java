@@ -8,7 +8,6 @@ import org.springframework.context.annotation.Configuration;
  * Class which configures a bean for lib {@link GpsUtil }
  *
  * @author Christine Duarte
- *
  */
 @Configuration
 public class MicroServiceGpsModule {

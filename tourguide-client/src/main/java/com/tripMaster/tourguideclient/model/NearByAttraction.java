@@ -4,6 +4,13 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * Class that models {@link NearByAttraction}
+ * and permit displaying information of attractions
+ * that are near of the position of user
+ *
+ * @author Christine Duarte
+ */
 @Getter
 @Setter
 @AllArgsConstructor

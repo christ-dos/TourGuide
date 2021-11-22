@@ -88,7 +88,7 @@ public class UserGpsTestIT {
                 .andDo(print());
 
         List<Attraction> attractionsResults = userGpsServiceTest.getAttractionsByAverageDistance(new Location(33.817595D, -117.922008D));
-        assertEquals(12, attractionsResults.size() );
+        assertEquals(12, attractionsResults.size());
         assertTrue(attractionsResults.get(0).attractionName.contains("Disneyland"));
     }
 

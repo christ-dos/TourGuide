@@ -9,6 +9,11 @@ import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+/**
+ * Class that models {@link User}
+ *
+ * @author Christine Duarte
+ */
 @Getter
 @Setter
 public class User {
@@ -20,7 +25,7 @@ public class User {
     private List<UserReward> userRewards = new ArrayList<>();
     private UserPreferences userPreferences = new UserPreferences();
     private List<Provider> tripDeals = new ArrayList<>();
-	private CopyOnWriteArrayList<VisitedLocation> visitedLocations = new CopyOnWriteArrayList<>();
+    private CopyOnWriteArrayList<VisitedLocation> visitedLocations = new CopyOnWriteArrayList<>();
 
 
     public User(UUID userId, String userName, String phoneNumber, String emailAddress) {

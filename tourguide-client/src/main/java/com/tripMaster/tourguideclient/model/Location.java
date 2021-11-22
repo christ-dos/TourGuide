@@ -5,6 +5,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * Class that models {@link Location}
+ *
+ * @author Christine Duarte
+ */
 @Getter
 @Setter
 @NoArgsConstructor
