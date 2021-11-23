@@ -83,11 +83,9 @@ public class TestPerformance {
      *          assertTrue(TimeUnit.MINUTES.toSeconds(20) >= TimeUnit.MILLISECONDS.toSeconds(stopWatch.getTime()));
      */
 
-    //	@Ignore
     @Test
     public void highVolumeTrackLocation() {
 
-//		CompletableFuture<VisitedLocation> completableFuture = new CompletableFuture<>();
         // Users should be incremented up to 100,000, and test finishes within 15 minutes
         InternalTestHelper.setInternalUserNumber(100);
         tourGuideClientRewardsService.setProximityBuffer(Integer.MAX_VALUE);
@@ -130,7 +128,6 @@ public class TestPerformance {
         assertTrue(TimeUnit.MINUTES.toSeconds(15) >= TimeUnit.MILLISECONDS.toSeconds(stopWatch.getTime()));
     }
 
-    @Ignore
     @Test
     public void highVolumeGetRewards() {
 
@@ -171,5 +168,4 @@ public class TestPerformance {
         System.out.println("highVolumeGetRewards: Time Elapsed: " + TimeUnit.MILLISECONDS.toSeconds(stopWatch.getTime()) + " seconds.");
         assertTrue(TimeUnit.MINUTES.toSeconds(20) >= TimeUnit.MILLISECONDS.toSeconds(stopWatch.getTime()));
     }
-
 }
