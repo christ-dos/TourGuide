@@ -9,6 +9,11 @@ import java.util.Date;
 import java.util.UUID;
 
 
+/**
+ * Class that models {@link VisitedLocation}
+ *
+ * @author Christine Duarte
+ */
 @Getter
 @Setter
 @NoArgsConstructor

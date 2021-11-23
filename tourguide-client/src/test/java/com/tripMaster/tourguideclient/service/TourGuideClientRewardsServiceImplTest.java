@@ -22,6 +22,11 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
+/**
+ * Class that test {@link TourGuideClientRewardsServiceImpl}
+ *
+ * @author Christine Duarte
+ */
 @ExtendWith(MockitoExtension.class)
 public class TourGuideClientRewardsServiceImplTest {
     private TourGuideClientRewardsServiceImpl tourGuideClientRewardsServiceTest;
