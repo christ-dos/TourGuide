@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
 
 /**
  * Class of service that permit obtains user visited location
+ * and list of attractions
  *
  * @author Christine Duarte
  */
@@ -49,10 +50,12 @@ public class UserGpsServiceImpl implements UserGpsService {
     @Override
     public List<Attraction> getAttractionsByAverageDistance(Location location) {
         List<Attraction> attractions = gpsUtil.getAttractions();
-        double average = attractions.stream().mapToDouble(attraction -> getDistance(attraction, location))
+        double average = attractions.stream()
+                .mapToDouble(attraction -> getDistance(attraction, location))
                 .average()
                 .orElse(0D);
-        List<Attraction> attractionsNearPosition = attractions.stream().filter(attraction -> getDistance(attraction, location) < average)
+        List<Attraction> attractionsNearPosition = attractions.stream()
+                .filter(attraction -> getDistance(attraction, location) < average)
                 .collect(Collectors.toList());
 
         return attractionsNearPosition;

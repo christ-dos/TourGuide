@@ -62,7 +62,8 @@ public class TourGuideClientServiceImpl implements TourGuideClientService {
         try {
             Locale.setDefault(new Locale("en", "US"));
 
-            visitedLocationFuture = CompletableFuture.supplyAsync(() -> microserviceUserGpsProxy.trackUserLocation(user.getUserId()), executorService);
+            visitedLocationFuture = CompletableFuture.supplyAsync(
+                    () -> microserviceUserGpsProxy.trackUserLocation(user.getUserId()), executorService);
             visitedLocationFuture.thenCompose(visitedLocation ->
                     CompletableFuture.runAsync(() -> {
                         addToVisitedLocations(visitedLocation, user);
@@ -154,7 +155,8 @@ public class TourGuideClientServiceImpl implements TourGuideClientService {
 
     @Override
     public List<NearByAttraction> getNearByAttractions(VisitedLocation visitedLocation) {
-        List<Attraction> attractions = microserviceUserGpsProxy.getAttractionsByAverageDistance(visitedLocation.getLocation().getLatitude(), visitedLocation.getLocation().getLongitude());
+        List<Attraction> attractions = microserviceUserGpsProxy.getAttractionsByAverageDistance(
+                visitedLocation.getLocation().getLatitude(), visitedLocation.getLocation().getLongitude());
 
         List<NearByAttraction> nearByAttractionsList = attractions.stream()
                 .sorted((o1, o2) -> {

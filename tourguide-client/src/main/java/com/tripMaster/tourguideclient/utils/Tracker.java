@@ -18,7 +18,7 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 public class Tracker extends Thread {
     private static final long trackingPollingInterval = TimeUnit.MINUTES.toSeconds(5);
-    private final ExecutorService executorService = Executors.newFixedThreadPool(100000);
+    private final ExecutorService executorService = Executors.newFixedThreadPool(16);
     private final TourGuideClientServiceImpl tourGuideClientService;
     private boolean stop = false;
 

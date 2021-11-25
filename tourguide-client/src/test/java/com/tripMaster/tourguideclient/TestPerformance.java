@@ -94,34 +94,7 @@ public class TestPerformance {
 
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
-        //TODO clean code
-//		allUsers.stream().map(u -> tourGuideClientService.trackUserLocation(u));
-//		for (User user : allUsers) {
-//			while (user.getVisitedLocations().isEmpty()) {
-//				try {
-//					TimeUnit.MILLISECONDS.sleep(5000);
-//				} catch (InterruptedException e) {
-//					e.printStackTrace();
-//				}
-//			}
-//		}
-//		System.out.println("****************************************nombre total*********************: " + i);
-        int i = 0;
-        for (User user : allUsers) {
-            tourGuideClientService.trackUserLocation(user);
-            i++;
-            System.out.println("****************nombre de passage dans la boucle de test:" + i);
-        }
-//		for (User user : allUsers) {
-//			while (user.getVisitedLocations().isEmpty()) {
-//				try {
-//					TimeUnit.MILLISECONDS.sleep(10);
-//				} catch (InterruptedException e) {
-//					e.printStackTrace();
-//				}
-//			}
-//		}
-        System.out.println("*************************nombre Total de passage ************************: " + i);
+		allUsers.stream().map(u -> tourGuideClientService.trackUserLocation(u));
         tourGuideClientService.tracker.stopTracking();
 
         System.out.println("highVolumeTrackLocation: Time Elapsed: " + TimeUnit.MILLISECONDS.toSeconds(stopWatch.getTime()) + " seconds.");
@@ -140,25 +113,17 @@ public class TestPerformance {
         List<User> allUsers = tourGuideClientService.getAllUsers();
 
         allUsers.forEach(user -> tourGuideClientService.addToVisitedLocations(new VisitedLocation(user.getUserId(), new Location(attraction.getLatitude(), attraction.getLongitude()), new Date()), user));
-//		allUsers.forEach(user -> tourGuideClientRewardsService.calculateRewards(user));
         allUsers.forEach(user -> CompletableFuture.runAsync((() -> tourGuideClientRewardsService.calculateRewards(user))));
 
         for (User user : allUsers) {
             while (user.getUserRewards().isEmpty()) {
                 try {
-                    TimeUnit.MILLISECONDS.sleep(10);
+                    TimeUnit.MILLISECONDS.sleep(100);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
         }
-
-//		try {
-//			TimeUnit.MILLISECONDS.sleep(100);
-//		} catch (InterruptedException e) {
-//			e.printStackTrace();
-//		}
-        //todo clean code
         for (User user : allUsers) {
             assertTrue(user.getUserRewards().size() > 0);
         }

@@ -274,6 +274,11 @@ public class TourGuideClientServiceImplTest {
                 getProviders(anyString(), any(UUID.class), anyInt(), anyInt(), anyInt(), anyInt()))
                 .thenReturn(providersTest);
         //WHEN
+        try {
+            TimeUnit.MILLISECONDS.sleep(100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         userTest.setUserPreferences(userPreferences);
         List<Provider> providersResult = tourGuideClientServiceTest.getTripDeals("jon");
         //THEN
