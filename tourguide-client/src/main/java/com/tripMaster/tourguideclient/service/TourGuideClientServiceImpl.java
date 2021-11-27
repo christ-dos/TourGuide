@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Locale;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -59,20 +58,15 @@ public class TourGuideClientServiceImpl implements TourGuideClientService {
     public CompletableFuture<VisitedLocation> trackUserLocation(User user) {
         final ExecutorService executorService = Executors.newFixedThreadPool(1600);
         CompletableFuture<VisitedLocation> visitedLocationFuture = null;
-        try {
-            Locale.setDefault(new Locale("en", "US"));
 
-            visitedLocationFuture = CompletableFuture.supplyAsync(
-                    () -> microserviceUserGpsProxy.trackUserLocation(user.getUserId()), executorService);
-            visitedLocationFuture.thenCompose(visitedLocation ->
-                    CompletableFuture.runAsync(() -> {
-                        addToVisitedLocations(visitedLocation, user);
-                        tourGuideClientRewardsServiceImpl.calculateRewards(user);
-                    }, executorService)
-            );
-        } catch (NumberFormatException ex) {
-            log.debug("NumberFormatException: " + ex.getMessage());
-        }
+        visitedLocationFuture = CompletableFuture.supplyAsync(
+                () -> microserviceUserGpsProxy.trackUserLocation(user.getUserId()), executorService);
+        visitedLocationFuture.thenCompose(visitedLocation ->
+                CompletableFuture.runAsync(() -> {
+                    addToVisitedLocations(visitedLocation, user);
+                    tourGuideClientRewardsServiceImpl.calculateRewards(user);
+                }, executorService)
+        );
         log.debug("Service - user location tracked for username: " + user.getUserName());
 
         return visitedLocationFuture;

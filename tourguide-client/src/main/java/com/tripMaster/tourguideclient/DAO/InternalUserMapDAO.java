@@ -49,10 +49,6 @@ public class InternalUserMapDAO {
         IntStream.range(0, 3).forEach(i -> {
             user.getVisitedLocations().add(
                     new VisitedLocation(user.getUserId(), new Location(generateRandomLatitude(), generateRandomLongitude()), getRandomTime()));
-//            user.getUserRewards().add(
-//                    new UserReward(new VisitedLocation(user.getUserId(), new Location(generateRandomLatitude(), generateRandomLongitude()), getRandomTime()),
-//                            new Attraction("Disneyland", "Anaheim", "CA", 33.817595D, -117.922008D), 200)
-//            );
         });
     }
 
