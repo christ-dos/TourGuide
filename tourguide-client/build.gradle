@@ -31,6 +31,12 @@ configurations {
     }
 }
 
+compileJava{
+    options.encoding= 'UTF-8'
+    options.fork=true
+    options.forkOptions.setMemoryMaximumSize("16g")
+}
+
 bootJar {
     archiveBaseName = 'tourGuideClient'
     archiveVersion = '0.0.1'
@@ -38,9 +44,6 @@ bootJar {
 
 repositories {
     mavenCentral()
-    flatDir {
-        dirs 'libs'
-    }
 }
 
 ext {
@@ -55,10 +58,6 @@ dependencies {
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-
-    compileOnly(name: 'gpsUtil', ext: 'jar')
-    compileOnly(name: 'RewardCentral', ext: 'jar')
-    compileOnly(name: 'TripPricer', ext: 'jar')
 
     compileOnly group: 'com.jsoniter', name: 'jsoniter', version: '0.9.23'
 

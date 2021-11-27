@@ -22,6 +22,11 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
+/**
+ * Class that test {@link TourGuideClientRewardsServiceImpl}
+ *
+ * @author Christine Duarte
+ */
 @ExtendWith(MockitoExtension.class)
 public class TourGuideClientRewardsServiceImplTest {
     private TourGuideClientRewardsServiceImpl tourGuideClientRewardsServiceTest;
@@ -106,7 +111,6 @@ public class TourGuideClientRewardsServiceImplTest {
         //WHEN
         visitedLocations.add(visitedLocation);
         tourGuideClientRewardsServiceTest.calculateRewards(user);
-        List<UserReward> userRewards = user.getUserRewards();
         //THEN
         try {
             TimeUnit.MILLISECONDS.sleep(10);
@@ -159,7 +163,7 @@ public class TourGuideClientRewardsServiceImplTest {
     }
 
     @Test
-    public void getUserRewardsTest_whenUserNotExist_thenThrowUserNotFoundexception() {
+    public void getUserRewardsTest_whenUserNotExist_thenThrowUserNotFoundException() {
         when(internalUserMapDAOMock.getUser(anyString())).thenReturn(null);
         //WHEN
         //THEN

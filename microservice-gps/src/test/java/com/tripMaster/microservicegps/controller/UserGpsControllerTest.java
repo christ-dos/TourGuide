@@ -84,7 +84,6 @@ public class UserGpsControllerTest {
     @Test
     public void getAttractionsByAverageDistanceTest_thenReturnListWithAttractionBelowAverageDistance() throws Exception {
         //GIVEN
-        VisitedLocation visitedLocationMock = new VisitedLocation(UUID.randomUUID(), new Location(33.817595D, -117.922008D), new Date());
         List<Attraction> attractions = new ArrayList();
         attractions.add(new Attraction("Disneyland", "Anaheim", "CA", 33.817595D, -117.922008D));
         attractions.add(new Attraction("Jackson Hole", "Jackson Hole", "WY", 43.582767D, -110.821999D));

@@ -3,15 +3,17 @@ package com.tripMaster.tourguideclient.DAO;
 import com.tripMaster.tourguideclient.model.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Class that test {@link InternalUserMapDAO}
+ *
+ * @author Christine Duarte
+ */
 public class InternalUserMapDAOTest {
     private InternalUserMapDAO internalUserMapDAO;
 
@@ -62,7 +64,7 @@ public class InternalUserMapDAOTest {
         User userResult = internalUserMapDAO.getUser("jon");
         //THEN
         assertNotNull(userResult);
-        assertEquals(user.getUserId(),userResult.getUserId());
+        assertEquals(user.getUserId(), userResult.getUserId());
     }
 
     @Test

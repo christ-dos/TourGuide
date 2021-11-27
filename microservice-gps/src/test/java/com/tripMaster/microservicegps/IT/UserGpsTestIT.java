@@ -44,7 +44,7 @@ public class UserGpsTestIT {
         //WHEN
         VisitedLocation visitedLocationResult = userGpsServiceTest.trackUserLocation(userId);
         //THEN
-        mockMvcUserGps.perform(MockMvcRequestBuilders.get("/getLocation?getLocation")
+        mockMvcUserGps.perform(MockMvcRequestBuilders.get("/getLocation")
                         .param("userId", String.valueOf(userId)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.userId", is(String.valueOf(userId))))
@@ -57,13 +57,14 @@ public class UserGpsTestIT {
     }
 
     @Test
-    public void getAttractionsTest_whenListContainedThreeElements_thenReturnListWithThreeAttractions() throws Exception {
+    public void getAttractionsTest_thenReturnListWithAllAttractions() throws Exception {
         //GIVEN
         //WHEN
         List<Attraction> attractionList = userGpsServiceTest.getAttractions();
         //THEN
         mockMvcUserGps.perform(MockMvcRequestBuilders.get("/getAttractions"))
                 .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()", is(26)))
                 .andExpect(jsonPath("$.[0].attractionName", is("Disneyland")))
                 .andExpect(jsonPath("$.[0].latitude", is(33.817595)))
                 .andExpect(jsonPath("$.[0].longitude", is(-117.922008)))
