@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.tripMaster.tourguideclient.service.TourGuideClientServiceImplTest" tests="17" skipped="0" failures="0" errors="0" timestamp="2021-11-27T19:34:12" hostname="MSI" time="2.052">
+  <properties/>
+  <testcase name="getTripDealsTest_whenUserExistAndUserRewardsListIsNotEmpty_thenReturnListProviders()" classname="com.tripMaster.tourguideclient.service.TourGuideClientServiceImplTest" time="0.952"/>
+  <testcase name="addToVisitedLocation()" classname="com.tripMaster.tourguideclient.service.TourGuideClientServiceImplTest" time="0.003"/>
+  <testcase name="addUserTest_thenVerifyUserWasAdded()" classname="com.tripMaster.tourguideclient.service.TourGuideClientServiceImplTest" time="0.01"/>
+  <testcase name="getNearByAttractionsTest_whenSixAttractionsHaveDistanceLessThanAttractionProximityRange_thenReturnListAttractionWith5Attractions()" classname="com.tripMaster.tourguideclient.service.TourGuideClientServiceImplTest" time="0.009"/>
+  <testcase name="getNearByAttractionsTest_whenThreeAttractionsHaveDistanceLessThanAttractionProximityRange_thenReturnListAttractionWithThreeAttractionsRetrievedByNewProximityRangeSetWithAverageDistanceCalculate()" classname="com.tripMaster.tourguideclient.service.TourGuideClientServiceImplTest" time="0.005"/>
+  <testcase name="getNearByAttractionsTest_whenNoAttractionsHaveDistanceLessThanAttractionProximityRange_thenReturnListWithFiveAttractionsNearOfAverageDistance()" classname="com.tripMaster.tourguideclient.service.TourGuideClientServiceImplTest" time="0.006"/>
+  <testcase name="trackUserLocationTest()" classname="com.tripMaster.tourguideclient.service.TourGuideClientServiceImplTest" time="0.008"/>
+  <testcase name="getAllCurrentLocationsTest_whenUserListNotEmpty_thenReturnListOfUsers()" classname="com.tripMaster.tourguideclient.service.TourGuideClientServiceImplTest" time="0.004"/>
+  <testcase name="getAllCurrentLocationsTest_whenUserListIsEmpty_thenReturnEmptyList()" classname="com.tripMaster.tourguideclient.service.TourGuideClientServiceImplTest" time="0.003"/>
+  <testcase name="getUserLocationTest_whenVisitedLocationsListIsNotEmpty_thenGetLastVisitedLocation()" classname="com.tripMaster.tourguideclient.service.TourGuideClientServiceImplTest" time="0.024"/>
+  <testcase name="getUserTest_whenUserExistAndUserNameIsJon_thenReturnUser()" classname="com.tripMaster.tourguideclient.service.TourGuideClientServiceImplTest" time="0.003"/>
+  <testcase name="getTripDealsTest_whenUserRewardsIsEmpty_thenReturnUserRewardsNotFoundException()" classname="com.tripMaster.tourguideclient.service.TourGuideClientServiceImplTest" time="0.003"/>
+  <testcase name="getUserTest_whenUserNotExist_thenThrowUserNotFoundException()" classname="com.tripMaster.tourguideclient.service.TourGuideClientServiceImplTest" time="0.002"/>
+  <testcase name="getUserLocationTest_whenVisitedLocationsListIsEmpty_thenCallMethodTrackUserLocation()" classname="com.tripMaster.tourguideclient.service.TourGuideClientServiceImplTest" time="1.006"/>
+  <testcase name="getAllUsersTest_thenReturnListWithTwoUsersWhichContainUserAndUserOne()" classname="com.tripMaster.tourguideclient.service.TourGuideClientServiceImplTest" time="0.003"/>
+  <testcase name="getTripDealsTest_whenUserNotFound_thenReturnUserNotFoundException()" classname="com.tripMaster.tourguideclient.service.TourGuideClientServiceImplTest" time="0.003"/>
+  <testcase name="getUserLocationTest_whenUserNotExist_thenThrowUserNotFoundException()" classname="com.tripMaster.tourguideclient.service.TourGuideClientServiceImplTest" time="0.003"/>
+  <system-out><![CDATA[20:34:13.079 [Test worker] INFO com.tripMaster.tourguideclient.service.TourGuideClientServiceImpl - TestMode enabled
+20:34:13.102 [Test worker] DEBUG com.tripMaster.tourguideclient.service.TourGuideClientServiceImpl - Initializing users
+20:34:13.116 [Test worker] DEBUG com.tripMaster.tourguideclient.service.TourGuideClientServiceImpl - Finished initializing users
+20:34:13.122 [pool-1-thread-1] DEBUG com.tripMaster.tourguideclient.utils.Tracker - Begin Tracker. Tracking 0 users.
+20:34:13.123 [pool-1-thread-1] DEBUG com.tripMaster.tourguideclient.utils.Tracker - Tracker Time Elapsed: 0 seconds.
+20:34:13.123 [pool-1-thread-1] DEBUG com.tripMaster.tourguideclient.utils.Tracker - Tracker sleeping
+20:34:13.280 [Test worker] DEBUG com.tripMaster.tourguideclient.service.TourGuideClientServiceImpl - Service - list of providers getted for user: jon
+20:34:13.298 [Test worker] INFO com.tripMaster.tourguideclient.service.TourGuideClientServiceImpl - TestMode enabled
+20:34:13.298 [Test worker] DEBUG com.tripMaster.tourguideclient.service.TourGuideClientServiceImpl - Initializing users
+20:34:13.298 [Test worker] DEBUG com.tripMaster.tourguideclient.service.TourGuideClientServiceImpl - Finished initializing users
+20:34:13.299 [Test worker] DEBUG com.tripMaster.tourguideclient.service.TourGuideClientServiceImpl - Service - Visited location added for user: jon
+20:34:13.299 [pool-2-thread-1] DEBUG com.tripMaster.tourguideclient.utils.Tracker - Begin Tracker. Tracking 0 users.
+20:34:13.299 [pool-2-thread-1] DEBUG com.tripMaster.tourguideclient.utils.Tracker - Tracker Time Elapsed: 0 seconds.
+20:34:13.299 [pool-2-thread-1] DEBUG com.tripMaster.tourguideclient.utils.Tracker - Tracker sleeping
+20:34:13.301 [Test worker] INFO com.tripMaster.tourguideclient.service.TourGuideClientServiceImpl - TestMode enabled
+20:34:13.301 [Test worker] DEBUG com.tripMaster.tourguideclient.service.TourGuideClientServiceImpl - Initializing users
+20:34:13.301 [Test worker] DEBUG com.tripMaster.tourguideclient.service.TourGuideClientServiceImpl - Finished initializing users
+20:34:13.302 [pool-3-thread-1] DEBUG com.tripMaster.tourguideclient.utils.Tracker - Begin Tracker. Tracking 0 users.
+20:34:13.302 [pool-3-thread-1] DEBUG com.tripMaster.tourguideclient.utils.Tracker - Tracker Time Elapsed: 0 seconds.
+20:34:13.302 [pool-3-thread-1] DEBUG com.tripMaster.tourguideclient.utils.Tracker - Tracker sleeping
+20:34:13.303 [Test worker] DEBUG com.tripMaster.tourguideclient.service.TourGuideClientServiceImpl - Service - user found: jon
+20:34:13.312 [Test worker] INFO com.tripMaster.tourguideclient.service.TourGuideClientServiceImpl - TestMode enabled
+20:34:13.312 [Test worker] DEBUG com.tripMaster.tourguideclient.service.TourGuideClientServiceImpl - Initializing users
+20:34:13.312 [Test worker] DEBUG com.tripMaster.tourguideclient.service.TourGuideClientServiceImpl - Finished initializing users
+20:34:13.313 [pool-4-thread-1] DEBUG com.tripMaster.tourguideclient.utils.Tracker - Begin Tracker. Tracking 0 users.
+20:34:13.313 [pool-4-thread-1] DEBUG com.tripMaster.tourguideclient.utils.Tracker - Tracker Time Elapsed: 0 seconds.
+20:34:13.313 [pool-4-thread-1] DEBUG com.tripMaster.tourguideclient.utils.Tracker - Tracker sleeping
+20:34:13.318 [Test worker] DEBUG com.tripMaster.tourguideclient.service.TourGuideClientServiceImpl - Service - Attractions near of position of user: bf7c6516-8c81-4826-be4a-a21ebf3efa8c
+20:34:13.321 [Test worker] INFO com.tripMaster.tourguideclient.service.TourGuideClientServiceImpl - TestMode enabled
+20:34:13.321 [Test worker] DEBUG com.tripMaster.tourguideclient.service.TourGuideClientServiceImpl - Initializing users
+20:34:13.321 [Test worker] DEBUG com.tripMaster.tourguideclient.service.TourGuideClientServiceImpl - Finished initializing users
+20:34:13.322 [pool-5-thread-1] DEBUG com.tripMaster.tourguideclient.utils.Tracker - Begin Tracker. Tracking 0 users.
+20:34:13.322 [pool-5-thread-1] DEBUG com.tripMaster.tourguideclient.utils.Tracker - Tracker Time Elapsed: 0 seconds.
+20:34:13.323 [pool-5-thread-1] DEBUG com.tripMaster.tourguideclient.utils.Tracker - Tracker sleeping
+20:34:13.324 [Test worker] DEBUG com.tripMaster.tourguideclient.service.TourGuideClientServiceImpl - Service - Attractions near of position of user: b7cf879c-e140-4278-96bb-cf8c8ce6d983
+20:34:13.327 [Test worker] INFO com.tripMaster.tourguideclient.service.TourGuideClientServiceImpl - TestMode enabled
+20:34:13.327 [Test worker] DEBUG com.tripMaster.tourguideclient.service.TourGuideClientServiceImpl - Initializing users
+20:34:13.327 [Test worker] DEBUG com.tripMaster.tourguideclient.service.TourGuideClientServiceImpl - Finished initializing users
+20:34:13.328 [pool-6-thread-1] DEBUG com.tripMaster.tourguideclient.utils.Tracker - Begin Tracker. Tracking 0 users.
+20:34:13.328 [pool-6-thread-1] DEBUG com.tripMaster.tourguideclient.utils.Tracker - Tracker Time Elapsed: 0 seconds.
+20:34:13.328 [pool-6-thread-1] DEBUG com.tripMaster.tourguideclient.utils.Tracker - Tracker sleeping
+20:34:13.330 [Test worker] DEBUG com.tripMaster.tourguideclient.service.TourGuideClientServiceImpl - Service - Attractions near of position of user: d527bb1f-cb27-4f95-95df-55137c247194
+20:34:13.332 [Test worker] INFO com.tripMaster.tourguideclient.service.TourGuideClientServiceImpl - TestMode enabled
+20:34:13.333 [Test worker] DEBUG com.tripMaster.tourguideclient.service.TourGuideClientServiceImpl - Initializing users
+20:34:13.333 [Test worker] DEBUG com.tripMaster.tourguideclient.service.TourGuideClientServiceImpl - Finished initializing users
+20:34:13.334 [pool-7-thread-1] DEBUG com.tripMaster.tourguideclient.utils.Tracker - Begin Tracker. Tracking 0 users.
+20:34:13.334 [pool-7-thread-1] DEBUG com.tripMaster.tourguideclient.utils.Tracker - Tracker Time Elapsed: 0 seconds.
+20:34:13.334 [pool-7-thread-1] DEBUG com.tripMaster.tourguideclient.utils.Tracker - Tracker sleeping
+20:34:13.338 [pool-8-thread-2] DEBUG com.tripMaster.tourguideclient.service.TourGuideClientServiceImpl - Service - Visited location added for user: jon
+20:34:13.338 [Test worker] DEBUG com.tripMaster.tourguideclient.service.TourGuideClientServiceImpl - Service - user location tracked for username: jon
+20:34:13.341 [Test worker] INFO com.tripMaster.tourguideclient.service.TourGuideClientServiceImpl - TestMode enabled
+20:34:13.341 [Test worker] DEBUG com.tripMaster.tourguideclient.service.TourGuideClientServiceImpl - Initializing users
+20:34:13.341 [Test worker] DEBUG com.tripMaster.tourguideclient.service.TourGuideClientServiceImpl - Finished initializing users
+20:34:13.342 [pool-9-thread-1] DEBUG com.tripMaster.tourguideclient.utils.Tracker - Begin Tracker. Tracking 0 users.
+20:34:13.342 [Test worker] DEBUG com.tripMaster.tourguideclient.service.TourGuideClientServiceImpl - Service - Current location for all users got
+20:34:13.342 [pool-9-thread-1] DEBUG com.tripMaster.tourguideclient.utils.Tracker - Tracker Time Elapsed: 0 seconds.
+20:34:13.342 [pool-9-thread-1] DEBUG com.tripMaster.tourguideclient.utils.Tracker - Tracker sleeping
+20:34:13.345 [Test worker] INFO com.tripMaster.tourguideclient.service.TourGuideClientServiceImpl - TestMode enabled
+20:34:13.345 [Test worker] DEBUG com.tripMaster.tourguideclient.service.TourGuideClientServiceImpl - Initializing users
+20:34:13.345 [Test worker] DEBUG com.tripMaster.tourguideclient.service.TourGuideClientServiceImpl - Finished initializing users
+20:34:13.346 [Test worker] DEBUG com.tripMaster.tourguideclient.service.TourGuideClientServiceImpl - Service - Current location for all users got
+20:34:13.346 [pool-10-thread-1] DEBUG com.tripMaster.tourguideclient.utils.Tracker - Begin Tracker. Tracking 0 users.
+20:34:13.346 [pool-10-thread-1] DEBUG com.tripMaster.tourguideclient.utils.Tracker - Tracker Time Elapsed: 0 seconds.
+20:34:13.346 [pool-10-thread-1] DEBUG com.tripMaster.tourguideclient.utils.Tracker - Tracker sleeping
+20:34:13.347 [Test worker] INFO com.tripMaster.tourguideclient.service.TourGuideClientServiceImpl - TestMode enabled
+20:34:13.347 [Test worker] DEBUG com.tripMaster.tourguideclient.service.TourGuideClientServiceImpl - Initializing users
+20:34:13.347 [Test worker] DEBUG com.tripMaster.tourguideclient.service.TourGuideClientServiceImpl - Finished initializing users
+20:34:13.348 [Test worker] DEBUG com.tripMaster.tourguideclient.service.TourGuideClientServiceImpl - Service - get user location for user: jona
+20:34:13.348 [pool-11-thread-1] DEBUG com.tripMaster.tourguideclient.utils.Tracker - Begin Tracker. Tracking 0 users.
+20:34:13.349 [pool-11-thread-1] DEBUG com.tripMaster.tourguideclient.utils.Tracker - Tracker Time Elapsed: 0 seconds.
+20:34:13.349 [pool-11-thread-1] DEBUG com.tripMaster.tourguideclient.utils.Tracker - Tracker sleeping
+20:34:13.372 [Test worker] INFO com.tripMaster.tourguideclient.service.TourGuideClientServiceImpl - TestMode enabled
+20:34:13.372 [Test worker] DEBUG com.tripMaster.tourguideclient.service.TourGuideClientServiceImpl - Initializing users
+20:34:13.372 [Test worker] DEBUG com.tripMaster.tourguideclient.service.TourGuideClientServiceImpl - Finished initializing users
+20:34:13.373 [Test worker] DEBUG com.tripMaster.tourguideclient.service.TourGuideClientServiceImpl - Service - user found: jon
+20:34:13.373 [pool-12-thread-1] DEBUG com.tripMaster.tourguideclient.utils.Tracker - Begin Tracker. Tracking 0 users.
+20:34:13.374 [pool-12-thread-1] DEBUG com.tripMaster.tourguideclient.utils.Tracker - Tracker Time Elapsed: 0 seconds.
+20:34:13.374 [pool-12-thread-1] DEBUG com.tripMaster.tourguideclient.utils.Tracker - Tracker sleeping
+20:34:13.375 [Test worker] INFO com.tripMaster.tourguideclient.service.TourGuideClientServiceImpl - TestMode enabled
+20:34:13.375 [Test worker] DEBUG com.tripMaster.tourguideclient.service.TourGuideClientServiceImpl - Initializing users
+20:34:13.375 [Test worker] DEBUG com.tripMaster.tourguideclient.service.TourGuideClientServiceImpl - Finished initializing users
+20:34:13.376 [pool-13-thread-1] DEBUG com.tripMaster.tourguideclient.utils.Tracker - Begin Tracker. Tracking 0 users.
+20:34:13.376 [pool-13-thread-1] DEBUG com.tripMaster.tourguideclient.utils.Tracker - Tracker Time Elapsed: 0 seconds.
+20:34:13.376 [pool-13-thread-1] DEBUG com.tripMaster.tourguideclient.utils.Tracker - Tracker sleeping
+20:34:13.377 [Test worker] ERROR com.tripMaster.tourguideclient.service.TourGuideClientServiceImpl - Service - userRewards not found
+20:34:13.379 [Test worker] INFO com.tripMaster.tourguideclient.service.TourGuideClientServiceImpl - TestMode enabled
+20:34:13.379 [Test worker] DEBUG com.tripMaster.tourguideclient.service.TourGuideClientServiceImpl - Initializing users
+20:34:13.379 [Test worker] DEBUG com.tripMaster.tourguideclient.service.TourGuideClientServiceImpl - Finished initializing users
+20:34:13.379 [pool-14-thread-1] DEBUG com.tripMaster.tourguideclient.utils.Tracker - Begin Tracker. Tracking 0 users.
+20:34:13.380 [pool-14-thread-1] DEBUG com.tripMaster.tourguideclient.utils.Tracker - Tracker Time Elapsed: 0 seconds.
+20:34:13.380 [Test worker] ERROR com.tripMaster.tourguideclient.service.TourGuideClientServiceImpl - Service - user not found
+20:34:13.380 [pool-14-thread-1] DEBUG com.tripMaster.tourguideclient.utils.Tracker - Tracker sleeping
+20:34:13.381 [Test worker] INFO com.tripMaster.tourguideclient.service.TourGuideClientServiceImpl - TestMode enabled
+20:34:13.381 [Test worker] DEBUG com.tripMaster.tourguideclient.service.TourGuideClientServiceImpl - Initializing users
+20:34:13.381 [Test worker] DEBUG com.tripMaster.tourguideclient.service.TourGuideClientServiceImpl - Finished initializing users
+20:34:13.382 [pool-15-thread-1] DEBUG com.tripMaster.tourguideclient.utils.Tracker - Begin Tracker. Tracking 0 users.
+20:34:13.382 [Test worker] DEBUG com.tripMaster.tourguideclient.service.TourGuideClientServiceImpl - Service - user location tracked for username: jon
+20:34:13.382 [pool-15-thread-1] DEBUG com.tripMaster.tourguideclient.utils.Tracker - Tracker Time Elapsed: 0 seconds.
+20:34:13.382 [pool-15-thread-1] DEBUG com.tripMaster.tourguideclient.utils.Tracker - Tracker sleeping
+20:34:13.383 [Test worker] DEBUG com.tripMaster.tourguideclient.service.TourGuideClientServiceImpl - Service - get user location for user: jon
+20:34:13.383 [pool-16-thread-2] DEBUG com.tripMaster.tourguideclient.service.TourGuideClientServiceImpl - Service - Visited location added for user: jon
+20:34:14.388 [Test worker] INFO com.tripMaster.tourguideclient.service.TourGuideClientServiceImpl - TestMode enabled
+20:34:14.388 [Test worker] DEBUG com.tripMaster.tourguideclient.service.TourGuideClientServiceImpl - Initializing users
+20:34:14.388 [Test worker] DEBUG com.tripMaster.tourguideclient.service.TourGuideClientServiceImpl - Finished initializing users
+20:34:14.389 [pool-17-thread-1] DEBUG com.tripMaster.tourguideclient.utils.Tracker - Begin Tracker. Tracking 2 users.
+20:34:14.389 [pool-17-thread-1] DEBUG com.tripMaster.tourguideclient.service.TourGuideClientServiceImpl - Service - user location tracked for username: jon
+20:34:14.390 [pool-17-thread-1] DEBUG com.tripMaster.tourguideclient.service.TourGuideClientServiceImpl - Service - user location tracked for username: jon1
+20:34:14.390 [pool-17-thread-1] DEBUG com.tripMaster.tourguideclient.utils.Tracker - Tracker Time Elapsed: 0 seconds.
+20:34:14.390 [pool-17-thread-1] DEBUG com.tripMaster.tourguideclient.utils.Tracker - Tracker sleeping
+20:34:14.390 [pool-18-thread-2] DEBUG com.tripMaster.tourguideclient.service.TourGuideClientServiceImpl - Service - Visited location added for user: jon
+20:34:14.391 [pool-19-thread-2] DEBUG com.tripMaster.tourguideclient.service.TourGuideClientServiceImpl - Service - Visited location added for user: jon1
+20:34:14.391 [Test worker] INFO com.tripMaster.tourguideclient.service.TourGuideClientServiceImpl - TestMode enabled
+20:34:14.391 [Test worker] DEBUG com.tripMaster.tourguideclient.service.TourGuideClientServiceImpl - Initializing users
+20:34:14.391 [Test worker] DEBUG com.tripMaster.tourguideclient.service.TourGuideClientServiceImpl - Finished initializing users
+20:34:14.392 [pool-20-thread-1] DEBUG com.tripMaster.tourguideclient.utils.Tracker - Begin Tracker. Tracking 0 users.
+20:34:14.392 [Test worker] ERROR com.tripMaster.tourguideclient.service.TourGuideClientServiceImpl - Service - user not found
+20:34:14.392 [pool-20-thread-1] DEBUG com.tripMaster.tourguideclient.utils.Tracker - Tracker Time Elapsed: 0 seconds.
+20:34:14.392 [pool-20-thread-1] DEBUG com.tripMaster.tourguideclient.utils.Tracker - Tracker sleeping
+20:34:14.394 [Test worker] INFO com.tripMaster.tourguideclient.service.TourGuideClientServiceImpl - TestMode enabled
+20:34:14.394 [Test worker] DEBUG com.tripMaster.tourguideclient.service.TourGuideClientServiceImpl - Initializing users
+20:34:14.394 [Test worker] DEBUG com.tripMaster.tourguideclient.service.TourGuideClientServiceImpl - Finished initializing users
+20:34:14.395 [pool-21-thread-1] DEBUG com.tripMaster.tourguideclient.utils.Tracker - Begin Tracker. Tracking 0 users.
+20:34:14.395 [pool-21-thread-1] DEBUG com.tripMaster.tourguideclient.utils.Tracker - Tracker Time Elapsed: 0 seconds.
+20:34:14.395 [pool-21-thread-1] DEBUG com.tripMaster.tourguideclient.utils.Tracker - Tracker sleeping
+20:34:14.395 [Test worker] ERROR com.tripMaster.tourguideclient.service.TourGuideClientServiceImpl - Service - user not found
+]]></system-out>
+  <system-err><![CDATA[nov. 27, 2021 8:34:13 PM org.javamoney.moneta.DefaultMonetaryContextFactory createMonetaryContextNonNullConfig
+INFOS: Using custom MathContext: precision=256, roundingMode=HALF_EVEN
+]]></system-err>
+</testsuite>

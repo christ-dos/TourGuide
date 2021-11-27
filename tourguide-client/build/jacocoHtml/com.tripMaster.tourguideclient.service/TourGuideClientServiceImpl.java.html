@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TourGuideClientServiceImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tourguide-client</a> &gt; <a href="index.source.html" class="el_package">com.tripMaster.tourguideclient.service</a> &gt; <span class="el_source">TourGuideClientServiceImpl.java</span></div><h1>TourGuideClientServiceImpl.java</h1><pre class="source lang-java linenums">package com.tripMaster.tourguideclient.service;
+
+import com.tripMaster.tourguideclient.DAO.InternalUserMapDAO;
+import com.tripMaster.tourguideclient.exception.UserNotFoundException;
+import com.tripMaster.tourguideclient.exception.UserRewardsNotFoundException;
+import com.tripMaster.tourguideclient.model.*;
+import com.tripMaster.tourguideclient.proxies.MicroserviceRewardsProxy;
+import com.tripMaster.tourguideclient.proxies.MicroserviceTripPricerProxy;
+import com.tripMaster.tourguideclient.proxies.MicroserviceUserGpsProxy;
+import com.tripMaster.tourguideclient.utils.Tracker;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Locale;
+import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.stream.Collectors;
+
+/**
+ * Class that implements methods of {@link TourGuideClientService}
+ *
+ * @author Christine Duarte
+ */
+@Service
+<span class="fc" id="L30">@Slf4j</span>
+public class TourGuideClientServiceImpl implements TourGuideClientService {
+
+    public final Tracker tracker;
+    private final MicroserviceUserGpsProxy microserviceUserGpsProxy;
+    private final MicroserviceRewardsProxy microserviceRewardsProxy;
+    private final InternalUserMapDAO internalUserMapDAO;
+    private final TourGuideClientRewardsServiceImpl tourGuideClientRewardsServiceImpl;
+    private final MicroserviceTripPricerProxy microserviceTripPricerProxy;
+<span class="fc" id="L39">    boolean testMode = true;</span>
+
+    @Autowired
+<span class="fc" id="L42">    public TourGuideClientServiceImpl(MicroserviceRewardsProxy microserviceRewardsProxy, MicroserviceUserGpsProxy microserviceUserGpsProxy, InternalUserMapDAO internalUserMapDAO, TourGuideClientRewardsServiceImpl tourGuideClientRewardsServiceImpl, MicroserviceTripPricerProxy microserviceTripPricerProxy) {</span>
+<span class="fc" id="L43">        this.microserviceUserGpsProxy = microserviceUserGpsProxy;</span>
+<span class="fc" id="L44">        this.internalUserMapDAO = internalUserMapDAO;</span>
+<span class="fc" id="L45">        this.tourGuideClientRewardsServiceImpl = tourGuideClientRewardsServiceImpl;</span>
+<span class="fc" id="L46">        this.microserviceTripPricerProxy = microserviceTripPricerProxy;</span>
+<span class="fc" id="L47">        this.microserviceRewardsProxy = microserviceRewardsProxy;</span>
+
+<span class="pc bpc" id="L49" title="1 of 2 branches missed.">        if (testMode) {</span>
+<span class="fc" id="L50">            log.info(&quot;TestMode enabled&quot;);</span>
+<span class="fc" id="L51">            log.debug(&quot;Initializing users&quot;);</span>
+<span class="fc" id="L52">            internalUserMapDAO.initializeInternalUsers();</span>
+<span class="fc" id="L53">            log.debug(&quot;Finished initializing users&quot;);</span>
+        }
+<span class="fc" id="L55">        tracker = new Tracker(this);</span>
+<span class="fc" id="L56">        addShutDownHook();</span>
+<span class="fc" id="L57">    }</span>
+
+    public CompletableFuture&lt;VisitedLocation&gt; trackUserLocation(User user) {
+<span class="fc" id="L60">        final ExecutorService executorService = Executors.newFixedThreadPool(1600);</span>
+<span class="fc" id="L61">        CompletableFuture&lt;VisitedLocation&gt; visitedLocationFuture = null;</span>
+        try {
+<span class="fc" id="L63">            Locale.setDefault(new Locale(&quot;en&quot;, &quot;US&quot;));</span>
+
+<span class="fc" id="L65">            visitedLocationFuture = CompletableFuture.supplyAsync(() -&gt; microserviceUserGpsProxy.trackUserLocation(user.getUserId()), executorService);</span>
+<span class="fc" id="L66">            visitedLocationFuture.thenCompose(visitedLocation -&gt;</span>
+<span class="fc" id="L67">                    CompletableFuture.runAsync(() -&gt; {</span>
+<span class="fc" id="L68">                        addToVisitedLocations(visitedLocation, user);</span>
+<span class="fc" id="L69">                        tourGuideClientRewardsServiceImpl.calculateRewards(user);</span>
+<span class="fc" id="L70">                    }, executorService)</span>
+            );
+<span class="nc" id="L72">        } catch (NumberFormatException ex) {</span>
+<span class="nc" id="L73">            log.debug(&quot;NumberFormatException: &quot; + ex.getMessage());</span>
+<span class="fc" id="L74">        }</span>
+<span class="fc" id="L75">        log.debug(&quot;Service - user location tracked for username: &quot; + user.getUserName());</span>
+
+<span class="fc" id="L77">        return visitedLocationFuture;</span>
+    }
+
+    public User getUser(String userName) {
+<span class="fc" id="L81">        User user = internalUserMapDAO.getUser(userName);</span>
+<span class="fc bfc" id="L82" title="All 2 branches covered.">        if (user == null) {</span>
+<span class="fc" id="L83">            log.error(&quot;Service - user not found&quot;);</span>
+<span class="fc" id="L84">            throw new UserNotFoundException(&quot;User not found&quot;);</span>
+        }
+<span class="fc" id="L86">        log.debug((&quot;Service - user found: &quot; + userName));</span>
+
+<span class="fc" id="L88">        return user;</span>
+    }
+
+    public List&lt;User&gt; getAllUsers() {
+<span class="fc" id="L92">        return internalUserMapDAO.getAllUsers();</span>
+    }
+
+    public void addUser(User user) {
+<span class="fc" id="L96">        internalUserMapDAO.addUser(user);</span>
+<span class="fc" id="L97">    }</span>
+
+    @Override
+    public VisitedLocation getUserLocation(String userName) {
+<span class="fc" id="L101">        User user = internalUserMapDAO.getUser(userName);</span>
+<span class="fc bfc" id="L102" title="All 2 branches covered.">        if (user == null) {</span>
+<span class="fc" id="L103">            log.error(&quot;Service - user not found&quot;);</span>
+<span class="fc" id="L104">            throw new UserNotFoundException(&quot;User not found&quot;);</span>
+        }
+<span class="fc" id="L106">        List&lt;VisitedLocation&gt; visitedLocations = user.getVisitedLocations();</span>
+<span class="fc bfc" id="L107" title="All 2 branches covered.">        VisitedLocation visitedLocation = (user.getVisitedLocations().size() &gt; 0) ?</span>
+<span class="fc" id="L108">                user.getVisitedLocations().get(visitedLocations.size() - 1) :</span>
+<span class="fc" id="L109">                trackUserLocation(user).join();</span>
+
+<span class="fc" id="L111">        log.debug(&quot;Service - get user location for user: &quot; + userName);</span>
+
+<span class="fc" id="L113">        return visitedLocation;</span>
+    }
+
+    @Override
+    public List&lt;UserCurrentLocation&gt; getAllCurrentLocations() {
+<span class="fc" id="L118">        List&lt;User&gt; users = internalUserMapDAO.getAllUsers();</span>
+<span class="fc" id="L119">        log.debug(&quot;Service - Current location for all users got&quot;);</span>
+
+<span class="fc" id="L121">        return users.stream()</span>
+<span class="fc" id="L122">                .map(u -&gt; new UserCurrentLocation(u.getUserId(), u.getVisitedLocations().get(u.getVisitedLocations().size() - 1).getLocation()))</span>
+<span class="fc" id="L123">                .collect(Collectors.toList());</span>
+    }
+
+    @Override
+    public List&lt;Provider&gt; getTripDeals(String userName) {
+<span class="fc" id="L128">        User user = internalUserMapDAO.getUser(userName);</span>
+<span class="fc bfc" id="L129" title="All 2 branches covered.">        if (user == null) {</span>
+<span class="fc" id="L130">            log.error(&quot;Service - user not found&quot;);</span>
+<span class="fc" id="L131">            throw new UserNotFoundException(&quot;User not found&quot;);</span>
+        }
+<span class="fc" id="L133">        List&lt;UserReward&gt; userRewards = user.getUserRewards();</span>
+<span class="fc bfc" id="L134" title="All 2 branches covered.">        if (userRewards.isEmpty()) {</span>
+<span class="fc" id="L135">            log.error(&quot;Service - userRewards not found&quot;);</span>
+<span class="fc" id="L136">            throw new UserRewardsNotFoundException(&quot;User Rewards not found&quot;);</span>
+        }
+<span class="fc" id="L138">        UUID attractionId = userRewards.get(userRewards.size() - 1).getAttraction().getAttractionId();</span>
+
+<span class="fc" id="L140">        int cumulativeRewardPoints = user.getUserRewards().stream().mapToInt(i -&gt; i.getRewardPoints()).sum();</span>
+<span class="fc" id="L141">        List&lt;Provider&gt; providers = microserviceTripPricerProxy.getProviders(</span>
+<span class="fc" id="L142">                internalUserMapDAO.getTripPricerApiKey(),</span>
+                attractionId,
+<span class="fc" id="L144">                user.getUserPreferences().getNumberOfAdults(),</span>
+<span class="fc" id="L145">                user.getUserPreferences().getNumberOfChildren(),</span>
+<span class="fc" id="L146">                user.getUserPreferences().getTripDuration(),</span>
+                cumulativeRewardPoints);
+
+<span class="fc" id="L149">        user.setTripDeals(providers);</span>
+<span class="fc" id="L150">        log.debug(&quot;Service - list of providers getted for user: &quot; + userName);</span>
+
+<span class="fc" id="L152">        return providers;</span>
+    }
+
+    @Override
+    public List&lt;NearByAttraction&gt; getNearByAttractions(VisitedLocation visitedLocation) {
+<span class="fc" id="L157">        List&lt;Attraction&gt; attractions = microserviceUserGpsProxy.getAttractionsByAverageDistance(visitedLocation.getLocation().getLatitude(), visitedLocation.getLocation().getLongitude());</span>
+
+<span class="fc" id="L159">        List&lt;NearByAttraction&gt; nearByAttractionsList = attractions.stream()</span>
+<span class="fc" id="L160">                .sorted((o1, o2) -&gt; {</span>
+<span class="fc" id="L161">                    Double distanceO1 = tourGuideClientRewardsServiceImpl.getDistance(o1, visitedLocation.getLocation());</span>
+<span class="fc" id="L162">                    Double distanceO2 = tourGuideClientRewardsServiceImpl.getDistance(o2, visitedLocation.getLocation());</span>
+
+<span class="pc bpc" id="L164" title="2 of 4 branches missed.">                    return distanceO1 == distanceO2 ? 0 : distanceO1 &gt; distanceO2 ? 1 : -1;</span>
+                })
+<span class="fc" id="L166">                .limit(5)</span>
+<span class="fc" id="L167">                .map(attraction -&gt; buildNearByAttraction(visitedLocation, attraction))</span>
+<span class="fc" id="L168">                .collect(Collectors.toList());</span>
+
+<span class="fc" id="L170">        log.debug(&quot;Service - Attractions near of position of user: &quot; + visitedLocation.getUserId());</span>
+<span class="fc" id="L171">        return nearByAttractionsList;</span>
+    }
+
+    private NearByAttraction buildNearByAttraction(VisitedLocation visitedLocation, Attraction attraction) {
+<span class="fc" id="L175">        return new NearByAttraction(attraction.getAttractionName(),</span>
+<span class="fc" id="L176">                new Location(attraction.getLatitude(), attraction.getLongitude()),</span>
+<span class="fc" id="L177">                visitedLocation.getLocation(),</span>
+<span class="fc" id="L178">                (int) tourGuideClientRewardsServiceImpl.getDistance(attraction, visitedLocation.getLocation()),</span>
+<span class="fc" id="L179">                microserviceRewardsProxy.getRewardsPoints(attraction.getAttractionId(), visitedLocation.getUserId()));</span>
+    }
+
+    public void addToVisitedLocations(VisitedLocation visitedLocation, User user) {
+<span class="fc" id="L183">        CopyOnWriteArrayList&lt;VisitedLocation&gt; visitedLocations = user.getVisitedLocations();</span>
+<span class="fc" id="L184">        visitedLocations.add(visitedLocation);</span>
+<span class="fc" id="L185">        user.setVisitedLocations(visitedLocations);</span>
+
+<span class="fc" id="L187">        log.debug(&quot;Service - Visited location added for user: &quot; + user.getUserName());</span>
+<span class="fc" id="L188">    }</span>
+
+    private double getAverageDistanceByAttraction(List&lt;Double&gt; distances) {
+<span class="nc" id="L191">        log.debug(&quot;Service - Average calculated&quot;);</span>
+<span class="nc" id="L192">        return distances.stream().mapToDouble(s -&gt; s)</span>
+<span class="nc" id="L193">                .average()</span>
+<span class="nc" id="L194">                .orElse(0D);</span>
+    }
+
+    private void addShutDownHook() {
+<span class="fc" id="L198">        Runtime.getRuntime().addShutdownHook(new Thread() {</span>
+            public void run() {
+<span class="fc" id="L200">                tracker.stopTracking();</span>
+<span class="fc" id="L201">                log.info(&quot;Service - Stop tracking&quot;);</span>
+<span class="fc" id="L202">            }</span>
+        });
+<span class="fc" id="L204">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

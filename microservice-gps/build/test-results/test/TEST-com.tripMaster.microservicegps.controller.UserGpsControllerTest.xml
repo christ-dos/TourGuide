@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.tripMaster.microservicegps.controller.UserGpsControllerTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2021-11-27T19:32:26" hostname="MSI" time="0.34">
+  <properties/>
+  <testcase name="getAttractionsTest_whenListContainedThreeElements_thenReturnListWithThreeAttractions()" classname="com.tripMaster.microservicegps.controller.UserGpsControllerTest" time="0.277"/>
+  <testcase name="trackUserLocationTest()" classname="com.tripMaster.microservicegps.controller.UserGpsControllerTest" time="0.031"/>
+  <testcase name="getAttractionsByAverageDistanceTest_thenReturnListWithAttractionBelowAverageDistance()" classname="com.tripMaster.microservicegps.controller.UserGpsControllerTest" time="0.028"/>
+  <system-out><![CDATA[20:32:23.108 [Test worker] DEBUG org.springframework.test.context.BootstrapUtils - Instantiating CacheAwareContextLoaderDelegate from class [org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate]
+20:32:23.127 [Test worker] DEBUG org.springframework.test.context.BootstrapUtils - Instantiating BootstrapContext using constructor [public org.springframework.test.context.support.DefaultBootstrapContext(java.lang.Class,org.springframework.test.context.CacheAwareContextLoaderDelegate)]
+20:32:23.186 [Test worker] DEBUG org.springframework.test.context.BootstrapUtils - Instantiating TestContextBootstrapper for test class [com.tripMaster.microservicegps.controller.UserGpsControllerTest] from class [org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTestContextBootstrapper]
+20:32:23.204 [Test worker] INFO org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTestContextBootstrapper - Neither @ContextConfiguration nor @ContextHierarchy found for test class [com.tripMaster.microservicegps.controller.UserGpsControllerTest], using SpringBootContextLoader
+20:32:23.211 [Test worker] DEBUG org.springframework.test.context.support.AbstractContextLoader - Did not detect default resource location for test class [com.tripMaster.microservicegps.controller.UserGpsControllerTest]: class path resource [com/tripMaster/microservicegps/controller/UserGpsControllerTest-context.xml] does not exist
+20:32:23.212 [Test worker] DEBUG org.springframework.test.context.support.AbstractContextLoader - Did not detect default resource location for test class [com.tripMaster.microservicegps.controller.UserGpsControllerTest]: class path resource [com/tripMaster/microservicegps/controller/UserGpsControllerTestContext.groovy] does not exist
+20:32:23.212 [Test worker] INFO org.springframework.test.context.support.AbstractContextLoader - Could not detect default resource locations for test class [com.tripMaster.microservicegps.controller.UserGpsControllerTest]: no resource found for suffixes {-context.xml, Context.groovy}.
+20:32:23.213 [Test worker] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils - Could not detect default configuration classes for test class [com.tripMaster.microservicegps.controller.UserGpsControllerTest]: UserGpsControllerTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+20:32:23.317 [Test worker] DEBUG org.springframework.test.context.support.ActiveProfilesUtils - Could not find an 'annotation declaring class' for annotation type [org.springframework.test.context.ActiveProfiles] and class [com.tripMaster.microservicegps.controller.UserGpsControllerTest]
+20:32:23.409 [Test worker] DEBUG org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider - Identified candidate component class: file [C:\Users\Kikine\Desktop\tripMaster\microservice-gps\build\classes\java\main\com\tripMaster\microservicegps\MicroserviceGpsApplication.class]
+20:32:23.410 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper - Found @SpringBootConfiguration com.tripMaster.microservicegps.MicroserviceGpsApplication for test class com.tripMaster.microservicegps.controller.UserGpsControllerTest
+20:32:23.413 [Test worker] DEBUG org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTestContextBootstrapper - @TestExecutionListeners is not present for class [com.tripMaster.microservicegps.controller.UserGpsControllerTest]: using defaults.
+20:32:23.413 [Test worker] INFO org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTestContextBootstrapper - Loaded default TestExecutionListener class names from location [META-INF/spring.factories]: [org.springframework.test.context.web.ServletTestExecutionListener, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener, org.springframework.test.context.event.ApplicationEventsTestExecutionListener, org.springframework.test.context.support.DependencyInjectionTestExecutionListener, org.springframework.test.context.support.DirtiesContextTestExecutionListener, org.springframework.test.context.transaction.TransactionalTestExecutionListener, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener, org.springframework.test.context.event.EventPublishingTestExecutionListener, org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener, org.springframework.boot.test.autoconfigure.webservices.client.MockWebServiceServerTestExecutionListener, org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener]
+20:32:23.430 [Test worker] DEBUG org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTestContextBootstrapper - Skipping candidate TestExecutionListener [org.springframework.test.context.transaction.TransactionalTestExecutionListener] due to a missing dependency. Specify custom listener classes or make the default listener classes and their required dependencies available. Offending class: [org/springframework/transaction/interceptor/TransactionAttributeSource]
+20:32:23.431 [Test worker] DEBUG org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTestContextBootstrapper - Skipping candidate TestExecutionListener [org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener] due to a missing dependency. Specify custom listener classes or make the default listener classes and their required dependencies available. Offending class: [org/springframework/transaction/interceptor/TransactionAttribute]
+20:32:23.432 [Test worker] INFO org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTestContextBootstrapper - Using TestExecutionListeners: [org.springframework.test.context.web.ServletTestExecutionListener@43fe2008, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener@552bee2f, org.springframework.test.context.event.ApplicationEventsTestExecutionListener@6a543e09, org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener@2d0f548a, org.springframework.boot.test.autoconfigure.SpringBootDependencyInjectionTestExecutionListener@1fc3df43, org.springframework.test.context.support.DirtiesContextTestExecutionListener@15130002, org.springframework.test.context.event.EventPublishingTestExecutionListener@5e7cd0df, org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener@900649e, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener@8b89b3a, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener@526893f, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener@3de45b6c, org.springframework.boot.test.autoconfigure.webservices.client.MockWebServiceServerTestExecutionListener@37caecda, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener@7be7c052]
+20:32:23.437 [Test worker] DEBUG org.springframework.test.context.support.AbstractDirtiesContextTestExecutionListener - Before test class: context [DefaultTestContext@563ada5 testClass = UserGpsControllerTest, testInstance = [null], testMethod = [null], testException = [null], mergedContextConfiguration = [WebMergedContextConfiguration@12548f9a testClass = UserGpsControllerTest, locations = '{}', classes = '{class com.tripMaster.microservicegps.MicroserviceGpsApplication}', contextInitializerClasses = '[]', activeProfiles = '{}', propertySourceLocations = '{}', propertySourceProperties = '{org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTestContextBootstrapper=true}', contextCustomizers = set[org.springframework.boot.test.autoconfigure.OverrideAutoConfigurationContextCustomizerFactory$DisableAutoConfigurationContextCustomizer@4f2ac7e0, org.springframework.boot.test.autoconfigure.actuate.metrics.MetricsExportContextCustomizerFactory$DisableMetricExportContextCustomizer@4f5f474c, org.springframework.boot.test.autoconfigure.filter.TypeExcludeFiltersContextCustomizer@4c915310, org.springframework.boot.test.autoconfigure.properties.PropertyMappingContextCustomizer@26c7a664, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverContextCustomizerFactory$Customizer@718989fa, [ImportsContextCustomizer@156ff70f key = [org.springframework.boot.autoconfigure.cache.CacheAutoConfiguration, org.springframework.boot.autoconfigure.context.MessageSourceAutoConfiguration, org.springframework.boot.autoconfigure.data.web.SpringDataWebAutoConfiguration, org.springframework.boot.autoconfigure.freemarker.FreeMarkerAutoConfiguration, org.springframework.boot.autoconfigure.groovy.template.GroovyTemplateAutoConfiguration, org.springframework.boot.autoconfigure.gson.GsonAutoConfiguration, org.springframework.boot.autoconfigure.hateoas.HypermediaAutoConfiguration, org.springframework.boot.autoconfigure.http.HttpMessageConvertersAutoConfiguration, org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration, org.springframework.boot.autoconfigure.jsonb.JsonbAutoConfiguration, org.springframework.boot.autoconfigure.mustache.MustacheAutoConfiguration, org.springframework.boot.autoconfigure.task.TaskExecutionAutoConfiguration, org.springframework.boot.autoconfigure.thymeleaf.ThymeleafAutoConfiguration, org.springframework.boot.autoconfigure.validation.ValidationAutoConfiguration, org.springframework.boot.autoconfigure.web.servlet.error.ErrorMvcAutoConfiguration, org.springframework.boot.autoconfigure.web.servlet.HttpEncodingAutoConfiguration, org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcAutoConfiguration, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcWebClientAutoConfiguration, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcWebDriverAutoConfiguration, org.springframework.boot.autoconfigure.security.oauth2.client.servlet.OAuth2ClientAutoConfiguration, org.springframework.boot.autoconfigure.security.oauth2.resource.servlet.OAuth2ResourceServerAutoConfiguration, org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration, org.springframework.boot.autoconfigure.security.servlet.SecurityFilterAutoConfiguration, org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcSecurityConfiguration]], org.springframework.boot.test.context.filter.ExcludeFilterContextCustomizer@267ff4df, org.springframework.boot.test.json.DuplicateJsonObjectContextCustomizerFactory$DuplicateJsonObjectContextCustomizer@3a2546d6, org.springframework.boot.test.mock.mockito.MockitoContextCustomizer@fe9f1dfa, org.springframework.boot.test.context.SpringBootTestArgs@1, org.springframework.boot.test.context.SpringBootTestWebEnvironment@0], resourceBasePath = 'src/main/webapp', contextLoader = 'org.springframework.boot.test.context.SpringBootContextLoader', parent = [null]], attributes = map[[empty]]], class annotated with @DirtiesContext [false] with mode [null].
+20:32:23.496 [Test worker] DEBUG org.springframework.test.context.support.TestPropertySourceUtils - Adding inlined properties to environment: {spring.jmx.enabled=false, org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTestContextBootstrapper=true}
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::                (v2.5.6)
+
+2021-11-27 20:32:23.955  INFO 534328 --- [    Test worker] c.t.m.controller.UserGpsControllerTest   : Starting UserGpsControllerTest using Java 1.8.0_281 on MSI with PID 534328 (started by Kikine in C:\Users\Kikine\Desktop\tripMaster\microservice-gps)
+2021-11-27 20:32:23.956 DEBUG 534328 --- [    Test worker] c.t.m.controller.UserGpsControllerTest   : Running with Spring Boot v2.5.6, Spring v5.3.12
+2021-11-27 20:32:23.957  INFO 534328 --- [    Test worker] c.t.m.controller.UserGpsControllerTest   : No active profile set, falling back to default profiles: default
+2021-11-27 20:32:25.977  INFO 534328 --- [    Test worker] pertySourcedRequestMappingHandlerMapping : Mapped URL path [/v2/api-docs] onto method [springfox.documentation.swagger2.web.Swagger2Controller#getDocumentation(String, HttpServletRequest)]
+2021-11-27 20:32:26.385  INFO 534328 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2021-11-27 20:32:26.385  INFO 534328 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2021-11-27 20:32:26.387  INFO 534328 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 2 ms
+2021-11-27 20:32:26.418  INFO 534328 --- [    Test worker] d.s.w.p.DocumentationPluginsBootstrapper : Context refreshed
+2021-11-27 20:32:26.456  INFO 534328 --- [    Test worker] d.s.w.p.DocumentationPluginsBootstrapper : Found 1 custom documentation plugin(s)
+2021-11-27 20:32:26.501  INFO 534328 --- [    Test worker] s.d.s.w.s.ApiListingReferenceScanner     : Scanning for api listing references
+2021-11-27 20:32:26.701  INFO 534328 --- [    Test worker] c.t.m.controller.UserGpsControllerTest   : Started UserGpsControllerTest in 3.194 seconds (JVM running for 4.954)
+2021-11-27 20:32:26.815  INFO 534328 --- [    Test worker] c.t.m.controller.UserGpsController       : Request to get list attractions
+
+MockHttpServletRequest:
+      HTTP Method = GET
+      Request URI = /getAttractions
+       Parameters = {}
+          Headers = []
+             Body = null
+    Session Attrs = {}
+
+Handler:
+             Type = com.tripMaster.microservicegps.controller.UserGpsController
+           Method = com.tripMaster.microservicegps.controller.UserGpsController#getAttractions()
+
+Async:
+    Async started = false
+     Async result = null
+
+Resolved Exception:
+             Type = null
+
+ModelAndView:
+        View name = null
+             View = null
+            Model = null
+
+FlashMap:
+       Attributes = null
+
+MockHttpServletResponse:
+           Status = 200
+    Error message = null
+          Headers = [Content-Type:"application/json"]
+     Content type = application/json
+             Body = [{"longitude":-117.922008,"latitude":33.817595,"attractionName":"Disneyland","city":"Anaheim","state":"CA","attractionId":"933f0d9c-f86b-4a62-b31a-a43fd18f0b69"},{"longitude":-110.821999,"latitude":43.582767,"attractionName":"Jackson Hole","city":"Jackson Hole","state":"WY","attractionId":"10d104cb-a683-46ab-ad4c-16870a3eb296"},{"longitude":-115.510399,"latitude":35.141689,"attractionName":"Mojave National Preserve","city":"Kelso","state":"CA","attractionId":"5fc44c9d-8b6a-4e00-849a-a2e47f6ea88c"}]
+    Forwarded URL = null
+   Redirected URL = null
+          Cookies = []
+2021-11-27 20:32:27.008  INFO 534328 --- [    Test worker] c.t.m.controller.UserGpsController       : Controller - request to get user location with ID: 475ac1c2-e74c-4642-8bb1-d84a4de805a7
+
+MockHttpServletRequest:
+      HTTP Method = GET
+      Request URI = /getLocation
+       Parameters = {getLocation=[null], userId=[475ac1c2-e74c-4642-8bb1-d84a4de805a7]}
+          Headers = []
+             Body = null
+    Session Attrs = {}
+
+Handler:
+             Type = com.tripMaster.microservicegps.controller.UserGpsController
+           Method = com.tripMaster.microservicegps.controller.UserGpsController#trackUserLocation(UUID)
+
+Async:
+    Async started = false
+     Async result = null
+
+Resolved Exception:
+             Type = null
+
+ModelAndView:
+        View name = null
+             View = null
+            Model = null
+
+FlashMap:
+       Attributes = null
+
+MockHttpServletResponse:
+           Status = 200
+    Error message = null
+          Headers = [Content-Type:"application/json"]
+     Content type = application/json
+             Body = {"userId":"475ac1c2-e74c-4642-8bb1-d84a4de805a7","location":{"longitude":-116.922008,"latitude":33.817595},"timeVisited":"2021-11-27T19:32:26.992+00:00"}
+    Forwarded URL = null
+   Redirected URL = null
+          Cookies = []
+2021-11-27 20:32:27.031  INFO 534328 --- [    Test worker] c.t.m.controller.UserGpsController       : Request to get list attractions by average distance
+
+MockHttpServletRequest:
+      HTTP Method = GET
+      Request URI = /getAttractionsbydistance
+       Parameters = {latitude=[33.697500D], longitude=[ -117.206667D]}
+          Headers = []
+             Body = null
+    Session Attrs = {}
+
+Handler:
+             Type = com.tripMaster.microservicegps.controller.UserGpsController
+           Method = com.tripMaster.microservicegps.controller.UserGpsController#getAttractionsByAverageDistance(double, double)
+
+Async:
+    Async started = false
+     Async result = null
+
+Resolved Exception:
+             Type = null
+
+ModelAndView:
+        View name = null
+             View = null
+            Model = null
+
+FlashMap:
+       Attributes = null
+
+MockHttpServletResponse:
+           Status = 200
+    Error message = null
+          Headers = [Content-Type:"application/json"]
+     Content type = application/json
+             Body = [{"longitude":-117.922008,"latitude":33.817595,"attractionName":"Disneyland","city":"Anaheim","state":"CA","attractionId":"755d5ba0-6f15-40be-b432-3376877cead4"},{"longitude":-110.821999,"latitude":43.582767,"attractionName":"Jackson Hole","city":"Jackson Hole","state":"WY","attractionId":"4f7ca3e8-1d83-493b-b57d-9c2d385d46fa"},{"longitude":-115.510399,"latitude":35.141689,"attractionName":"Mojave National Preserve","city":"Kelso","state":"CA","attractionId":"7acd1e7c-8647-4a4e-8cb6-12f8086ae4d0"}]
+    Forwarded URL = null
+   Redirected URL = null
+          Cookies = []
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

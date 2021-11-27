@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.tripMaster.microservicegps.service.UserGpsServiceImplTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2021-11-27T19:32:29" hostname="MSI" time="0.025">
+  <properties/>
+  <testcase name="trackUserLocationTest()" classname="com.tripMaster.microservicegps.service.UserGpsServiceImplTest" time="0.018"/>
+  <testcase name="getAttractionsByAverageDistanceTest_whenFourAttractionsAreNearPositionAndFourAreFar_thenReturnListAttractionsBelowAverageDistance()" classname="com.tripMaster.microservicegps.service.UserGpsServiceImplTest" time="0.002"/>
+  <testcase name="getAttractionsByAverageDistanceTest_whenAllAttractionsAreFarOfPosition_thenReturnListAttractionsBelowAverageDistance()" classname="com.tripMaster.microservicegps.service.UserGpsServiceImplTest" time="0.001"/>
+  <testcase name="getAttractionsTest_thenReturnListAllAttractions()" classname="com.tripMaster.microservicegps.service.UserGpsServiceImplTest" time="0.002"/>
+  <system-out><![CDATA[2021-11-27 20:32:29.618 DEBUG 534328 --- [    Test worker] c.t.m.service.UserGpsServiceImpl         : Service - user location tracked for userId: b4255438-6c4d-47cd-9eea-dec434bfddb3
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

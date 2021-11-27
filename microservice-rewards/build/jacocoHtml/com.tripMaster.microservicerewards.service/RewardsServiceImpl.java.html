@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RewardsServiceImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">microservice-rewards</a> &gt; <a href="index.source.html" class="el_package">com.tripMaster.microservicerewards.service</a> &gt; <span class="el_source">RewardsServiceImpl.java</span></div><h1>RewardsServiceImpl.java</h1><pre class="source lang-java linenums">package com.tripMaster.microservicerewards.service;
+
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import rewardCentral.RewardCentral;
+
+import java.util.UUID;
+
+/**
+ * Class of service that permit get rewards points
+ *
+ * @author Christine Duarte
+ */
+@Service
+<span class="fc" id="L16">@Slf4j</span>
+public class RewardsServiceImpl implements RewardsService {
+    private static final double STATUTE_MILES_PER_NAUTICAL_MILE = 1.15077945;
+
+    private RewardCentral rewardsCentral;
+
+    @Autowired
+<span class="fc" id="L23">    public RewardsServiceImpl(RewardCentral rewardsCentral) {</span>
+<span class="fc" id="L24">        this.rewardsCentral = rewardsCentral;</span>
+<span class="fc" id="L25">    }</span>
+
+    public int getRewardPoints(UUID attractionId, UUID userId) {
+<span class="fc" id="L28">        log.info(&quot;Service - Rewards points getted for user:&quot;  + userId);</span>
+<span class="fc" id="L29">        return rewardsCentral.getAttractionRewardPoints(attractionId, userId);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

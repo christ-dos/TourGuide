@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.tripMaster.microservicerewards.service.RewardsServiceTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2021-11-23T15:00:32" hostname="MSI" time="0.02">
+  <properties/>
+  <testcase name="getRewardPointTest_thenReturn200RewardPoints()" classname="com.tripMaster.microservicerewards.service.RewardsServiceTest" time="0.02"/>
+  <system-out><![CDATA[2021-11-23 16:00:32.911  INFO 678340 --- [    Test worker] c.t.m.service.RewardsServiceImpl         : Service - Rewards points getted for user:044dea74-88f3-4e67-b601-80037940ecff
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

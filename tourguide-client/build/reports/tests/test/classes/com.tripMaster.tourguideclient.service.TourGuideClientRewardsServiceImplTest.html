@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="x-ua-compatible" content="IE=edge"/>
+<title>Test results - TourGuideClientRewardsServiceImplTest</title>
+<link href="../css/base-style.css" rel="stylesheet" type="text/css"/>
+<link href="../css/style.css" rel="stylesheet" type="text/css"/>
+<script src="../js/report.js" type="text/javascript"></script>
+</head>
+<body>
+<div id="content">
+<h1>TourGuideClientRewardsServiceImplTest</h1>
+<div class="breadcrumbs">
+<a href="../index.html">all</a> &gt; 
+<a href="../packages/com.tripMaster.tourguideclient.service.html">com.tripMaster.tourguideclient.service</a> &gt; TourGuideClientRewardsServiceImplTest</div>
+<div id="summary">
+<table>
+<tr>
+<td>
+<div class="summaryGroup">
+<table>
+<tr>
+<td>
+<div class="infoBox" id="tests">
+<div class="counter">9</div>
+<p>tests</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="failures">
+<div class="counter">0</div>
+<p>failures</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="ignored">
+<div class="counter">0</div>
+<p>ignored</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="duration">
+<div class="counter">0.127s</div>
+<p>duration</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</td>
+<td>
+<div class="infoBox success" id="successRate">
+<div class="percent">100%</div>
+<p>successful</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div id="tabs">
+<ul class="tabLinks">
+<li>
+<a href="#tab0">Tests</a>
+</li>
+<li>
+<a href="#tab1">Standard output</a>
+</li>
+</ul>
+<div id="tab0" class="tab">
+<h2>Tests</h2>
+<table>
+<thead>
+<tr>
+<th>Test</th>
+<th>Duration</th>
+<th>Result</th>
+</tr>
+</thead>
+<tr>
+<td class="success">calculateRewardsTest_whenUserHasTwoVisitedLocationsAndTwoAttractionsIsNear_thenUserRewardsAdded()</td>
+<td class="success">0.032s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">calculateRewardsTest_whenVisitedLocationIsFarOfAttractions_thenUserHasNoRewardsAdded()</td>
+<td class="success">0.012s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">getUserRewardsTest_whenUserHasNoUserRewards_thenReturnEmptyList()</td>
+<td class="success">0.001s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">getUserRewardsTest_whenUserHasTwoUserRewards_thenReturnListWithTwoElements()</td>
+<td class="success">0.002s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">getUserRewardsTest_whenUserNotExist_thenThrowUserNotFoundException()</td>
+<td class="success">0.001s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">isWithinAttractionProximityTest_whenDistanceGreaterThanAttractionProximityRange_thenReturnFalse()</td>
+<td class="success">0.002s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">isWithinAttractionProximityTest_whenDistanceLessThanAttractionProximityRange_thenReturnTrue()</td>
+<td class="success">0.001s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">nearAllAttractionsTest()</td>
+<td class="success">0.015s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">userGetRewardsTest_whenVisitedLocationIsNearOfOnlyOneAttractionInListAttractions_thenReturnOneUserRewards()</td>
+<td class="success">0.061s</td>
+<td class="success">passed</td>
+</tr>
+</table>
+</div>
+<div id="tab1" class="tab">
+<h2>Standard output</h2>
+<span class="code">
+<pre>2021-11-27 20:34:17.945  INFO 530588 --- [    Test worker] .t.t.s.TourGuideClientRewardsServiceImpl : Service - Distance calculated: 5.8950310023474215E-5
+2021-11-27 20:34:17.947  INFO 530588 --- [    Test worker] .t.t.s.TourGuideClientRewardsServiceImpl : Service - list of UserRewards getted fir user: jon
+2021-11-27 20:34:17.949  INFO 530588 --- [    Test worker] c.t.t.s.TourGuideClientServiceImpl       : TestMode enabled
+2021-11-27 20:34:17.949 DEBUG 530588 --- [    Test worker] c.t.t.s.TourGuideClientServiceImpl       : Initializing users
+2021-11-27 20:34:17.950 DEBUG 530588 --- [    Test worker] c.t.t.s.TourGuideClientServiceImpl       : Finished initializing users
+2021-11-27 20:34:17.951 DEBUG 530588 --- [ool-25-thread-1] c.t.tourguideclient.utils.Tracker        : Begin Tracker. Tracking 0 users.
+2021-11-27 20:34:17.951 DEBUG 530588 --- [    Test worker] c.t.t.s.TourGuideClientServiceImpl       : Service - user location tracked for username: jon
+2021-11-27 20:34:17.951 DEBUG 530588 --- [ool-25-thread-1] c.t.tourguideclient.utils.Tracker        : Tracker Time Elapsed: 0 seconds.
+2021-11-27 20:34:17.951 DEBUG 530588 --- [ool-25-thread-1] c.t.tourguideclient.utils.Tracker        : Tracker sleeping
+2021-11-27 20:34:17.951  INFO 530588 --- [    Test worker] .t.t.s.TourGuideClientRewardsServiceImpl : Service - Calculate rewards points for user: jon
+2021-11-27 20:34:17.951 DEBUG 530588 --- [ool-26-thread-2] c.t.t.s.TourGuideClientServiceImpl       : Service - Visited location added for user: jon
+2021-11-27 20:34:17.952  INFO 530588 --- [ool-26-thread-2] .t.t.s.TourGuideClientRewardsServiceImpl : Service - Distance calculated: 5658.9081706802435
+2021-11-27 20:34:17.952  INFO 530588 --- [ool-26-thread-2] .t.t.s.TourGuideClientRewardsServiceImpl : Service - Distance calculated: 4937.3103967493125
+2021-11-27 20:34:17.952  INFO 530588 --- [ool-26-thread-2] .t.t.s.TourGuideClientRewardsServiceImpl : Service - Distance calculated: 5495.364435582225
+2021-11-27 20:34:17.953  INFO 530588 --- [ool-26-thread-2] .t.t.s.TourGuideClientRewardsServiceImpl : Service - Distance calculated: 0.1797004744045605
+2021-11-27 20:34:17.954  INFO 530588 --- [ool-26-thread-2] .t.t.s.TourGuideClientRewardsServiceImpl : Service - Calculate rewards points for user: jon
+2021-11-27 20:34:17.954  INFO 530588 --- [ool-28-thread-1] .t.t.s.TourGuideClientRewardsServiceImpl : Service - Reward added for user: jon
+2021-11-27 20:34:18.012  INFO 530588 --- [    Test worker] .t.t.s.TourGuideClientRewardsServiceImpl : Service - list of UserRewards getted fir user: jon
+2021-11-27 20:34:18.015  INFO 530588 --- [    Test worker] .t.t.s.TourGuideClientRewardsServiceImpl : Service - Calculate rewards points for user: jon
+2021-11-27 20:34:18.028  INFO 530588 --- [    Test worker] .t.t.s.TourGuideClientRewardsServiceImpl : Service - Distance calculated: 57.36476731296287
+2021-11-27 20:34:18.028  INFO 530588 --- [    Test worker] .t.t.s.TourGuideClientRewardsServiceImpl : Service - Distance calculated: 749.5723192764914
+2021-11-27 20:34:18.029  INFO 530588 --- [    Test worker] .t.t.s.TourGuideClientRewardsServiceImpl : Service - Distance calculated: 121.70826966445416
+2021-11-27 20:34:18.029  INFO 530588 --- [    Test worker] .t.t.s.TourGuideClientRewardsServiceImpl : Service - Distance calculated: 5616.072272542216
+2021-11-27 20:34:18.029  INFO 530588 --- [ool-34-thread-1] .t.t.s.TourGuideClientRewardsServiceImpl : Service - Reward added for user: jon
+2021-11-27 20:34:18.029  INFO 530588 --- [    Test worker] .t.t.s.TourGuideClientRewardsServiceImpl : Service - Distance calculated: 713.9206106147237
+2021-11-27 20:34:18.030  INFO 530588 --- [ool-34-thread-2] .t.t.s.TourGuideClientRewardsServiceImpl : Service - Reward added for user: jon
+2021-11-27 20:34:18.030  INFO 530588 --- [    Test worker] .t.t.s.TourGuideClientRewardsServiceImpl : Service - Distance calculated: 138.2533298559724
+2021-11-27 20:34:18.030  INFO 530588 --- [ool-34-thread-4] .t.t.s.TourGuideClientRewardsServiceImpl : Service - Reward added for user: jon
+2021-11-27 20:34:18.030  INFO 530588 --- [    Test worker] .t.t.s.TourGuideClientRewardsServiceImpl : Service - Calculate rewards points for user: jon
+2021-11-27 20:34:18.030  INFO 530588 --- [ool-34-thread-3] .t.t.s.TourGuideClientRewardsServiceImpl : Service - Reward added for user: jon
+2021-11-27 20:34:18.030  INFO 530588 --- [    Test worker] .t.t.s.TourGuideClientRewardsServiceImpl : Service - list of UserRewards getted fir user: jon
+2021-11-27 20:34:18.044  INFO 530588 --- [    Test worker] .t.t.s.TourGuideClientRewardsServiceImpl : Service - Distance calculated: 57.36476731296287
+2021-11-27 20:34:18.044  INFO 530588 --- [    Test worker] .t.t.s.TourGuideClientRewardsServiceImpl : Service - Distance calculated: 749.5723192764914
+2021-11-27 20:34:18.044  INFO 530588 --- [    Test worker] .t.t.s.TourGuideClientRewardsServiceImpl : Service - Distance calculated: 121.70826966445416
+2021-11-27 20:34:18.045  INFO 530588 --- [    Test worker] .t.t.s.TourGuideClientRewardsServiceImpl : Service - Distance calculated: 5616.072272542216
+2021-11-27 20:34:18.045  INFO 530588 --- [    Test worker] .t.t.s.TourGuideClientRewardsServiceImpl : Service - Distance calculated: 69.0467669999931
+2021-11-27 20:34:18.045  INFO 530588 --- [    Test worker] .t.t.s.TourGuideClientRewardsServiceImpl : Service - Distance calculated: 713.9206106147237
+2021-11-27 20:34:18.045  INFO 530588 --- [ool-36-thread-1] .t.t.s.TourGuideClientRewardsServiceImpl : Service - Reward added for user: jon
+2021-11-27 20:34:18.045  INFO 530588 --- [    Test worker] .t.t.s.TourGuideClientRewardsServiceImpl : Service - Distance calculated: 138.2533298559724
+2021-11-27 20:34:18.045  INFO 530588 --- [    Test worker] .t.t.s.TourGuideClientRewardsServiceImpl : Service - Distance calculated: 5613.161651043713
+2021-11-27 20:34:18.045  INFO 530588 --- [ool-36-thread-2] .t.t.s.TourGuideClientRewardsServiceImpl : Service - Reward added for user: jon
+2021-11-27 20:34:18.045  INFO 530588 --- [    Test worker] .t.t.s.TourGuideClientRewardsServiceImpl : Service - Calculate rewards points for user: jon
+2021-11-27 20:34:18.076  INFO 530588 --- [    Test worker] .t.t.s.TourGuideClientRewardsServiceImpl : Service - Distance calculated: 5045.359548125801
+</pre>
+</span>
+</div>
+</div>
+<div id="footer">
+<p>
+<div>
+<label class="hidden" id="label-for-line-wrapping-toggle" for="line-wrapping-toggle">Wrap lines
+<input id="line-wrapping-toggle" type="checkbox" autocomplete="off"/>
+</label>
+</div>Generated by 
+<a href="http://www.gradle.org">Gradle 7.2</a> at 27 nov. 2021 20:34:22</p>
+</div>
+</div>
+</body>
+</html>

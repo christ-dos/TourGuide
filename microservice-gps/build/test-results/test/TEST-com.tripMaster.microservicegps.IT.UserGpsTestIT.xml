@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.tripMaster.microservicegps.IT.UserGpsTestIT" tests="3" skipped="0" failures="0" errors="0" timestamp="2021-11-27T19:32:28" hostname="MSI" time="0.249">
+  <properties/>
+  <testcase name="getAttractionsTest_thenReturnListWithAllAttractions()" classname="com.tripMaster.microservicegps.IT.UserGpsTestIT" time="0.06"/>
+  <testcase name="trackUserLocationTest_thenReturnVisitedLocationForUser()" classname="com.tripMaster.microservicegps.IT.UserGpsTestIT" time="0.135"/>
+  <testcase name="getAttractionsByAverageDistanceTest_thenReturnListWithAttractionBelowAverageDistance()" classname="com.tripMaster.microservicegps.IT.UserGpsTestIT" time="0.052"/>
+  <system-out><![CDATA[2021-11-27 20:32:27.057  INFO 534328 --- [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Neither @ContextConfiguration nor @ContextHierarchy found for test class [com.tripMaster.microservicegps.IT.UserGpsTestIT], using SpringBootContextLoader
+2021-11-27 20:32:27.058  INFO 534328 --- [    Test worker] o.s.t.c.support.AbstractContextLoader    : Could not detect default resource locations for test class [com.tripMaster.microservicegps.IT.UserGpsTestIT]: no resource found for suffixes {-context.xml, Context.groovy}.
+2021-11-27 20:32:27.059  INFO 534328 --- [    Test worker] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.tripMaster.microservicegps.IT.UserGpsTestIT]: UserGpsTestIT does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2021-11-27 20:32:27.072  INFO 534328 --- [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.tripMaster.microservicegps.MicroserviceGpsApplication for test class com.tripMaster.microservicegps.IT.UserGpsTestIT
+2021-11-27 20:32:27.078  INFO 534328 --- [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Loaded default TestExecutionListener class names from location [META-INF/spring.factories]: [org.springframework.test.context.web.ServletTestExecutionListener, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener, org.springframework.test.context.event.ApplicationEventsTestExecutionListener, org.springframework.test.context.support.DependencyInjectionTestExecutionListener, org.springframework.test.context.support.DirtiesContextTestExecutionListener, org.springframework.test.context.transaction.TransactionalTestExecutionListener, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener, org.springframework.test.context.event.EventPublishingTestExecutionListener, org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener, org.springframework.boot.test.autoconfigure.webservices.client.MockWebServiceServerTestExecutionListener, org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener]
+2021-11-27 20:32:27.080  INFO 534328 --- [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Using TestExecutionListeners: [org.springframework.test.context.web.ServletTestExecutionListener@5d43405f, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener@1341b7cd, org.springframework.test.context.event.ApplicationEventsTestExecutionListener@372787b5, org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener@2ce8b03b, org.springframework.boot.test.autoconfigure.SpringBootDependencyInjectionTestExecutionListener@6b6e4c41, org.springframework.test.context.support.DirtiesContextTestExecutionListener@750f713e, org.springframework.test.context.event.EventPublishingTestExecutionListener@7e1e4a05, org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener@171e4495, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener@e8b0e73, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener@3181d, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener@cc1247a, org.springframework.boot.test.autoconfigure.webservices.client.MockWebServiceServerTestExecutionListener@691ef39b, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener@3f30805d]
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::                (v2.5.6)
+
+2021-11-27 20:32:27.129  INFO 534328 --- [    Test worker] c.t.microservicegps.IT.UserGpsTestIT     : Starting UserGpsTestIT using Java 1.8.0_281 on MSI with PID 534328 (started by Kikine in C:\Users\Kikine\Desktop\tripMaster\microservice-gps)
+2021-11-27 20:32:27.129 DEBUG 534328 --- [    Test worker] c.t.microservicegps.IT.UserGpsTestIT     : Running with Spring Boot v2.5.6, Spring v5.3.12
+2021-11-27 20:32:27.130  INFO 534328 --- [    Test worker] c.t.microservicegps.IT.UserGpsTestIT     : No active profile set, falling back to default profiles: default
+2021-11-27 20:32:27.915  INFO 534328 --- [    Test worker] pertySourcedRequestMappingHandlerMapping : Mapped URL path [/v2/api-docs] onto method [springfox.documentation.swagger2.web.Swagger2Controller#getDocumentation(String, HttpServletRequest)]
+2021-11-27 20:32:28.288  INFO 534328 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2021-11-27 20:32:28.288  INFO 534328 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2021-11-27 20:32:28.289  INFO 534328 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+2021-11-27 20:32:28.295  INFO 534328 --- [    Test worker] d.s.w.p.DocumentationPluginsBootstrapper : Context refreshed
+2021-11-27 20:32:28.295  INFO 534328 --- [    Test worker] d.s.w.p.DocumentationPluginsBootstrapper : Found 1 custom documentation plugin(s)
+2021-11-27 20:32:28.300  INFO 534328 --- [    Test worker] s.d.s.w.s.ApiListingReferenceScanner     : Scanning for api listing references
+2021-11-27 20:32:28.318  INFO 534328 --- [    Test worker] c.t.microservicegps.IT.UserGpsTestIT     : Started UserGpsTestIT in 1.231 seconds (JVM running for 6.57)
+2021-11-27 20:32:28.329  INFO 534328 --- [    Test worker] c.t.m.service.UserGpsServiceImpl         : Service - Attraction getted
+2021-11-27 20:32:28.352  INFO 534328 --- [    Test worker] c.t.m.controller.UserGpsController       : Request to get list attractions
+2021-11-27 20:32:28.352  INFO 534328 --- [    Test worker] c.t.m.service.UserGpsServiceImpl         : Service - Attraction getted
+
+MockHttpServletRequest:
+      HTTP Method = GET
+      Request URI = /getAttractions
+       Parameters = {}
+          Headers = []
+             Body = null
+    Session Attrs = {}
+
+Handler:
+             Type = com.tripMaster.microservicegps.controller.UserGpsController
+           Method = com.tripMaster.microservicegps.controller.UserGpsController#getAttractions()
+
+Async:
+    Async started = false
+     Async result = null
+
+Resolved Exception:
+             Type = null
+
+ModelAndView:
+        View name = null
+             View = null
+            Model = null
+
+FlashMap:
+       Attributes = null
+
+MockHttpServletResponse:
+           Status = 200
+    Error message = null
+          Headers = [Content-Type:"application/json"]
+     Content type = application/json
+             Body = [{"longitude":-117.922008,"latitude":33.817595,"attractionName":"Disneyland","city":"Anaheim","state":"CA","attractionId":"7102d287-591e-4c3a-9a8f-f171abbc0c5b"},{"longitude":-110.821999,"latitude":43.582767,"attractionName":"Jackson Hole","city":"Jackson Hole","state":"WY","attractionId":"ffa20815-9e13-4653-9ae8-5032ace50c71"},{"longitude":-115.510399,"latitude":35.141689,"attractionName":"Mojave National Preserve","city":"Kelso","state":"CA","attractionId":"6323b261-70c0-4758-852a-a1bcbfa6707d"},{"longitude":-115.90065,"latitude":33.881866,"attractionName":"Joshua Tree National Park","city":"Joshua Tree National Park","state":"CA","attractionId":"5d27852f-1798-4855-8b4c-44308ae5e157"},{"longitude":-92.757652,"latitude":35.985512,"attractionName":"Buffalo National River","city":"St Joe","state":"AR","attractionId":"406d52f2-43b2-4bed-ad2a-ad77fdf1a106"},{"longitude":-93.042267,"latitude":34.52153,"attractionName":"Hot Springs National Park","city":"Hot Springs","state":"AR","attractionId":"af39cb9c-c662-4645-aba6-ffb4745d9c23"},{"longitude":-110.347382,"latitude":31.837551,"attractionName":"Kartchner Caverns State Park","city":"Benson","state":"AZ","attractionId":"fcd5c4d7-0480-4a46-a37e-b3ded03e0d60"},{"longitude":-82.40667,"latitude":39.937778,"attractionName":"Legend Valley","city":"Thornville","state":"OH","attractionId":"ce0a85b2-f18c-48ec-b741-4d11d915c649"},{"longitude":-84.07486,"latitude":37.131527,"attractionName":"Flowers Bakery of London","city":"Flowers Bakery of London","state":"KY","attractionId":"ce5b59b5-30b8-44fa-a45e-8a0fa870da09"},{"longitude":-149.877502,"latitude":61.218887,"attractionName":"McKinley Tower","city":"Anchorage","state":"AK","attractionId":"69bfde03-e824-461a-8026-96360398b903"},{"longitude":-73.989723,"latitude":40.741112,"attractionName":"Flatiron Building","city":"New York City","state":"NY","attractionId":"d69a3ae4-0dd7-4feb-a3fd-dd05eaa25f8c"},{"longitude":-79.468056,"latitude":39.906113,"attractionName":"Fallingwater","city":"Mill Run","state":"PA","attractionId":"f6b9d6a8-49c4-4059-8a03-61047c657403"},{"longitude":-77.006332,"latitude":38.897095,"attractionName":"Union Station","city":"Washington D.C.","state":"CA","attractionId":"0ec817d1-d9e2-4fdd-bcbc-0385f774800b"},{"longitude":-80.116577,"latitude":26.890959,"attractionName":"Roger Dean Stadium","city":"Jupiter","state":"FL","attractionId":"eaec5b41-082f-4d06-a5dc-def9df102689"},{"longitude":-97.732536,"latitude":30.283682,"attractionName":"Texas Memorial Stadium","city":"Austin","state":"TX","attractionId":"2ae8f8a7-4bc8-4264-a8ae-080c503a1c6d"},{"longitude":-87.550438,"latitude":33.208973,"attractionName":"Bryant-Denny Stadium","city":"Tuscaloosa","state":"AL","attractionId":"55ade188-cbc1-456f-b7ef-7947de0054d6"},{"longitude":-91.183815,"latitude":30.412035,"attractionName":"Tiger Stadium","city":"Baton Rouge","state":"LA","attractionId":"4ba43361-04f1-47dc-abee-0cfffc7109a6"},{"longitude":-83.925011,"latitude":35.955013,"attractionName":"Neyland Stadium","city":"Knoxville","state":"TN","attractionId":"f2ccbd59-595c-48ad-8c77-70a581a5087f"},{"longitude":-96.339844,"latitude":30.61025,"attractionName":"Kyle Field","city":"College Station","state":"TX","attractionId":"8f41e826-a16f-4f80-bd81-9ca915545908"},{"longitude":-117.149048,"latitude":32.735317,"attractionName":"San Diego Zoo","city":"San Diego","state":"CA","attractionId":"e688ad42-9e19-4675-9b00-7b3e84693d29"},{"longitude":-82.469269,"latitude":28.012804,"attractionName":"Zoo Tampa at Lowry Park","city":"Tampa","state":"FL","attractionId":"7ef670dc-314a-4e47-9092-06bdf3fad30a"},{"longitude":-71.086731,"latitude":42.302601,"attractionName":"Franklin Park Zoo","city":"Boston","state":"MA","attractionId":"3a1dee87-f396-4273-bc6a-ed006a41c3e1"},{"longitude":-106.44487,"latitude":31.769125,"attractionName":"El Paso Zoo","city":"El Paso","state":"TX","attractionId":"7f33af6f-f14a-4ef8-b043-6815a9923ec6"},{"longitude":-94.529625,"latitude":39.007504,"attractionName":"Kansas City Zoo","city":"Kansas City","state":"MO","attractionId":"da54dec3-1adc-4cce-925a-2b01e9a5093d"},{"longitude":-73.872971,"latitude":40.852905,"attractionName":"Bronx Zoo","city":"Bronx","state":"NY","attractionId":"d778d031-c722-442e-bf1d-74420a233d4f"},{"longitude":-81.5812,"latitude":28.419411,"attractionName":"Cinderella Castle","city":"Orlando","state":"FL","attractionId":"83b9e3d4-2692-40f1-8ce6-d3d149f1bbdf"}]
+    Forwarded URL = null
+   Redirected URL = null
+          Cookies = []
+2021-11-27 20:32:28.389 DEBUG 534328 --- [    Test worker] c.t.m.service.UserGpsServiceImpl         : Service - user location tracked for userId: 1b970e93-c585-417a-a405-3b9f45a5b74e
+2021-11-27 20:32:28.469  INFO 534328 --- [    Test worker] c.t.m.controller.UserGpsController       : Controller - request to get user location with ID: 1b970e93-c585-417a-a405-3b9f45a5b74e
+2021-11-27 20:32:28.469 DEBUG 534328 --- [    Test worker] c.t.m.service.UserGpsServiceImpl         : Service - user location tracked for userId: 1b970e93-c585-417a-a405-3b9f45a5b74e
+
+MockHttpServletRequest:
+      HTTP Method = GET
+      Request URI = /getLocation
+       Parameters = {userId=[1b970e93-c585-417a-a405-3b9f45a5b74e]}
+          Headers = []
+             Body = null
+    Session Attrs = {}
+
+Handler:
+             Type = com.tripMaster.microservicegps.controller.UserGpsController
+           Method = com.tripMaster.microservicegps.controller.UserGpsController#trackUserLocation(UUID)
+
+Async:
+    Async started = false
+     Async result = null
+
+Resolved Exception:
+             Type = null
+
+ModelAndView:
+        View name = null
+             View = null
+            Model = null
+
+FlashMap:
+       Attributes = null
+
+MockHttpServletResponse:
+           Status = 200
+    Error message = null
+          Headers = [Content-Type:"application/json"]
+     Content type = application/json
+             Body = {"userId":"1b970e93-c585-417a-a405-3b9f45a5b74e","location":{"longitude":60.677622,"latitude":-4.326033},"timeVisited":"2021-11-27T19:32:28.509+00:00"}
+    Forwarded URL = null
+   Redirected URL = null
+          Cookies = []
+2021-11-27 20:32:28.526  INFO 534328 --- [    Test worker] c.t.m.controller.UserGpsController       : Request to get list attractions by average distance
+
+MockHttpServletRequest:
+      HTTP Method = GET
+      Request URI = /getAttractionsbydistance
+       Parameters = {latitude=[33.697500D], longitude=[ -117.206667D]}
+          Headers = []
+             Body = null
+    Session Attrs = {}
+
+Handler:
+             Type = com.tripMaster.microservicegps.controller.UserGpsController
+           Method = com.tripMaster.microservicegps.controller.UserGpsController#getAttractionsByAverageDistance(double, double)
+
+Async:
+    Async started = false
+     Async result = null
+
+Resolved Exception:
+             Type = null
+
+ModelAndView:
+        View name = null
+             View = null
+            Model = null
+
+FlashMap:
+       Attributes = null
+
+MockHttpServletResponse:
+           Status = 200
+    Error message = null
+          Headers = [Content-Type:"application/json"]
+     Content type = application/json
+             Body = [{"longitude":-117.922008,"latitude":33.817595,"attractionName":"Disneyland","city":"Anaheim","state":"CA","attractionId":"d6211422-8e88-432f-ab0c-d214223ee512"},{"longitude":-110.821999,"latitude":43.582767,"attractionName":"Jackson Hole","city":"Jackson Hole","state":"WY","attractionId":"c1ceb2ed-f912-4041-a6b4-a77f9d28d5b3"},{"longitude":-115.510399,"latitude":35.141689,"attractionName":"Mojave National Preserve","city":"Kelso","state":"CA","attractionId":"3bf1f4c1-03a4-4ee4-8fd3-fb3e92606d97"},{"longitude":-115.90065,"latitude":33.881866,"attractionName":"Joshua Tree National Park","city":"Joshua Tree National Park","state":"CA","attractionId":"01c8e254-f8de-470e-a28a-ff1ceeb1c157"},{"longitude":-92.757652,"latitude":35.985512,"attractionName":"Buffalo National River","city":"St Joe","state":"AR","attractionId":"1537c322-e6ec-42aa-969c-390bd8d621ab"},{"longitude":-93.042267,"latitude":34.52153,"attractionName":"Hot Springs National Park","city":"Hot Springs","state":"AR","attractionId":"02ec63ef-a12d-4886-aaa3-85f9a123513c"},{"longitude":-110.347382,"latitude":31.837551,"attractionName":"Kartchner Caverns State Park","city":"Benson","state":"AZ","attractionId":"de0eae9b-9903-4d72-a428-678f69c37b16"},{"longitude":-97.732536,"latitude":30.283682,"attractionName":"Texas Memorial Stadium","city":"Austin","state":"TX","attractionId":"f6eea99f-107b-49b8-9744-6b5165423c86"},{"longitude":-96.339844,"latitude":30.61025,"attractionName":"Kyle Field","city":"College Station","state":"TX","attractionId":"e78176f0-807d-4247-9bc5-9909c063e188"},{"longitude":-117.149048,"latitude":32.735317,"attractionName":"San Diego Zoo","city":"San Diego","state":"CA","attractionId":"54f4697b-95bf-4658-8e95-0b7f078d63ba"},{"longitude":-106.44487,"latitude":31.769125,"attractionName":"El Paso Zoo","city":"El Paso","state":"TX","attractionId":"b14aa0ad-f524-4cd7-b0c1-b7341e8f2a16"},{"longitude":-94.529625,"latitude":39.007504,"attractionName":"Kansas City Zoo","city":"Kansas City","state":"MO","attractionId":"c90e3ae6-e584-448d-91fc-ee8f870a2631"}]
+    Forwarded URL = null
+   Redirected URL = null
+          Cookies = []
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

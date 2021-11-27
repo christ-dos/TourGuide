@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>InternalUserMapDAO.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tourguide-client</a> &gt; <a href="index.source.html" class="el_package">com.tripMaster.tourguideclient.DAO</a> &gt; <span class="el_source">InternalUserMapDAO.java</span></div><h1>InternalUserMapDAO.java</h1><pre class="source lang-java linenums">package com.tripMaster.tourguideclient.DAO;
+
+import com.tripMaster.tourguideclient.helper.InternalTestHelper;
+import com.tripMaster.tourguideclient.model.Location;
+import com.tripMaster.tourguideclient.model.User;
+import com.tripMaster.tourguideclient.model.VisitedLocation;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Repository;
+
+import javax.annotation.PostConstruct;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
+/**
+ * Class of Repository that manage the user
+ * for internal testing
+ *
+ * @author Christine Duarte
+ */
+@Repository
+<span class="fc" id="L24">@Slf4j</span>
+<span class="fc" id="L25">public class InternalUserMapDAO {</span>
+
+    /**********************************************************************************
+     *
+     * Methods Below: For Internal Testing
+     *
+     **********************************************************************************/
+    private static final String tripPricerApiKey = &quot;test-server-api-key&quot;;
+    // Database connection will be used for external users, but for testing purposes internal users are provided and stored in memory
+<span class="fc" id="L34">    private final Map&lt;String, User&gt; internalUserMap = new HashMap&lt;&gt;();</span>
+
+    @PostConstruct
+    public void initializeInternalUsers() {
+<span class="fc" id="L38">        IntStream.range(0, InternalTestHelper.getInternalUserNumber()).forEach(i -&gt; {</span>
+<span class="fc" id="L39">            String userName = &quot;internalUser&quot; + i;</span>
+<span class="fc" id="L40">            String phone = &quot;000&quot;;</span>
+<span class="fc" id="L41">            String email = userName + &quot;@tourGuide.com&quot;;</span>
+<span class="fc" id="L42">            User user = new User(UUID.randomUUID(), userName, phone, email);</span>
+<span class="fc" id="L43">            generateUserLocationHistory(user);</span>
+
+<span class="fc" id="L45">            internalUserMap.put(userName, user);</span>
+<span class="fc" id="L46">        });</span>
+<span class="fc" id="L47">        log.debug(&quot;Created &quot; + InternalTestHelper.getInternalUserNumber() + &quot; internal test users.&quot;);</span>
+<span class="fc" id="L48">    }</span>
+
+    private void generateUserLocationHistory(User user) {
+<span class="fc" id="L51">        IntStream.range(0, 3).forEach(i -&gt; {</span>
+<span class="fc" id="L52">            user.getVisitedLocations().add(</span>
+<span class="fc" id="L53">                    new VisitedLocation(user.getUserId(), new Location(generateRandomLatitude(), generateRandomLongitude()), getRandomTime()));</span>
+//            user.getUserRewards().add(
+//                    new UserReward(new VisitedLocation(user.getUserId(), new Location(generateRandomLatitude(), generateRandomLongitude()), getRandomTime()),
+//                            new Attraction(&quot;Disneyland&quot;, &quot;Anaheim&quot;, &quot;CA&quot;, 33.817595D, -117.922008D), 200)
+//            );
+            //todo clean code
+<span class="fc" id="L59">        });</span>
+<span class="fc" id="L60">    }</span>
+
+    private double generateRandomLongitude() {
+<span class="fc" id="L63">        double leftLimit = -180;</span>
+<span class="fc" id="L64">        double rightLimit = 180;</span>
+<span class="fc" id="L65">        return leftLimit + new Random().nextDouble() * (rightLimit - leftLimit);</span>
+    }
+
+    private double generateRandomLatitude() {
+<span class="fc" id="L69">        double leftLimit = -85.05112878D;</span>
+<span class="fc" id="L70">        double rightLimit = 85.05112878D;</span>
+<span class="fc" id="L71">        return leftLimit + new Random().nextDouble() * (rightLimit - leftLimit);</span>
+    }
+
+    private Date getRandomTime() {
+<span class="fc" id="L75">        LocalDateTime localDateTime = LocalDateTime.now().minusDays(new Random().nextInt(30));</span>
+<span class="fc" id="L76">        return Date.from(localDateTime.toInstant(ZoneOffset.UTC));</span>
+    }
+
+    public User getUser(String userName) {
+<span class="fc" id="L80">        return internalUserMap.get(userName);</span>
+    }
+
+    public List&lt;User&gt; getAllUsers() {
+<span class="fc" id="L84">        return internalUserMap.values().stream().collect(Collectors.toList());</span>
+    }
+
+    public void addUser(User user) {
+<span class="pc bpc" id="L88" title="1 of 2 branches missed.">        if (!internalUserMap.containsKey(user.getUserName())) {</span>
+<span class="fc" id="L89">            internalUserMap.put(user.getUserName(), user);</span>
+        }
+<span class="fc" id="L91">    }</span>
+
+    public String getTripPricerApiKey() {
+<span class="nc" id="L94">        return tripPricerApiKey;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

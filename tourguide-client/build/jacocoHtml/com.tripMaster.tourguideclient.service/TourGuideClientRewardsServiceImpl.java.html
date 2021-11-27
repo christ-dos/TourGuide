@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TourGuideClientRewardsServiceImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tourguide-client</a> &gt; <a href="index.source.html" class="el_package">com.tripMaster.tourguideclient.service</a> &gt; <span class="el_source">TourGuideClientRewardsServiceImpl.java</span></div><h1>TourGuideClientRewardsServiceImpl.java</h1><pre class="source lang-java linenums">package com.tripMaster.tourguideclient.service;
+
+import com.tripMaster.tourguideclient.DAO.InternalUserMapDAO;
+import com.tripMaster.tourguideclient.exception.UserNotFoundException;
+import com.tripMaster.tourguideclient.model.*;
+import com.tripMaster.tourguideclient.proxies.MicroserviceRewardsProxy;
+import com.tripMaster.tourguideclient.proxies.MicroserviceUserGpsProxy;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+/**
+ * Class of service that manage user rewards
+ *
+ * @author Christine Duarte
+ */
+@Service
+<span class="fc" id="L24">@Slf4j</span>
+public class TourGuideClientRewardsServiceImpl implements TourGuideClientRewardsService {
+    private static final double STATUTE_MILES_PER_NAUTICAL_MILE = 1.15077945;
+
+    // proximity in miles
+<span class="fc" id="L29">    private int defaultProximityBuffer = 10;</span>
+<span class="fc" id="L30">    private int proximityBuffer = defaultProximityBuffer;</span>
+<span class="fc" id="L31">    private int attractionProximityRange = 200;</span>
+
+    private MicroserviceRewardsProxy microserviceRewardsProxy;
+    private MicroserviceUserGpsProxy microserviceUserGpsProxy;
+    private InternalUserMapDAO internalUserMapDAO;
+
+    @Autowired
+<span class="fc" id="L38">    public TourGuideClientRewardsServiceImpl(MicroserviceRewardsProxy microserviceRewardsProxy, MicroserviceUserGpsProxy microserviceUserGpsProxy, InternalUserMapDAO internalUserMapDAO) {</span>
+<span class="fc" id="L39">        this.microserviceRewardsProxy = microserviceRewardsProxy;</span>
+<span class="fc" id="L40">        this.microserviceUserGpsProxy = microserviceUserGpsProxy;</span>
+<span class="fc" id="L41">        this.internalUserMapDAO = internalUserMapDAO;</span>
+<span class="fc" id="L42">    }</span>
+
+    public void setDefaultProximityBuffer(int defaultProximityBuffer) {
+<span class="nc" id="L45">        this.defaultProximityBuffer = defaultProximityBuffer;</span>
+<span class="nc" id="L46">    }</span>
+
+    public void setProximityBuffer(int proximityBuffer) {
+<span class="fc" id="L49">        this.proximityBuffer = proximityBuffer;</span>
+<span class="fc" id="L50">    }</span>
+
+    public void setAttractionProximityRange(int attractionProximityRange) {
+<span class="fc" id="L53">        this.attractionProximityRange = attractionProximityRange;</span>
+<span class="fc" id="L54">    }</span>
+
+    @Override
+    public void calculateRewards(User user) {
+<span class="fc" id="L58">        final ExecutorService executorService = Executors.newFixedThreadPool(1600);</span>
+
+<span class="fc" id="L60">        List&lt;VisitedLocation&gt; userLocations = user.getVisitedLocations();</span>
+<span class="fc" id="L61">        List&lt;Attraction&gt; attractions = microserviceUserGpsProxy.getAttractions();</span>
+
+<span class="fc bfc" id="L63" title="All 2 branches covered.">        for (VisitedLocation visitedLocation : userLocations) {</span>
+<span class="fc bfc" id="L64" title="All 2 branches covered.">            for (Attraction attraction : attractions) {</span>
+<span class="fc bfc" id="L65" title="All 2 branches covered.">                if (user.getUserRewards().stream().filter(r -&gt; r.getAttraction().getAttractionName().equals(attraction.getAttractionName())).count() == 0) {</span>
+<span class="fc bfc" id="L66" title="All 2 branches covered.">                    if (nearAttraction(visitedLocation, attraction)) {</span>
+<span class="fc" id="L67">                        CompletableFuture.supplyAsync(() -&gt; getRewardPoints(attraction.getAttractionId(), user.getUserId()), executorService)</span>
+<span class="fc" id="L68">                                .thenAccept(rewardPoints -&gt; {</span>
+<span class="fc" id="L69">                                    UserReward userReward = new UserReward(visitedLocation, attraction, rewardPoints);</span>
+<span class="fc" id="L70">                                    addUserReward(userReward, user);</span>
+<span class="fc" id="L71">                                });</span>
+                    }
+                }
+<span class="fc" id="L74">            }</span>
+<span class="fc" id="L75">        }</span>
+<span class="fc" id="L76">        log.info(&quot;Service - Calculate rewards points for user: &quot; + user.getUserName());</span>
+<span class="fc" id="L77">    }</span>
+
+    @Override
+    public List&lt;UserReward&gt; getUserRewards(String userName) {
+<span class="fc" id="L81">        User user = internalUserMapDAO.getUser(userName);</span>
+<span class="fc bfc" id="L82" title="All 2 branches covered.">        if (user == null) {</span>
+<span class="fc" id="L83">            throw new UserNotFoundException(&quot;User not found&quot;);</span>
+        }
+<span class="fc" id="L85">        log.info(&quot;Service - list of UserRewards getted fir user: &quot; + userName);</span>
+
+<span class="fc" id="L87">        return user.getUserRewards();</span>
+    }
+
+    public double getDistance(Location loc1, Location loc2) {
+<span class="fc" id="L91">        double lat1 = Math.toRadians(loc1.getLatitude());</span>
+<span class="fc" id="L92">        double lon1 = Math.toRadians(loc1.getLongitude());</span>
+<span class="fc" id="L93">        double lat2 = Math.toRadians(loc2.getLatitude());</span>
+<span class="fc" id="L94">        double lon2 = Math.toRadians(loc2.getLongitude());</span>
+
+<span class="fc" id="L96">        double angle = Math.acos(Math.sin(lat1) * Math.sin(lat2)</span>
+<span class="fc" id="L97">                + Math.cos(lat1) * Math.cos(lat2) * Math.cos(lon1 - lon2));</span>
+
+<span class="fc" id="L99">        double nauticalMiles = 60 * Math.toDegrees(angle);</span>
+<span class="fc" id="L100">        double statuteMiles = STATUTE_MILES_PER_NAUTICAL_MILE * nauticalMiles;</span>
+<span class="fc" id="L101">        log.info(&quot;Service - Distance calculated: &quot; + statuteMiles);</span>
+
+<span class="fc" id="L103">        return statuteMiles;</span>
+    }
+
+    private void addUserReward(UserReward userReward, User user) {
+<span class="fc" id="L107">        List&lt;UserReward&gt; userRewards = user.getUserRewards();</span>
+<span class="fc bfc" id="L108" title="All 2 branches covered.">        if (userRewards.stream().filter(r -&gt; r.getAttraction().getAttractionName().equals(userReward.getAttraction().getAttractionName())).count() == 0) {</span>
+<span class="fc" id="L109">            userRewards.add(userReward);</span>
+<span class="fc" id="L110">            user.setUserRewards(userRewards);</span>
+<span class="fc" id="L111">            log.info(&quot;Service - Reward added for user: &quot; + user.getUserName());</span>
+        }
+<span class="fc" id="L113">    }</span>
+
+    public boolean isWithinAttractionProximity(Attraction attraction, Location location) {
+<span class="fc bfc" id="L116" title="All 2 branches covered.">        return getDistance(attraction, location) &gt; attractionProximityRange ? false : true;</span>
+    }
+
+    private boolean nearAttraction(VisitedLocation visitedLocation, Attraction attraction) {
+<span class="fc bfc" id="L120" title="All 2 branches covered.">        return getDistance(attraction, visitedLocation.getLocation()) &gt; proximityBuffer ? false : true;</span>
+    }
+
+    private int getRewardPoints(UUID attractionId, UUID userId) {
+<span class="fc" id="L124">        return microserviceRewardsProxy.getRewardsPoints(attractionId, userId);</span>
+    }
+}
+
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

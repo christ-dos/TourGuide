@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UserGpsServiceImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">microservice-gps</a> &gt; <a href="index.source.html" class="el_package">com.tripMaster.microservicegps.service</a> &gt; <span class="el_source">UserGpsServiceImpl.java</span></div><h1>UserGpsServiceImpl.java</h1><pre class="source lang-java linenums">package com.tripMaster.microservicegps.service;
+
+import gpsUtil.GpsUtil;
+import gpsUtil.location.Attraction;
+import gpsUtil.location.Location;
+import gpsUtil.location.VisitedLocation;
+import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Locale;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
+/**
+ * Class of service that permit obtains user visited location
+ *
+ * @author Christine Duarte
+ */
+@Service
+<span class="nc" id="L23">@NoArgsConstructor</span>
+<span class="fc" id="L24">@Slf4j</span>
+public class UserGpsServiceImpl implements UserGpsService {
+
+    private static final double STATUTE_MILES_PER_NAUTICAL_MILE = 1.15077945;
+    private GpsUtil gpsUtil;
+
+
+    @Autowired
+<span class="fc" id="L32">    public UserGpsServiceImpl(GpsUtil gpsUtil) {</span>
+<span class="fc" id="L33">        this.gpsUtil = gpsUtil;</span>
+<span class="fc" id="L34">    }</span>
+
+    @Override
+    public VisitedLocation trackUserLocation(UUID userId) {
+<span class="fc" id="L38">        Locale.setDefault(new Locale(&quot;en&quot;, &quot;US&quot;));</span>
+<span class="fc" id="L39">        log.debug(&quot;Service - user location tracked for userId: &quot; + userId);</span>
+<span class="fc" id="L40">        return gpsUtil.getUserLocation(userId);</span>
+    }
+
+    @Override
+    public List&lt;Attraction&gt; getAttractions() {
+<span class="fc" id="L45">        log.info(&quot;Service - Attraction getted&quot;);</span>
+<span class="fc" id="L46">        return gpsUtil.getAttractions();</span>
+    }
+
+    @Override
+    public List&lt;Attraction&gt; getAttractionsByAverageDistance(Location location) {
+<span class="fc" id="L51">        List&lt;Attraction&gt; attractions = gpsUtil.getAttractions();</span>
+<span class="fc" id="L52">        double average = attractions.stream().mapToDouble(attraction -&gt; getDistance(attraction, location))</span>
+<span class="fc" id="L53">                .average()</span>
+<span class="fc" id="L54">                .orElse(0D);</span>
+<span class="fc bfc" id="L55" title="All 2 branches covered.">        List&lt;Attraction&gt; attractionsNearPosition = attractions.stream().filter(attraction -&gt; getDistance(attraction, location) &lt; average)</span>
+<span class="fc" id="L56">                .collect(Collectors.toList());</span>
+
+<span class="fc" id="L58">        return attractionsNearPosition;</span>
+    }
+
+    private double getDistance(Location loc1, Location loc2) {
+<span class="fc" id="L62">        double lat1 = Math.toRadians(loc1.latitude);</span>
+<span class="fc" id="L63">        double lon1 = Math.toRadians(loc1.longitude);</span>
+<span class="fc" id="L64">        double lat2 = Math.toRadians(loc2.latitude);</span>
+<span class="fc" id="L65">        double lon2 = Math.toRadians(loc2.longitude);</span>
+
+<span class="fc" id="L67">        double angle = Math.acos(Math.sin(lat1) * Math.sin(lat2)</span>
+<span class="fc" id="L68">                + Math.cos(lat1) * Math.cos(lat2) * Math.cos(lon1 - lon2));</span>
+
+<span class="fc" id="L70">        double nauticalMiles = 60 * Math.toDegrees(angle);</span>
+<span class="fc" id="L71">        double statuteMiles = STATUTE_MILES_PER_NAUTICAL_MILE * nauticalMiles;</span>
+<span class="fc" id="L72">        return statuteMiles;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

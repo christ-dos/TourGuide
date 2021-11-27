@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.tripMaster.microservicetripPricer.service.TripPricerServiceImplTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2021-11-26T20:32:51" hostname="MSI" time="0.774">
+  <properties/>
+  <testcase name="getPriceTest_whenTwoAdultsOneChildrenFiveNightsStayAndRewardsPoint200_thenReturnListOfProvider()" classname="com.tripMaster.microservicetripPricer.service.TripPricerServiceImplTest" time="0.774"/>
+  <system-out><![CDATA[21:32:52.284 [Test worker] INFO com.tripMaster.microservicetripPricer.service.TripPricerServiceImpl - Service - list Providers getted for microservice-TripPricer
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

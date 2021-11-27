@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.tripMaster.tourguideclient.service.TourGuideClientRewardsServiceImplTest" tests="9" skipped="0" failures="0" errors="0" timestamp="2021-11-27T19:34:17" hostname="MSI" time="0.133">
+  <properties/>
+  <testcase name="isWithinAttractionProximityTest_whenDistanceLessThanAttractionProximityRange_thenReturnTrue()" classname="com.tripMaster.tourguideclient.service.TourGuideClientRewardsServiceImplTest" time="0.001"/>
+  <testcase name="getUserRewardsTest_whenUserHasTwoUserRewards_thenReturnListWithTwoElements()" classname="com.tripMaster.tourguideclient.service.TourGuideClientRewardsServiceImplTest" time="0.002"/>
+  <testcase name="userGetRewardsTest_whenVisitedLocationIsNearOfOnlyOneAttractionInListAttractions_thenReturnOneUserRewards()" classname="com.tripMaster.tourguideclient.service.TourGuideClientRewardsServiceImplTest" time="0.061"/>
+  <testcase name="getUserRewardsTest_whenUserHasNoUserRewards_thenReturnEmptyList()" classname="com.tripMaster.tourguideclient.service.TourGuideClientRewardsServiceImplTest" time="0.001"/>
+  <testcase name="getUserRewardsTest_whenUserNotExist_thenThrowUserNotFoundException()" classname="com.tripMaster.tourguideclient.service.TourGuideClientRewardsServiceImplTest" time="0.001"/>
+  <testcase name="calculateRewardsTest_whenVisitedLocationIsFarOfAttractions_thenUserHasNoRewardsAdded()" classname="com.tripMaster.tourguideclient.service.TourGuideClientRewardsServiceImplTest" time="0.012"/>
+  <testcase name="nearAllAttractionsTest()" classname="com.tripMaster.tourguideclient.service.TourGuideClientRewardsServiceImplTest" time="0.015"/>
+  <testcase name="calculateRewardsTest_whenUserHasTwoVisitedLocationsAndTwoAttractionsIsNear_thenUserRewardsAdded()" classname="com.tripMaster.tourguideclient.service.TourGuideClientRewardsServiceImplTest" time="0.032"/>
+  <testcase name="isWithinAttractionProximityTest_whenDistanceGreaterThanAttractionProximityRange_thenReturnFalse()" classname="com.tripMaster.tourguideclient.service.TourGuideClientRewardsServiceImplTest" time="0.002"/>
+  <system-out><![CDATA[2021-11-27 20:34:17.945  INFO 530588 --- [    Test worker] .t.t.s.TourGuideClientRewardsServiceImpl : Service - Distance calculated: 5.8950310023474215E-5
+2021-11-27 20:34:17.947  INFO 530588 --- [    Test worker] .t.t.s.TourGuideClientRewardsServiceImpl : Service - list of UserRewards getted fir user: jon
+2021-11-27 20:34:17.949  INFO 530588 --- [    Test worker] c.t.t.s.TourGuideClientServiceImpl       : TestMode enabled
+2021-11-27 20:34:17.949 DEBUG 530588 --- [    Test worker] c.t.t.s.TourGuideClientServiceImpl       : Initializing users
+2021-11-27 20:34:17.950 DEBUG 530588 --- [    Test worker] c.t.t.s.TourGuideClientServiceImpl       : Finished initializing users
+2021-11-27 20:34:17.951 DEBUG 530588 --- [ool-25-thread-1] c.t.tourguideclient.utils.Tracker        : Begin Tracker. Tracking 0 users.
+2021-11-27 20:34:17.951 DEBUG 530588 --- [    Test worker] c.t.t.s.TourGuideClientServiceImpl       : Service - user location tracked for username: jon
+2021-11-27 20:34:17.951 DEBUG 530588 --- [ool-25-thread-1] c.t.tourguideclient.utils.Tracker        : Tracker Time Elapsed: 0 seconds.
+2021-11-27 20:34:17.951 DEBUG 530588 --- [ool-25-thread-1] c.t.tourguideclient.utils.Tracker        : Tracker sleeping
+2021-11-27 20:34:17.951  INFO 530588 --- [    Test worker] .t.t.s.TourGuideClientRewardsServiceImpl : Service - Calculate rewards points for user: jon
+2021-11-27 20:34:17.951 DEBUG 530588 --- [ool-26-thread-2] c.t.t.s.TourGuideClientServiceImpl       : Service - Visited location added for user: jon
+2021-11-27 20:34:17.952  INFO 530588 --- [ool-26-thread-2] .t.t.s.TourGuideClientRewardsServiceImpl : Service - Distance calculated: 5658.9081706802435
+2021-11-27 20:34:17.952  INFO 530588 --- [ool-26-thread-2] .t.t.s.TourGuideClientRewardsServiceImpl : Service - Distance calculated: 4937.3103967493125
+2021-11-27 20:34:17.952  INFO 530588 --- [ool-26-thread-2] .t.t.s.TourGuideClientRewardsServiceImpl : Service - Distance calculated: 5495.364435582225
+2021-11-27 20:34:17.953  INFO 530588 --- [ool-26-thread-2] .t.t.s.TourGuideClientRewardsServiceImpl : Service - Distance calculated: 0.1797004744045605
+2021-11-27 20:34:17.954  INFO 530588 --- [ool-26-thread-2] .t.t.s.TourGuideClientRewardsServiceImpl : Service - Calculate rewards points for user: jon
+2021-11-27 20:34:17.954  INFO 530588 --- [ool-28-thread-1] .t.t.s.TourGuideClientRewardsServiceImpl : Service - Reward added for user: jon
+2021-11-27 20:34:18.012  INFO 530588 --- [    Test worker] .t.t.s.TourGuideClientRewardsServiceImpl : Service - list of UserRewards getted fir user: jon
+2021-11-27 20:34:18.015  INFO 530588 --- [    Test worker] .t.t.s.TourGuideClientRewardsServiceImpl : Service - Calculate rewards points for user: jon
+2021-11-27 20:34:18.028  INFO 530588 --- [    Test worker] .t.t.s.TourGuideClientRewardsServiceImpl : Service - Distance calculated: 57.36476731296287
+2021-11-27 20:34:18.028  INFO 530588 --- [    Test worker] .t.t.s.TourGuideClientRewardsServiceImpl : Service - Distance calculated: 749.5723192764914
+2021-11-27 20:34:18.029  INFO 530588 --- [    Test worker] .t.t.s.TourGuideClientRewardsServiceImpl : Service - Distance calculated: 121.70826966445416
+2021-11-27 20:34:18.029  INFO 530588 --- [    Test worker] .t.t.s.TourGuideClientRewardsServiceImpl : Service - Distance calculated: 5616.072272542216
+2021-11-27 20:34:18.029  INFO 530588 --- [ool-34-thread-1] .t.t.s.TourGuideClientRewardsServiceImpl : Service - Reward added for user: jon
+2021-11-27 20:34:18.029  INFO 530588 --- [    Test worker] .t.t.s.TourGuideClientRewardsServiceImpl : Service - Distance calculated: 713.9206106147237
+2021-11-27 20:34:18.030  INFO 530588 --- [ool-34-thread-2] .t.t.s.TourGuideClientRewardsServiceImpl : Service - Reward added for user: jon
+2021-11-27 20:34:18.030  INFO 530588 --- [    Test worker] .t.t.s.TourGuideClientRewardsServiceImpl : Service - Distance calculated: 138.2533298559724
+2021-11-27 20:34:18.030  INFO 530588 --- [ool-34-thread-4] .t.t.s.TourGuideClientRewardsServiceImpl : Service - Reward added for user: jon
+2021-11-27 20:34:18.030  INFO 530588 --- [    Test worker] .t.t.s.TourGuideClientRewardsServiceImpl : Service - Calculate rewards points for user: jon
+2021-11-27 20:34:18.030  INFO 530588 --- [ool-34-thread-3] .t.t.s.TourGuideClientRewardsServiceImpl : Service - Reward added for user: jon
+2021-11-27 20:34:18.030  INFO 530588 --- [    Test worker] .t.t.s.TourGuideClientRewardsServiceImpl : Service - list of UserRewards getted fir user: jon
+2021-11-27 20:34:18.044  INFO 530588 --- [    Test worker] .t.t.s.TourGuideClientRewardsServiceImpl : Service - Distance calculated: 57.36476731296287
+2021-11-27 20:34:18.044  INFO 530588 --- [    Test worker] .t.t.s.TourGuideClientRewardsServiceImpl : Service - Distance calculated: 749.5723192764914
+2021-11-27 20:34:18.044  INFO 530588 --- [    Test worker] .t.t.s.TourGuideClientRewardsServiceImpl : Service - Distance calculated: 121.70826966445416
+2021-11-27 20:34:18.045  INFO 530588 --- [    Test worker] .t.t.s.TourGuideClientRewardsServiceImpl : Service - Distance calculated: 5616.072272542216
+2021-11-27 20:34:18.045  INFO 530588 --- [    Test worker] .t.t.s.TourGuideClientRewardsServiceImpl : Service - Distance calculated: 69.0467669999931
+2021-11-27 20:34:18.045  INFO 530588 --- [    Test worker] .t.t.s.TourGuideClientRewardsServiceImpl : Service - Distance calculated: 713.9206106147237
+2021-11-27 20:34:18.045  INFO 530588 --- [ool-36-thread-1] .t.t.s.TourGuideClientRewardsServiceImpl : Service - Reward added for user: jon
+2021-11-27 20:34:18.045  INFO 530588 --- [    Test worker] .t.t.s.TourGuideClientRewardsServiceImpl : Service - Distance calculated: 138.2533298559724
+2021-11-27 20:34:18.045  INFO 530588 --- [    Test worker] .t.t.s.TourGuideClientRewardsServiceImpl : Service - Distance calculated: 5613.161651043713
+2021-11-27 20:34:18.045  INFO 530588 --- [ool-36-thread-2] .t.t.s.TourGuideClientRewardsServiceImpl : Service - Reward added for user: jon
+2021-11-27 20:34:18.045  INFO 530588 --- [    Test worker] .t.t.s.TourGuideClientRewardsServiceImpl : Service - Calculate rewards points for user: jon
+2021-11-27 20:34:18.076  INFO 530588 --- [    Test worker] .t.t.s.TourGuideClientRewardsServiceImpl : Service - Distance calculated: 5045.359548125801
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
