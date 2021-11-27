@@ -111,7 +111,6 @@ public class TourGuideClientRewardsServiceImplTest {
         //WHEN
         visitedLocations.add(visitedLocation);
         tourGuideClientRewardsServiceTest.calculateRewards(user);
-        List<UserReward> userRewards = user.getUserRewards();
         //THEN
         try {
             TimeUnit.MILLISECONDS.sleep(10);
@@ -164,7 +163,7 @@ public class TourGuideClientRewardsServiceImplTest {
     }
 
     @Test
-    public void getUserRewardsTest_whenUserNotExist_thenThrowUserNotFoundexception() {
+    public void getUserRewardsTest_whenUserNotExist_thenThrowUserNotFoundException() {
         when(internalUserMapDAOMock.getUser(anyString())).thenReturn(null);
         //WHEN
         //THEN

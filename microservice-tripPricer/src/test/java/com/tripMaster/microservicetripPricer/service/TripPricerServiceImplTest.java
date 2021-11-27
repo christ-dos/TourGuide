@@ -29,8 +29,6 @@ public class TripPricerServiceImplTest {
     @Mock
     private TripPricer tripPricerMock;
 
-    private TripPricer tripPricer = new TripPricer();
-
     @BeforeEach
     public void setUpPerTest() {
         tripPricerService = new TripPricerServiceImpl(tripPricerMock);

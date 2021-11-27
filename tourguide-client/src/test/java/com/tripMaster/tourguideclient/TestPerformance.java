@@ -25,6 +25,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -97,6 +98,7 @@ public class TestPerformance {
 		allUsers.stream().map(u -> tourGuideClientService.trackUserLocation(u));
         tourGuideClientService.tracker.stopTracking();
 
+        stopWatch.stop();
         System.out.println("highVolumeTrackLocation: Time Elapsed: " + TimeUnit.MILLISECONDS.toSeconds(stopWatch.getTime()) + " seconds.");
         assertTrue(TimeUnit.MINUTES.toSeconds(15) >= TimeUnit.MILLISECONDS.toSeconds(stopWatch.getTime()));
     }
@@ -112,7 +114,11 @@ public class TestPerformance {
         Attraction attraction = microserviceUserGpsProxy.getAttractions().get(0);
         List<User> allUsers = tourGuideClientService.getAllUsers();
 
-        allUsers.forEach(user -> tourGuideClientService.addToVisitedLocations(new VisitedLocation(user.getUserId(), new Location(attraction.getLatitude(), attraction.getLongitude()), new Date()), user));
+        allUsers.forEach(
+                user -> tourGuideClientService.addToVisitedLocations(
+                        new VisitedLocation(user.getUserId(),
+                                new Location(attraction.getLatitude(), attraction.getLongitude()),
+                                new Date()), user));
         allUsers.forEach(user -> CompletableFuture.runAsync((() -> tourGuideClientRewardsService.calculateRewards(user))));
 
         for (User user : allUsers) {
@@ -124,10 +130,11 @@ public class TestPerformance {
                 }
             }
         }
+        stopWatch.stop();
         for (User user : allUsers) {
             assertTrue(user.getUserRewards().size() > 0);
         }
-        stopWatch.stop();
+
         tourGuideClientService.tracker.stopTracking();
 
         System.out.println("highVolumeGetRewards: Time Elapsed: " + TimeUnit.MILLISECONDS.toSeconds(stopWatch.getTime()) + " seconds.");

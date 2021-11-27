@@ -163,7 +163,7 @@ public class TourGuideClientServiceImpl implements TourGuideClientService {
                     Double distanceO1 = tourGuideClientRewardsServiceImpl.getDistance(o1, visitedLocation.getLocation());
                     Double distanceO2 = tourGuideClientRewardsServiceImpl.getDistance(o2, visitedLocation.getLocation());
 
-                    return distanceO1 == distanceO2 ? 0 : distanceO1 > distanceO2 ? 1 : -1;
+                    return distanceO1.equals(distanceO2) ? 0 : distanceO1 > distanceO2 ? 1 : -1;
                 })
                 .limit(5)
                 .map(attraction -> buildNearByAttraction(visitedLocation, attraction))

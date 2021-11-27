@@ -34,7 +34,7 @@ configurations {
 compileJava{
     options.encoding= 'UTF-8'
     options.fork=true
-    options.forkOptions.setMemoryMaximumSize("4g")
+    options.forkOptions.setMemoryMaximumSize("16g")
 }
 
 bootJar {
